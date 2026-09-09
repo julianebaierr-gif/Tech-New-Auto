@@ -207,7 +207,7 @@ Respond ONLY with valid JSON in this exact structure:
             "title": f"Advancements in {kw}: Technical Deep Dive",
             "slug": slug,
             "excerpt": f"Comprehensive overview and practical implementation insights regarding {kw}.",
-            "category": category,
+            "category": cat,
             "readTime": "4 min read",
             "tags": ["Technology", "Software", "AI"],
             "content": f"<p>Deep dive into {kw} and how modern engineering workflows are being transformed by high-speed automation and intelligent toolchains.</p>"
@@ -250,15 +250,15 @@ def main():
         json.dump(post_record, f, indent=2)
 
     print("\n" + "="*60)
-    print("🚀 [TECHPULSE AUTO PUBLISHER REPORT]")
+    print(">> [TECHPULSE AUTO PUBLISHER REPORT]")
     print("="*60)
-    print(f"📌 KEYWORD  : {keyword_data['keyword']}")
-    print(f"📂 CATEGORY : {post_record['category']}")
-    print(f"🏷️ TAGS     : {', '.join(post_record['tags'])}")
-    print(f"📰 TITLE    : {post_record['title']}")
-    print(f"🔗 SLUG     : {slug}")
-    print(f"⏱️ STATUS   : PUBLISHED (Date: {post_record['date']})")
-    print(f"🖼️ COVER IMG: {post_record['coverImage']}")
+    print(f"[*] KEYWORD  : {keyword_data['keyword']}")
+    print(f"[*] CATEGORY : {post_record['category']}")
+    print(f"[*] TAGS     : {', '.join(post_record['tags'])}")
+    print(f"[*] TITLE    : {post_record['title']}")
+    print(f"[*] SLUG     : {slug}")
+    print(f"[*] STATUS   : PUBLISHED (Date: {post_record['date']})")
+    print(f"[*] COVER IMG: {post_record['coverImage']}")
     print("="*60 + "\n")
 
 if __name__ == "__main__":
