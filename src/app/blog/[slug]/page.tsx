@@ -90,9 +90,6 @@ export default async function BlogPostPage({ params }: Props) {
           alt={post.title}
           className="w-full max-h-[500px] object-cover"
         />
-        <div className="p-2.5 bg-slate-50 text-right text-[11px] text-slate-400 border-t border-slate-200">
-          Photo: TechPulse Editorial Wire / Unsplash
-        </div>
       </div>
 
       {/* Post Body */}
