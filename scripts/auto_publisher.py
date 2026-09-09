@@ -179,24 +179,29 @@ def generate_article_with_gemini(keyword_info):
 You are an elite technical author and software architect writing for TechPulse, a premier technology journal.
 Write a comprehensive, professional, and SEO-optimized tech article based on this keyword/topic: "{kw}".
 
-CRITICAL FORMATTING INSTRUCTION:
-DO NOT USE any dashes or em-dashes (— or –). Always use clear sentences, commas, or parentheses instead. Never include "—" anywhere in the title, excerpt, or content.
+CRITICAL TITLE AND SEO CONSTRAINT:
+1. The "title" MUST BE strictly between 50 and 55 characters in length. Count the exact characters!
+2. NEVER include any years (such as 2025, 2026, 2024, or any future/past year) in the title, slug, headings, or content. It must be evergreen.
+3. Every title and description must be completely unique and specific to this topic.
 
 CRITICAL META DESCRIPTION CONSTRAINT:
-The "excerpt" MUST BE strictly between 120 and 150 characters maximum. Never exceed 150 characters.
+The "excerpt" MUST BE strictly between 150 and 155 characters in length. Never less than 150, never more than 155 characters. Do not truncate mid-sentence; write a complete, elegant sentence.
+
+CRITICAL FORMATTING INSTRUCTION:
+DO NOT USE any dashes or em-dashes (— or –). Always use clear sentences, commas, or parentheses instead. Never include "—" anywhere in the title, excerpt, or content.
 
 Automatically choose the most appropriate category from: [{tech_categories}].
 Automatically generate 4-5 relevant technical tags.
 
 Respond ONLY with valid JSON in this exact structure:
 {{
-  "title": "Engaging, authoritative title without dashes",
-  "slug": "url-friendly-lowercase-slug-without-special-characters",
-  "excerpt": "Concise high-impact SEO meta summary strictly under 150 characters",
+  "title": "Authoritative title strictly between 50 and 55 chars",
+  "slug": "url-friendly-lowercase-slug-without-special-characters-or-years",
+  "excerpt": "Concise high-impact SEO meta summary strictly between 150 and 155 chars.",
   "category": "Chosen Category",
   "readTime": "5 min read",
   "tags": ["Tag1", "Tag2", "Tag3", "Tag4"],
-  "content": "Rich HTML content using <h2>, <h3>, <p>, <ul>, <li>, <blockquote>, <strong> tags without any em-dashes. Minimum 450 words of deep technical insights."
+  "content": "Rich HTML content using <h2>, <h3>, <p>, <ul>, <li>, <blockquote>, <strong> tags without any em-dashes or years. Minimum 450 words of deep technical insights."
 }}
 """
         # Robust retry with backoff for temporary 503 spikes, across supported models
@@ -276,15 +281,46 @@ def main():
         cleaned = re.sub(r'\s{2,}', ' ', cleaned)
         return cleaned
 
+    def remove_years(text):
+        if not isinstance(text, str):
+            return text
+        text = re.sub(r'\bin (2020|2021|2022|2023|2024|2025|2026|2027|2028|2029|2030)\b', 'in modern computing', text, flags=re.IGNORECASE)
+        text = re.sub(r'\b(2020|2021|2022|2023|2024|2025|2026|2027|2028|2029|2030)\b', 'modern', text)
+        return text
+
+    def clean_title(title):
+        cleaned = clean_dashes(remove_years(title)).strip()
+        if len(cleaned) < 50:
+            cleaned = f"{cleaned} for Modern Systems"
+        if len(cleaned) > 55:
+            words = cleaned.split()
+            buf = ""
+            for w in words:
+                if len(buf + " " + w if buf else w) <= 55:
+                    buf = buf + " " + w if buf else w
+                else:
+                    break
+            cleaned = buf
+        # Final fine-tuning to guarantee 50-55 range
+        if len(cleaned) < 50:
+            cleaned = (cleaned + " Guide and Analysis")[:55]
+        return cleaned[:55]
+
     def clean_excerpt(text):
-        cleaned = clean_dashes(text).strip()
-        if len(cleaned) <= 150:
-            return cleaned
-        truncated = cleaned[:150]
-        last_space = truncated.rfind(' ')
-        if last_space > 80:
-            truncated = truncated[:last_space]
-        return truncated.rstrip('.,;:- ') + '.'
+        cleaned = clean_dashes(remove_years(text)).strip()
+        if len(cleaned) > 155:
+            words = cleaned.split()
+            buf = ""
+            for w in words:
+                if len(buf + " " + w if buf else w) <= 154:
+                    buf = buf + " " + w if buf else w
+                else:
+                    break
+            cleaned = buf.rstrip('.,;:- ') + '.'
+        if len(cleaned) < 150:
+            pad = " Comprehensive engineering overview and production analysis."
+            cleaned = (cleaned.rstrip('. ') + pad)[:154].rstrip('.,;:- ') + '.'
+        return cleaned
 
     import random
     AUTHORS = [
@@ -304,7 +340,7 @@ def main():
     selected_author = random.choice(AUTHORS)
 
     post_record = {
-        "title": clean_dashes(article_data["title"]),
+        "title": clean_title(article_data["title"]),
         "excerpt": clean_excerpt(article_data["excerpt"]),
         "coverImage": cover_image,
         "date": datetime.now().strftime("%Y-%m-%d"),
@@ -312,7 +348,7 @@ def main():
         "author": selected_author,
         "readTime": article_data.get("readTime", "5 min read"),
         "tags": article_data.get("tags", ["Tech", "Engineering"]),
-        "content": clean_dashes(article_data["content"])
+        "content": clean_dashes(remove_years(article_data["content"]))
     }
 
     with open(target_file, "w", encoding="utf-8") as f:

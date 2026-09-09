@@ -20,13 +20,13 @@ export async function generateMetadata({ params }: Props) {
   if (!post) return { title: "Article Not Found" };
   
   let desc = post.excerpt.trim();
-  if (desc.length > 150) {
-    const lastSpace = desc.slice(0, 150).lastIndexOf(" ");
-    desc = (lastSpace > 80 ? desc.slice(0, lastSpace) : desc.slice(0, 147)).replace(/[.,;:-]+$/, "") + "...";
+  if (desc.length > 155) {
+    const lastSpace = desc.slice(0, 155).lastIndexOf(" ");
+    desc = (lastSpace > 140 ? desc.slice(0, lastSpace) : desc.slice(0, 152)).replace(/[.,;:-]+$/, "") + "...";
   }
 
   return {
-    title: `${post.title} | TechPulse`,
+    title: post.title,
     description: desc,
   };
 }

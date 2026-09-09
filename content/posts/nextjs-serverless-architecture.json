@@ -1,6 +1,6 @@
 {
-  "title": "Next.js & Serverless Edge: Building High-Speed Global Web Apps",
-  "excerpt": "A deep dive into Edge caching, incremental static regeneration, and server components for lightning-fast modern web applications.",
+  "title": "Next.js Serverless Architecture and Edge Optimization",
+  "excerpt": "An architectural manual on configuring Next.js edge computing, streaming SSR pipelines, and incremental static revalidation for low-latency web platforms.",
   "coverImage": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
   "date": "2026-09-08",
   "category": "Web Development",
