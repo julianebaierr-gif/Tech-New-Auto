@@ -36,17 +36,14 @@ export default function Footer() {
         </div>
 
         <div>
-          <h3 className="text-white font-semibold mb-3 text-xs uppercase tracking-wider">Autonomous Engine</h3>
+          <h3 className="text-white font-semibold mb-3 text-xs uppercase tracking-wider">Connect</h3>
           <p className="text-xs text-neutral-400 mb-3">
-            Connected to Google Sheets, Unsplash API, Gemini AI, and deployed on Vercel.
+            Stay updated with the latest breakthroughs in technology, computing, and digital innovation.
           </p>
           <div className="flex items-center gap-3 text-neutral-400">
             <a href="https://github.com/julianebaierr-gif/Tech-New-Auto" target="_blank" rel="noreferrer" className="hover:text-cyan-400 p-2 bg-neutral-900 rounded-lg border border-neutral-800 transition">
               <GitBranch className="h-4 w-4" />
             </a>
-            <div className="p-2 bg-neutral-900 rounded-lg border border-neutral-800 text-cyan-400 text-xs font-mono">
-              4-Hour Sync
-            </div>
           </div>
         </div>
       </div>

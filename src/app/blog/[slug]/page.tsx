@@ -48,7 +48,6 @@ export default async function BlogPostPage({ params }: Props) {
           </span>
           <span className="flex items-center gap-1 text-neutral-400"><Calendar className="h-3.5 w-3.5" /> {post.date}</span>
           <span className="flex items-center gap-1 text-neutral-400"><Clock className="h-3.5 w-3.5" /> {post.readTime}</span>
-          <span className="flex items-center gap-1 text-emerald-400"><CheckCircle2 className="h-3.5 w-3.5" /> AI Verified</span>
         </div>
 
         <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
@@ -70,9 +69,6 @@ export default async function BlogPostPage({ params }: Props) {
               <p className="text-sm font-semibold text-white">{post.author.name}</p>
               <p className="text-xs text-neutral-400">{post.author.role}</p>
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-neutral-400 hidden sm:inline">Autonomous Pipeline</span>
           </div>
         </div>
       </header>

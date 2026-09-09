@@ -15,13 +15,13 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(6,182,212,0.15),rgba(255,255,255,0))] pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-800/60 text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-6">
-            <Sparkles className="h-3.5 w-3.5" /> Autonomous Tech Publication
+            <Sparkles className="h-3.5 w-3.5" /> Modern Technology Journal
           </div>
           <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white max-w-4xl leading-tight sm:leading-none">
             Exploring the Frontier of <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500">Artificial Intelligence</span> & Future Tech
           </h1>
           <p className="mt-6 text-lg sm:text-xl text-neutral-400 max-w-2xl leading-relaxed">
-            Real-time tech insights, artificial intelligence breakthroughs, cloud innovations, and hardware evolution updated dynamically via autonomous pipelines.
+            Real-time tech insights, artificial intelligence breakthroughs, cloud innovations, and hardware evolution curated for engineers and innovators.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
@@ -34,26 +34,26 @@ export default function HomePage() {
               href="/about"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 font-semibold text-sm transition"
             >
-              How Our AI Pipeline Works
+              About Our Editorial
             </Link>
           </div>
 
           <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 border-t border-neutral-800/60 text-xs text-neutral-400">
             <div className="flex items-center gap-2">
               <Zap className="h-4 w-4 text-cyan-400" />
-              <span>4-Hour Automated Cadence</span>
+              <span>Real-Time Updates</span>
             </div>
             <div className="flex items-center gap-2">
               <Cpu className="h-4 w-4 text-indigo-400" />
-              <span>Gemini 2.5 Flash Engine</span>
+              <span>Deep Technical Analysis</span>
             </div>
             <div className="flex items-center gap-2">
               <Globe className="h-4 w-4 text-emerald-400" />
-              <span>Live Google Sheet Curation</span>
+              <span>Global Tech Coverage</span>
             </div>
             <div className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-purple-400" />
-              <span>100% SEO Optimized</span>
+              <span>Industry Insights</span>
             </div>
           </div>
         </div>

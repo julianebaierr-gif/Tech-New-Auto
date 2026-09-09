@@ -275,9 +275,9 @@ def main():
         "date": datetime.now().strftime("%Y-%m-%d"),
         "category": article_data.get("category", "Technology"),
         "author": {
-            "name": "TechPulse Autonomous Bot",
-            "avatar": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=200&q=80",
-            "role": "AI Research & Publishing Engine"
+            "name": "TechPulse Editorial",
+            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+            "role": "Senior Tech Editor"
         },
         "readTime": article_data.get("readTime", "5 min read"),
         "tags": [clean_dashes(t) for t in article_data.get("tags", ["Tech", "AI", "Automation"])],

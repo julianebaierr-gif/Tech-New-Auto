@@ -10,7 +10,6 @@ export default function Navbar() {
             <Cpu className="h-5 w-5" />
           </div>
           <span>Tech<span className="text-cyan-400">Pulse</span></span>
-          <span className="text-xs uppercase px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">AI Auto</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-neutral-300">
@@ -29,13 +28,6 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-800/80 px-3 py-1.5 rounded-full">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <span>Auto Bot Active (4h)</span>
-          </div>
           <Link
             href="/blog"
             className="text-xs font-semibold px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:from-cyan-400 hover:to-blue-500 transition shadow-md shadow-cyan-500/25 flex items-center gap-1.5"
