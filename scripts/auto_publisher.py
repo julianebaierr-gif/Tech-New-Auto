@@ -361,17 +361,6 @@ Respond ONLY with valid JSON:
         article_data["category"] = chosen_category
     article_data["visual_subject"] = visual_subject
     return article_data
-        print(f"[ERROR] Gemini generation failed: {e}")
-        slug = re.sub(r'[^a-zA-Z0-9]+', '-', kw.lower()).strip('-')
-        return {
-            "title": f"Advancements in {kw}: Technical Deep Dive",
-            "slug": slug,
-            "excerpt": f"Comprehensive overview and practical implementation insights regarding {kw}.",
-            "category": cat,
-            "readTime": "4 min read",
-            "tags": ["Technology", "Software", "AI"],
-            "content": f"<p>Deep dive into {kw} and how modern engineering workflows are being transformed by high-speed automation and intelligent toolchains.</p>"
-        }
 
 def main():
     print("[START] TechPulse Autonomous Publisher running...")
