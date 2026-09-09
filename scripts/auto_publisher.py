@@ -350,8 +350,11 @@ CRITICAL SEO & GOOGLE 2026 HELPFUL CONTENT GUIDELINES:
    - <h4> for granular implementation details
    - Structure with rich <p>, <ul><li>, <ol><li>, <blockquote>, and <strong> tags.
 3. TITLE REQUIREMENT:
-   - Must directly feature or be 100% relevant to "{kw}".
-   - Strictly between 50 and 55 characters in length. Count the exact characters!
+   - Must naturally feature or strictly relate to "{kw}".
+   - Complete the title into a concise, professional, and SEO-friendly headline.
+   - Automatically understand the article's topic, audience, and main focus, then craft the most natural, engaging, and relevant ending.
+   - DO NOT force fixed phrases (like "for Modern Systems" or "Guide and Analysis").
+   - Strictly between 50 and 55 characters in length. Natural, human-written, and engaging.
    - NEVER include any years (such as 2025, 2026, etc.). Evergreen content only.
 4. META DESCRIPTION (EXCERPT):
    - Must directly mention "{kw}".
@@ -452,8 +455,7 @@ def main():
 
     def clean_title(title):
         cleaned = clean_dashes(remove_years(title)).strip()
-        if len(cleaned) < 50:
-            cleaned = f"{cleaned} for Modern Systems"
+        # If Gemini generated slightly over 55, trim cleanly at word boundary
         if len(cleaned) > 55:
             words = cleaned.split()
             buf = ""
@@ -462,11 +464,11 @@ def main():
                     buf = buf + " " + w if buf else w
                 else:
                     break
-            cleaned = buf
-        # Final fine-tuning to guarantee 50-55 range
-        if len(cleaned) < 50:
-            cleaned = (cleaned + " Guide and Analysis")[:55]
-        return cleaned[:55]
+            if len(buf) >= 45:
+                cleaned = buf
+            else:
+                cleaned = cleaned[:55].rstrip('.,;:- ')
+        return cleaned
 
     def clean_excerpt(text):
         cleaned = clean_dashes(remove_years(text)).strip()
