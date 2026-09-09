@@ -26,26 +26,26 @@ export default function HomePage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Main Big Lead Article */}
           {leadPost && (
-            <article className="lg:col-span-7 bg-[#111827] rounded-lg overflow-hidden border border-[#1f293d] hover:border-[#c1121e] transition duration-200 flex flex-col">
-              <div className="h-72 sm:h-96 relative overflow-hidden bg-black">
+            <article className="lg:col-span-7 bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition duration-300 flex flex-col group">
+              <div className="h-72 sm:h-96 relative overflow-hidden bg-slate-100">
                 <img
                   src={leadPost.coverImage}
                   alt={leadPost.title}
-                  className="w-full h-full object-cover hover:scale-105 transition duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                 />
               </div>
               <div className="p-6 sm:p-8 flex flex-col flex-1">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#ef233c] mb-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-blue-600 mb-2">
                   {leadPost.category} &bull; Editorial Lead Feature
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-white hover:text-[#ef233c] transition leading-snug mb-3">
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 group-hover:text-blue-600 transition leading-snug mb-3">
                   <Link href={`/blog/${leadPost.slug}`}>{leadPost.title}</Link>
                 </h2>
-                <p className="text-sm sm:text-base text-[#94a3b8] leading-relaxed mb-6 line-clamp-3">
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-6 line-clamp-3">
                   {leadPost.excerpt}
                 </p>
-                <div className="mt-auto flex items-center justify-between pt-4 border-t border-[#1f293d] text-xs text-[#64748b]">
-                  <span>By <strong className="text-[#cbd5e1]">{leadPost.author.name}</strong></span>
+                <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-100 text-xs text-slate-500">
+                  <span>By <strong className="text-slate-800">{leadPost.author.name}</strong></span>
                   <span>{leadPost.date}</span>
                 </div>
               </div>
@@ -53,13 +53,13 @@ export default function HomePage() {
           )}
 
           {/* Mini Side List */}
-          <div className="lg:col-span-5 flex flex-col gap-4">
+          <div className="lg:col-span-5 flex flex-col gap-3.5">
             {sideArticles.map((post) => (
               <article
                 key={post.slug}
-                className="bg-[#111827] p-3.5 rounded-lg border border-[#1f293d] hover:border-[#c1121e] transition flex items-center gap-4 group"
+                className="bg-white p-3.5 rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex items-center gap-4 group"
               >
-                <div className="w-24 h-20 shrink-0 rounded overflow-hidden bg-black">
+                <div className="w-24 h-20 shrink-0 rounded-lg overflow-hidden bg-slate-100">
                   <img
                     src={post.coverImage}
                     alt={post.title}
@@ -67,13 +67,13 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="text-[11px] font-bold uppercase text-[#ef233c] block mb-1">
+                  <span className="text-[11px] font-bold uppercase text-blue-600 block mb-1">
                     {post.category}
                   </span>
-                  <h3 className="text-xs sm:text-sm font-bold text-white group-hover:text-[#ef233c] transition line-clamp-2 leading-snug mb-1">
+                  <h3 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-blue-600 transition line-clamp-2 leading-snug mb-1">
                     <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                   </h3>
-                  <span className="text-[11px] text-[#64748b]">{post.date}</span>
+                  <span className="text-[11px] text-slate-400">{post.date}</span>
                 </div>
               </article>
             ))}
@@ -90,9 +90,9 @@ export default function HomePage() {
           {(aiPosts.length > 0 ? aiPosts : generalPosts.slice(0, 3)).map((post) => (
             <article
               key={post.slug}
-              className="bg-[#111827] rounded-lg overflow-hidden border border-[#1f293d] hover:border-[#c1121e] transition flex flex-col group"
+              className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-blue-500 hover:shadow-lg transition flex flex-col group"
             >
-              <div className="h-48 relative overflow-hidden bg-black">
+              <div className="h-48 relative overflow-hidden bg-slate-100">
                 <img
                   src={post.coverImage}
                   alt={post.title}
@@ -100,17 +100,17 @@ export default function HomePage() {
                 />
               </div>
               <div className="p-5 flex flex-col flex-1">
-                <span className="text-[11px] font-bold uppercase text-[#ef233c] mb-2">
+                <span className="text-[11px] font-bold uppercase text-blue-600 mb-2">
                   {post.category}
                 </span>
-                <h3 className="text-base font-bold text-white group-hover:text-[#ef233c] transition line-clamp-2 leading-snug mb-2">
+                <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition line-clamp-2 leading-snug mb-2">
                   <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                 </h3>
-                <p className="text-xs text-[#94a3b8] line-clamp-3 leading-relaxed mb-4 flex-1">
+                <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4 flex-1">
                   {post.excerpt}
                 </p>
-                <div className="pt-3 border-t border-[#1f293d] flex items-center justify-between text-[11px] text-[#64748b]">
-                  <span>{post.author.name}</span>
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                  <span className="font-semibold text-slate-700">{post.author.name}</span>
                   <span>{post.date}</span>
                 </div>
               </div>
@@ -128,9 +128,9 @@ export default function HomePage() {
           {(webPosts.length > 0 ? webPosts : generalPosts.slice(3, 6)).map((post) => (
             <article
               key={post.slug}
-              className="bg-[#111827] rounded-lg overflow-hidden border border-[#1f293d] hover:border-[#c1121e] transition flex flex-col group"
+              className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-blue-500 hover:shadow-lg transition flex flex-col group"
             >
-              <div className="h-48 relative overflow-hidden bg-black">
+              <div className="h-48 relative overflow-hidden bg-slate-100">
                 <img
                   src={post.coverImage}
                   alt={post.title}
@@ -138,17 +138,17 @@ export default function HomePage() {
                 />
               </div>
               <div className="p-5 flex flex-col flex-1">
-                <span className="text-[11px] font-bold uppercase text-[#ef233c] mb-2">
+                <span className="text-[11px] font-bold uppercase text-blue-600 mb-2">
                   {post.category}
                 </span>
-                <h3 className="text-base font-bold text-white group-hover:text-[#ef233c] transition line-clamp-2 leading-snug mb-2">
+                <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition line-clamp-2 leading-snug mb-2">
                   <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                 </h3>
-                <p className="text-xs text-[#94a3b8] line-clamp-3 leading-relaxed mb-4 flex-1">
+                <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4 flex-1">
                   {post.excerpt}
                 </p>
-                <div className="pt-3 border-t border-[#1f293d] flex items-center justify-between text-[11px] text-[#64748b]">
-                  <span>{post.author.name}</span>
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                  <span className="font-semibold text-slate-700">{post.author.name}</span>
                   <span>{post.date}</span>
                 </div>
               </div>
@@ -166,9 +166,9 @@ export default function HomePage() {
           {(hardwarePosts.length > 0 ? hardwarePosts : generalPosts.slice(0, 3)).map((post) => (
             <article
               key={post.slug}
-              className="bg-[#111827] rounded-lg overflow-hidden border border-[#1f293d] hover:border-[#c1121e] transition flex flex-col group"
+              className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-blue-500 hover:shadow-lg transition flex flex-col group"
             >
-              <div className="h-48 relative overflow-hidden bg-black">
+              <div className="h-48 relative overflow-hidden bg-slate-100">
                 <img
                   src={post.coverImage}
                   alt={post.title}
@@ -176,17 +176,17 @@ export default function HomePage() {
                 />
               </div>
               <div className="p-5 flex flex-col flex-1">
-                <span className="text-[11px] font-bold uppercase text-[#ef233c] mb-2">
+                <span className="text-[11px] font-bold uppercase text-blue-600 mb-2">
                   {post.category}
                 </span>
-                <h3 className="text-base font-bold text-white group-hover:text-[#ef233c] transition line-clamp-2 leading-snug mb-2">
+                <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition line-clamp-2 leading-snug mb-2">
                   <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                 </h3>
-                <p className="text-xs text-[#94a3b8] line-clamp-3 leading-relaxed mb-4 flex-1">
+                <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4 flex-1">
                   {post.excerpt}
                 </p>
-                <div className="pt-3 border-t border-[#1f293d] flex items-center justify-between text-[11px] text-[#64748b]">
-                  <span>{post.author.name}</span>
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                  <span className="font-semibold text-slate-700">{post.author.name}</span>
                   <span>{post.date}</span>
                 </div>
               </div>

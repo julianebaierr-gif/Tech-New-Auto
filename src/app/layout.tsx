@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import TopUtilityBar from "@/components/TopUtilityBar";
 import MainHeader from "@/components/MainHeader";
@@ -7,19 +7,11 @@ import MainNavbar from "@/components/MainNavbar";
 import BreakingTicker from "@/components/BreakingTicker";
 import Footer from "@/components/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "TechPulse Magazine | Independent Tech Journalism, Hardware & AI",
-  description: "In-depth reporting on artificial intelligence, software architecture, semiconductors, cybersecurity, and future tech developments.",
+  title: "TechPulse | Leading Tech Intelligence, AI & Software Architecture",
+  description: "Independent technology journalism reporting on artificial intelligence, software engineering, semiconductors, cybersecurity, and future computing.",
 };
 
 export default function RootLayout({
@@ -28,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} dark`}>
-      <body className="min-h-screen flex flex-col bg-[#0b0f19] text-[#f1f5f9] antialiased selection:bg-[#ef233c] selection:text-white">
+    <html lang="en" className={inter.className}>
+      <body className="min-h-screen flex flex-col bg-[#f8fafc] text-[#0f172a] antialiased selection:bg-blue-600 selection:text-white">
         <TopUtilityBar />
         <MainHeader />
         <MainNavbar />

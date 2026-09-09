@@ -1,34 +1,35 @@
 @import "tailwindcss";
 
 :root {
-  --primary-red: #c1121e;
-  --dark-red: #780000;
-  --accent-gold: #f59e0b;
-  --bg-dark: #0b0f19;
-  --card-dark: #111827;
-  --card-border: #1f293d;
+  --primary-blue: #2563eb;
+  --dark-blue: #1d4ed8;
+  --accent-cyan: #06b6d4;
+  --bg-light: #f8fafc;
+  --card-light: #ffffff;
+  --card-border: #e2e8f0;
 }
 
 body {
-  background-color: var(--bg-dark);
-  color: #f1f5f9;
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* Red section headers matching GenAlphaMagazines */
+/* Unique Tech Modern Section Headers */
 .section-tag-box {
-  background: linear-gradient(135deg, #ef233c 0%, #c1121e 60%, #780000 100%);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #0284c7 100%);
   color: #ffffff;
-  padding: 0.35rem 1rem;
-  font-size: 0.82rem;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.8rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   display: inline-block;
-  border-radius: 4px 4px 0 0;
+  border-radius: 6px 6px 0 0;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
 .section-line {
-  border-bottom: 2px solid #c1121e;
+  border-bottom: 2px solid #2563eb;
   margin-bottom: 1.5rem;
 }

@@ -14,13 +14,13 @@ export const categories = [
 
 export default function MainNavbar() {
   return (
-    <nav className="sticky top-0 z-40 bg-[#070a12] border-b border-[#1f293d] shadow-md">
+    <nav className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ul className="flex items-center overflow-x-auto scrollbar-none py-2 gap-1 text-xs sm:text-sm font-semibold whitespace-nowrap">
+        <ul className="flex items-center overflow-x-auto scrollbar-none py-2.5 gap-1.5 text-xs sm:text-sm font-semibold whitespace-nowrap">
           <li>
             <Link
               href="/"
-              className="px-3.5 py-1.5 rounded hover:bg-[#c1121e] hover:text-white transition text-[#f1f5f9] inline-block font-bold"
+              className="px-3.5 py-1.5 rounded-md hover:bg-blue-600 hover:text-white transition text-slate-800 inline-block font-bold"
             >
               Home
             </Link>
@@ -29,16 +29,16 @@ export default function MainNavbar() {
             <li key={cat.slug}>
               <Link
                 href={`/category/${cat.slug}`}
-                className="px-3.5 py-1.5 rounded hover:bg-[#c1121e] hover:text-white transition text-[#94a3b8] hover:text-white inline-block"
+                className="px-3 py-1.5 rounded-md hover:bg-blue-50 hover:text-blue-700 text-slate-600 transition inline-block font-medium"
               >
                 {cat.name}
               </Link>
             </li>
           ))}
-          <li>
+          <li className="ml-auto">
             <Link
               href="/blog"
-              className="px-3.5 py-1.5 rounded bg-[#1e293b] hover:bg-[#c1121e] text-[#f59e0b] hover:text-white transition inline-block font-bold ml-2"
+              className="px-3.5 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 text-white transition inline-block font-bold shadow-xs"
             >
               All Topics
             </Link>

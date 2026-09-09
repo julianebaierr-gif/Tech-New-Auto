@@ -7,64 +7,53 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-14">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-14">
       {/* Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950 text-cyan-400 text-xs font-semibold uppercase tracking-wider border border-cyan-800">
-          Autonomous Platform
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold uppercase tracking-wider border border-blue-200">
+          Independent Tech Journal
         </div>
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+        <h1 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
           About TechPulse Editorial
         </h1>
-        <p className="text-base sm:text-lg text-neutral-400 leading-relaxed">
-          TechPulse is a fully automated technology intelligence blog engineered to transform live spreadsheet keyword curation into deep, professional, and SEO-optimized technical articles.
+        <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+          TechPulse is a modern technology intelligence publication delivering deep technical reports, computing breakdowns, and software architectural analysis.
         </p>
       </div>
 
       {/* Pipeline Diagram */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-6 rounded-2xl border border-neutral-800 bg-neutral-900/60">
-        <div className="p-4 rounded-xl bg-neutral-950 border border-neutral-800/80 space-y-2 text-center">
-          <Database className="h-6 w-6 text-emerald-400 mx-auto" />
-          <h2 className="text-sm font-bold text-white">1. Google Sheets</h2>
-          <p className="text-xs text-neutral-400">Pulls target keywords, categories, and publication queues.</p>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-2 text-center">
+          <Database className="h-6 w-6 text-blue-600 mx-auto" />
+          <h2 className="text-sm font-bold text-slate-900">Curated Topics</h2>
+          <p className="text-xs text-slate-600">Continuous monitoring of computing trends and hardware developments.</p>
         </div>
-        <div className="p-4 rounded-xl bg-neutral-950 border border-neutral-800/80 space-y-2 text-center">
-          <Cpu className="h-6 w-6 text-cyan-400 mx-auto" />
-          <h2 className="text-sm font-bold text-white">2. Gemini AI</h2>
-          <p className="text-xs text-neutral-400">Deep technical research, structured analysis, and SEO generation.</p>
+        <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-2 text-center">
+          <Cpu className="h-6 w-6 text-indigo-600 mx-auto" />
+          <h2 className="text-sm font-bold text-slate-900">Deep Analysis</h2>
+          <p className="text-xs text-slate-600">Technical precision covering AI architectures and distributed systems.</p>
         </div>
-        <div className="p-4 rounded-xl bg-neutral-950 border border-neutral-800/80 space-y-2 text-center">
-          <Layers className="h-6 w-6 text-purple-400 mx-auto" />
-          <h2 className="text-sm font-bold text-white">3. Unsplash API</h2>
-          <p className="text-xs text-neutral-400">High-resolution, license-cleared tech photography.</p>
+        <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-2 text-center">
+          <Layers className="h-6 w-6 text-cyan-600 mx-auto" />
+          <h2 className="text-sm font-bold text-slate-900">Visual Standards</h2>
+          <p className="text-xs text-slate-600">Verified high-resolution imagery and clear diagramming.</p>
         </div>
-        <div className="p-4 rounded-xl bg-neutral-950 border border-neutral-800/80 space-y-2 text-center">
-          <RefreshCw className="h-6 w-6 text-indigo-400 mx-auto" />
-          <h2 className="text-sm font-bold text-white">4. 4-Hour Cron</h2>
-          <p className="text-xs text-neutral-400">GitHub Actions commits and Vercel automatically deploys.</p>
+        <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-2 text-center">
+          <RefreshCw className="h-6 w-6 text-emerald-600 mx-auto" />
+          <h2 className="text-sm font-bold text-slate-900">Real-Time Dispatch</h2>
+          <p className="text-xs text-slate-600">Regular publications around the clock across 9 tech departments.</p>
         </div>
       </div>
 
       {/* Detailed Mission */}
-      <div className="space-y-6 text-neutral-300 text-sm sm:text-base leading-relaxed border-t border-neutral-800 pt-10">
-        <h2 className="text-2xl font-bold text-white">Our Mission</h2>
+      <div className="space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed border-t border-slate-200 pt-10">
+        <h2 className="text-2xl font-bold text-slate-900">Our Mission</h2>
         <p>
-          In a rapidly evolving digital era where artificial intelligence, quantum computing, cybersecurity, and cloud architectures advance by the hour, conventional journalism struggles to keep pace. TechPulse was engineered to bridge that latency.
+          In an era where artificial intelligence, quantum computing, cloud infrastructure, and semiconductors advance at breakneck speeds, readers require clear, concise, and technically grounded journalism.
         </p>
         <p>
-          By pairing deterministic spreadsheet queues with state-of-the-art Large Language Models (Google Gemini), we deliver accurate, insightful, and accessible tech briefings around the clock without manual intervention.
+          TechPulse bridges this gap by delivering rigorous, easy-to-digest analyses of emerging technical breakthroughs.
         </p>
-
-        <h2 className="text-2xl font-bold text-white pt-6">Quality Control & Verification</h2>
-        <p>
-          Every article generated through our automated pipeline complies with strict editorial guardrails:
-        </p>
-        <ul className="list-disc pl-6 space-y-2 text-neutral-400">
-          <li>Factual consistency and technical precision in AI & software development topics.</li>
-          <li>Proper attribution and open-license image sourcing through official APIs.</li>
-          <li>Continuous schema validation to prevent malformed metadata or broken links.</li>
-          <li>Strict adherence to international data privacy and terms of use.</li>
-        </ul>
       </div>
     </div>
   );
