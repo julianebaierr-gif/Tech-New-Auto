@@ -1,8 +1,8 @@
 import { Cpu, Zap, Database, RefreshCw, Shield, Layers } from "lucide-react";
 
 export const metadata = {
-  title: "About Us & Automation Architecture | TechPulse",
-  description: "Learn how TechPulse operates completely autonomously using Google Sheets, Gemini AI, Unsplash, and GitHub Actions.",
+  title: "About Our Journal | TechPulse",
+  description: "Meet the TechPulse editorial masthead, our technical journalism standards, and our investigative mission covering computing frontiers.",
 };
 
 export default function AboutPage() {

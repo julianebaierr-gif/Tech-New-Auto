@@ -3,8 +3,8 @@ import { getAllPosts } from "@/lib/posts";
 import { ArrowRight, Calendar, Clock, BookOpen } from "lucide-react";
 
 export const metadata = {
-  title: "All Articles | TechPulse AI",
-  description: "Browse all automated tech updates, AI guides, and hardware developments.",
+  title: "All Articles & Research | TechPulse Newsroom",
+  description: "Browse the complete archive of technical analyses, computing benchmarks, and engineering breakdowns published by TechPulse.",
 };
 
 export default function BlogListPage() {

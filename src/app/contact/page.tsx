@@ -1,8 +1,8 @@
 import { Mail, MessageSquare, MapPin, Send, Globe } from "lucide-react";
 
 export const metadata = {
-  title: "Contact Us | TechPulse",
-  description: "Get in touch with the TechPulse team for editorial inquiries, technical partnerships, or API integrations.",
+  title: "Contact Newsroom | TechPulse",
+  description: "Get in touch with the TechPulse editorial desk for news tips, technical corrections, press submissions, and media inquiries.",
 };
 
 export default function ContactPage() {

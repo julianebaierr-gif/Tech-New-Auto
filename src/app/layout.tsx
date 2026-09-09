@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "TechPulse | Leading Tech Intelligence, AI & Software Architecture",
-  description: "Independent technology journalism reporting on artificial intelligence, software engineering, semiconductors, cybersecurity, and future computing.",
+  description: "Independent tech journalism reporting on emerging AI models, software architecture, semiconductors, cybersecurity, and future computing.",
 };
 
 export default function RootLayout({

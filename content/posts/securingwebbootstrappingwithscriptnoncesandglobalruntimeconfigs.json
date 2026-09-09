@@ -1,6 +1,6 @@
 {
   "title": "Securing Web Bootstrapping with Script Nonces and Global Runtime Configurations",
-  "excerpt": "Injecting dynamic environment variables during initial HTML delivery speeds up application rendering while introducing potential security vectors. Modern frontend platforms mitigate these risks using Content Security Policy nonces alongside structured global application state objects.",
+  "excerpt": "Injecting dynamic environment variables during initial HTML delivery speeds up application rendering while introducing potential security vectors.",
   "coverImage": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
   "date": "2026-09-09",
   "category": "Web Development",

@@ -18,9 +18,16 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return { title: "Article Not Found" };
+  
+  let desc = post.excerpt.trim();
+  if (desc.length > 150) {
+    const lastSpace = desc.slice(0, 150).lastIndexOf(" ");
+    desc = (lastSpace > 80 ? desc.slice(0, lastSpace) : desc.slice(0, 147)).replace(/[.,;:-]+$/, "") + "...";
+  }
+
   return {
-    title: `${post.title} | TechPulse AI`,
-    description: post.excerpt,
+    title: `${post.title} | TechPulse`,
+    description: desc,
   };
 }
 

@@ -182,6 +182,9 @@ Write a comprehensive, professional, and SEO-optimized tech article based on thi
 CRITICAL FORMATTING INSTRUCTION:
 DO NOT USE any dashes or em-dashes (— or –). Always use clear sentences, commas, or parentheses instead. Never include "—" anywhere in the title, excerpt, or content.
 
+CRITICAL META DESCRIPTION CONSTRAINT:
+The "excerpt" MUST BE strictly between 120 and 150 characters maximum. Never exceed 150 characters.
+
 Automatically choose the most appropriate category from: [{tech_categories}].
 Automatically generate 4-5 relevant technical tags.
 
@@ -189,7 +192,7 @@ Respond ONLY with valid JSON in this exact structure:
 {{
   "title": "Engaging, authoritative title without dashes",
   "slug": "url-friendly-lowercase-slug-without-special-characters",
-  "excerpt": "Compelling 2-sentence summary of the article for social sharing and search meta without dashes",
+  "excerpt": "Concise high-impact SEO meta summary strictly under 150 characters",
   "category": "Chosen Category",
   "readTime": "5 min read",
   "tags": ["Tag1", "Tag2", "Tag3", "Tag4"],
@@ -273,6 +276,16 @@ def main():
         cleaned = re.sub(r'\s{2,}', ' ', cleaned)
         return cleaned
 
+    def clean_excerpt(text):
+        cleaned = clean_dashes(text).strip()
+        if len(cleaned) <= 150:
+            return cleaned
+        truncated = cleaned[:150]
+        last_space = truncated.rfind(' ')
+        if last_space > 80:
+            truncated = truncated[:last_space]
+        return truncated.rstrip('.,;:- ') + '.'
+
     import random
     AUTHORS = [
         {
@@ -292,7 +305,7 @@ def main():
 
     post_record = {
         "title": clean_dashes(article_data["title"]),
-        "excerpt": clean_dashes(article_data["excerpt"]),
+        "excerpt": clean_excerpt(article_data["excerpt"]),
         "coverImage": cover_image,
         "date": datetime.now().strftime("%Y-%m-%d"),
         "category": article_data.get("category", "Technology"),
