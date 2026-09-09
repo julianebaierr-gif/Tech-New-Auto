@@ -39,9 +39,33 @@ export default function HomePage() {
                 <h2 className="text-2xl sm:text-3xl font-black text-slate-900 group-hover:text-blue-600 transition leading-snug mb-3">
                   <Link href={`/blog/${leadPost.slug}`}>{leadPost.title}</Link>
                 </h2>
-                <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-6 line-clamp-3">
-                  {leadPost.excerpt}
-                </p>
+                {(() => {
+                  const content = leadPost.content || "";
+                  const pMatch = content.match(/<p>([\s\S]*?)<\/p>/);
+                  const rawText = pMatch
+                    ? pMatch[1].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()
+                    : content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+                  const sentences = rawText.split(/\.\s+/);
+                  let leadSnippet = "";
+                  if (sentences.length >= 2) {
+                    leadSnippet = `${sentences[0]}. ${sentences[1].replace(/\.+$/, "")}.`;
+                  } else if (sentences.length === 1 && sentences[0]) {
+                    leadSnippet = `${sentences[0].replace(/\.+$/, "")}.`;
+                  } else {
+                    leadSnippet = leadPost.excerpt;
+                  }
+
+                  return (
+                    <div className="space-y-3 mb-6">
+                      <p className="text-sm sm:text-base font-medium text-slate-700 leading-relaxed">
+                        {leadPost.excerpt}
+                      </p>
+                      <p className="text-xs sm:text-sm text-slate-500 leading-relaxed border-l-2 border-blue-500 pl-3">
+                        {leadSnippet}
+                      </p>
+                    </div>
+                  );
+                })()}
                 <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-100 text-xs text-slate-500">
                   <span>By <strong className="text-slate-800">{leadPost.author.name}</strong></span>
                   <span>{leadPost.date}</span>
