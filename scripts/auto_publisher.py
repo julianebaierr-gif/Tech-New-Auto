@@ -3,8 +3,13 @@ import re
 import csv
 import json
 import time
+import warnings
 import requests
 from datetime import datetime
+
+# Suppress informational SDK notices
+warnings.filterwarnings("ignore", category=UserWarning)
+os.environ["PYTHONWARNINGS"] = "ignore"
 
 # 1. Configuration & Secrets
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
