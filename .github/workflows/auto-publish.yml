@@ -1,9 +1,9 @@
-name: Auto Publish Tech Article (4-Hour Sync)
+name: Auto Publish Tech Article (5-Min Test Sync)
 
 on:
   schedule:
-    # Runs every 4 hours automatically
-    - cron: '0 */4 * * *'
+    # Runs every 5 minutes for live testing
+    - cron: '*/5 * * * *'
   workflow_dispatch: # Allows manual run anytime from GitHub Actions tab
 
 permissions:
