@@ -36,12 +36,10 @@ export default function Footer() {
 
         <div>
           <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-4 border-b border-slate-800 pb-2">
-            Publications & Standards
+            Editorial & Organization
           </h4>
           <ul className="space-y-2 text-xs">
-            <li><Link href="/about" className="hover:text-blue-400 transition">Editorial Standards</Link></li>
-            <li><Link href="/about" className="hover:text-blue-400 transition">Mission Statement</Link></li>
-            <li><Link href="/contact" className="hover:text-blue-400 transition">News Tip & Press</Link></li>
+            <li><Link href="/about" className="hover:text-blue-400 transition">About Our Journal</Link></li>
             <li><Link href="/contact" className="hover:text-blue-400 transition">Contact Newsroom</Link></li>
           </ul>
         </div>
@@ -53,8 +51,6 @@ export default function Footer() {
           <ul className="space-y-2 text-xs">
             <li><Link href="/privacy-policy" className="hover:text-blue-400 transition">Privacy Policy</Link></li>
             <li><Link href="/terms" className="hover:text-blue-400 transition">Terms & Conditions</Link></li>
-            <li><span className="text-slate-500">Ethics & Attribution</span></li>
-            <li><span className="text-slate-500">Security Disclosures</span></li>
           </ul>
         </div>
       </div>

@@ -16,10 +16,9 @@ export default function TopUtilityBar() {
           </span>
         </div>
         <nav className="flex items-center gap-4 text-xs font-medium text-slate-300">
-          <Link href="/about" className="hover:text-cyan-400 transition">About Journal</Link>
-          <Link href="/about" className="hover:text-cyan-400 transition">Editorial Board</Link>
+          <Link href="/about" className="hover:text-cyan-400 transition">About</Link>
           <Link href="/privacy-policy" className="hover:text-cyan-400 transition">Privacy</Link>
-          <Link href="/contact" className="hover:text-cyan-400 transition">Submit Story</Link>
+          <Link href="/contact" className="hover:text-cyan-400 transition">Contact</Link>
         </nav>
       </div>
     </div>
