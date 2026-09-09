@@ -164,6 +164,15 @@ def fetch_keyword_from_sheet():
     # STRICT: Do not take keywords from anywhere else. If exhausted or unreadable, raise error.
     raise Exception("[ERROR] Google Sheet me se koi naya ya un-published keyword nahi mila! Sheet check karein ya naye keywords add karein.")
 
+def extract_unsplash_id(url):
+    """Extracts unique photo ID from any Unsplash URL or query string."""
+    if not url:
+        return ""
+    m = re.search(r'photo-([a-zA-Z0-9\-]+)', str(url))
+    if m:
+        return m.group(1)
+    return str(url).split('?')[0].strip()
+
 def get_existing_posts_metadata():
     """
     Scans all existing posts to extract existing titles, excerpts, slugs, and cover images
@@ -172,6 +181,7 @@ def get_existing_posts_metadata():
     titles = []
     excerpts = []
     images = []
+    image_ids = set()
     slugs = []
     if os.path.exists(POSTS_DIR):
         for f in os.listdir(POSTS_DIR):
@@ -184,61 +194,77 @@ def get_existing_posts_metadata():
                         if d.get("excerpt"):
                             excerpts.append(d["excerpt"].strip())
                         if d.get("coverImage"):
-                            images.append(d["coverImage"].strip())
+                            c_img = d["coverImage"].strip()
+                            images.append(c_img)
+                            img_id = extract_unsplash_id(c_img)
+                            if img_id:
+                                image_ids.add(img_id)
                         slugs.append(f.replace(".json", ""))
                 except:
                     pass
-    return {"titles": titles, "excerpts": excerpts, "images": images, "slugs": slugs}
+    return {"titles": titles, "excerpts": excerpts, "images": images, "image_ids": image_ids, "slugs": slugs}
 
-def fetch_unsplash_image(query, used_images=None, visual_subject=None):
+def fetch_unsplash_image(query, used_image_ids=None, visual_subject=None):
     """
     Fetches high quality, strictly relevant photo from Unsplash based on the exact keyword and visual subject.
-    Never repeats an image already used on the site.
+    Never repeats an image or photo ID already used anywhere on the site.
     """
-    used_images = set(used_images or [])
+    used_ids = set(used_image_ids or [])
     clean_kw = re.sub(r'[^a-zA-Z0-9\s]+', ' ', query).strip()
-    
-    # Priority search queries: specific visual subject first, then clean keyword
+
+    # Distinct search queries: specific visual subject first, keyword, and niche combinations
     candidate_queries = []
     if visual_subject and visual_subject.strip():
         candidate_queries.append(visual_subject.strip())
+    candidate_queries.append(f"{clean_kw} concept")
     candidate_queries.append(clean_kw)
     words = clean_kw.split()
-    if len(words) > 2:
-        candidate_queries.append(" ".join(words[:2]))
-    candidate_queries.append(f"{clean_kw} technology")
+    if len(words) > 1:
+        candidate_queries.append(f"{words[0]} {words[1]} futuristic")
+    candidate_queries.append(f"{clean_kw} digital interface")
 
     if not UNSPLASH_ACCESS_KEY:
         print("[INFO] No UNSPLASH_ACCESS_KEY provided, using dynamic Unsplash source.")
-        encoded = requests.utils.quote(clean_kw)
         return f"https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
 
     for search_term in candidate_queries:
         try:
-            url = f"https://api.unsplash.com/search/photos?page=1&per_page=15&query={requests.utils.quote(search_term)}&client_id={UNSPLASH_ACCESS_KEY}&orientation=landscape"
-            res = requests.get(url, timeout=12)
-            if res.status_code == 200:
-                data = res.json()
-                results = data.get("results", [])
-                for item in results:
-                    img_url = item.get("urls", {}).get("regular")
-                    if img_url and img_url not in used_images:
-                        print(f"[IMAGE FOUND] Successfully matched relevant image for '{search_term}'")
-                        return img_url
+            # Query pages 1 and 2 to get a wider selection of 60 unique photos
+            for page_num in [1, 2]:
+                url = f"https://api.unsplash.com/search/photos?page={page_num}&per_page=30&query={requests.utils.quote(search_term)}&client_id={UNSPLASH_ACCESS_KEY}&orientation=landscape"
+                res = requests.get(url, timeout=12)
+                if res.status_code == 200:
+                    data = res.json()
+                    results = data.get("results", [])
+                    for item in results:
+                        img_url = item.get("urls", {}).get("regular")
+                        item_id = item.get("id") or extract_unsplash_id(img_url)
+                        photo_id = extract_unsplash_id(img_url) or str(item_id)
+
+                        if photo_id and photo_id not in used_ids and item_id not in used_ids:
+                            print(f"[IMAGE FOUND] Successfully matched fresh unique image '{photo_id}' for '{search_term}'")
+                            return img_url
         except Exception as e:
             print(f"[WARN] Unsplash API search error for '{search_term}': {e}")
 
-    # Fallback to general tech search if no specific image matched
-    try:
-        url = f"https://api.unsplash.com/search/photos?page=1&per_page=10&query=modern+technology&client_id={UNSPLASH_ACCESS_KEY}&orientation=landscape"
-        res = requests.get(url, timeout=10)
-        if res.status_code == 200:
-            for item in res.json().get("results", []):
-                img_url = item.get("urls", {}).get("regular")
-                if img_url and img_url not in used_images:
-                    return img_url
-    except:
-        pass
+    # Fallback to broader tech topics with random page offset
+    import random
+    fallback_queries = ["cyberpunk laboratory", "quantum server hardware", "cloud computing motherboard", "deep learning algorithm", "modern semiconductor microprocessor", "future data center server"]
+    random.shuffle(fallback_queries)
+    for fallback_term in fallback_queries:
+        try:
+            url = f"https://api.unsplash.com/search/photos?page={random.randint(1, 3)}&per_page=30&query={requests.utils.quote(fallback_term)}&client_id={UNSPLASH_ACCESS_KEY}&orientation=landscape"
+            res = requests.get(url, timeout=10)
+            if res.status_code == 200:
+                for item in res.json().get("results", []):
+                    img_url = item.get("urls", {}).get("regular")
+                    photo_id = extract_unsplash_id(img_url)
+                    item_id = item.get("id")
+                    if photo_id and photo_id not in used_ids and item_id not in used_ids:
+                        print(f"[IMAGE FALLBACK] Matched unique photo '{photo_id}' for '{fallback_term}'")
+                        return img_url
+        except:
+            pass
 
     return "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
 
@@ -427,7 +453,7 @@ def main():
     article_data = generate_article_with_gemini(keyword_data, existing_titles=existing_meta["titles"])
 
     visual_subject = article_data.get("visual_subject") or keyword_data["keyword"]
-    cover_image = fetch_unsplash_image(keyword_data["keyword"], used_images=existing_meta["images"], visual_subject=visual_subject)
+    cover_image = fetch_unsplash_image(keyword_data["keyword"], used_image_ids=existing_meta["image_ids"], visual_subject=visual_subject)
 
     slug = article_data.get("slug") or re.sub(r'[^a-zA-Z0-9]+', '-', article_data["title"].lower()).strip('-')
     target_file = os.path.join(POSTS_DIR, f"{slug}.json")
