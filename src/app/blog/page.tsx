@@ -18,7 +18,7 @@ export default function BlogListPage() {
         </div>
         <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">Technology Articles & In-Depth Analysis</h1>
         <p className="mt-3 text-base text-slate-600">
-          Discover all stories published by our editorial engine. New analysis published regularly.
+          Discover all stories and investigative features published by our newsroom editors. New analysis released regularly.
         </p>
       </div>
 

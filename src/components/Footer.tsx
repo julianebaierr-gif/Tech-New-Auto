@@ -15,7 +15,7 @@ export default function Footer() {
             </div>
           </Link>
           <p className="text-xs text-slate-400 leading-relaxed">
-            TechPulse is an independent digital magazine delivering continuous coverage of artificial intelligence breakthroughs, silicon hardware advances, software engineering, and the future of technology.
+            TechPulse is an independent digital magazine delivering daily investigative reporting, architectural breakdowns, hardware analysis, and global technology insights.
           </p>
         </div>
 

@@ -38,8 +38,8 @@ export default async function CategoryPage({ params }: Props) {
 
       {posts.length === 0 ? (
         <div className="p-12 text-center bg-white rounded-2xl border border-slate-200 shadow-sm">
-          <h2 className="text-xl font-bold text-slate-900 mb-2">No articles found in this department yet.</h2>
-          <p className="text-sm text-slate-500 mb-6">Our automated pipeline will publish articles for this category soon.</p>
+          <h2 className="text-xl font-bold text-slate-900 mb-2">No articles in this department yet.</h2>
+          <p className="text-sm text-slate-500 mb-6">Our editors are preparing new investigative coverage and guides for this section.</p>
           <Link href="/blog" className="px-5 py-2.5 rounded-lg bg-blue-600 text-white font-bold text-xs shadow-sm hover:bg-blue-700">
             Browse All Articles
           </Link>

@@ -81,7 +81,7 @@ export default async function BlogPostPage({ params }: Props) {
           className="w-full max-h-[500px] object-cover"
         />
         <div className="p-2.5 bg-slate-50 text-right text-[11px] text-slate-400 border-t border-slate-200">
-          Source: High-resolution editorial photography via Unsplash API
+          Photo: TechPulse Editorial Wire / Unsplash
         </div>
       </div>
 

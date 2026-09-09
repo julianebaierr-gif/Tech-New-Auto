@@ -12,7 +12,7 @@ export default function TopUtilityBar() {
           </span>
           <span className="text-slate-600 hidden sm:inline">&bull;</span>
           <span className="hidden sm:inline-flex items-center gap-1 text-cyan-400 font-semibold">
-            <Flame className="h-3.5 w-3.5 text-amber-400" /> Top Trend: Autonomous Agents & Quantum Chips
+            <Flame className="h-3.5 w-3.5 text-amber-400" /> Trending: Next-Gen Computing & Silicon Architecture
           </span>
         </div>
         <nav className="flex items-center gap-4 text-xs font-medium text-slate-300">

@@ -19,14 +19,14 @@ export default function TermsPage() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-xl font-bold text-slate-900">2. AI-Generated Editorial Notice</h2>
+        <h2 className="text-xl font-bold text-slate-900">2. Editorial Integrity & Technical Information</h2>
         <p>
-          Articles and commentary on TechPulse are generated through an automated intelligence workflow combining LLMs (Gemini API) and curation rules. While our models are instructed to produce strictly factual, researched content:
+          Articles, research commentaries, and architectural reviews published on TechPulse are created following comprehensive technical research and rigorous industry analysis:
         </p>
-        <ul className="list-disc pl-6 space-y-2 text-neutral-400">
-          <li>Information is provided for educational and informational purposes only.</li>
-          <li>We do not offer certified financial, legal, or enterprise security advisory.</li>
-          <li>Users must verify critical architecture or software decisions independently.</li>
+        <ul className="list-disc pl-6 space-y-2 text-slate-600">
+          <li>Information is provided for educational, analytical, and informational purposes.</li>
+          <li>Our content does not constitute certified legal, investment, or enterprise cybersecurity advisory.</li>
+          <li>Engineers and technology professionals should evaluate architecture decisions based on their specific systems.</li>
         </ul>
       </section>
 

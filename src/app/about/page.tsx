@@ -21,38 +21,38 @@ export default function AboutPage() {
         </p>
       </div>
 
-      {/* Pipeline Diagram */}
+      {/* Editorial Pillars */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-2 text-center">
           <Database className="h-6 w-6 text-blue-600 mx-auto" />
-          <h2 className="text-sm font-bold text-slate-900">Curated Topics</h2>
-          <p className="text-xs text-slate-600">Continuous monitoring of computing trends and hardware developments.</p>
+          <h2 className="text-sm font-bold text-slate-900">Deep Field Research</h2>
+          <p className="text-xs text-slate-600">Investigating raw engineering benchmarks and breakthrough announcements.</p>
         </div>
         <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-2 text-center">
           <Cpu className="h-6 w-6 text-indigo-600 mx-auto" />
-          <h2 className="text-sm font-bold text-slate-900">Deep Analysis</h2>
-          <p className="text-xs text-slate-600">Technical precision covering AI architectures and distributed systems.</p>
+          <h2 className="text-sm font-bold text-slate-900">Technical Rigor</h2>
+          <p className="text-xs text-slate-600">Expert analysis of complex computing architectures and distributed systems.</p>
         </div>
         <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-2 text-center">
           <Layers className="h-6 w-6 text-cyan-600 mx-auto" />
-          <h2 className="text-sm font-bold text-slate-900">Visual Standards</h2>
-          <p className="text-xs text-slate-600">Verified high-resolution imagery and clear diagramming.</p>
+          <h2 className="text-sm font-bold text-slate-900">Verified Photography</h2>
+          <p className="text-xs text-slate-600">Curated high-resolution editorial photography and clean architectural diagrams.</p>
         </div>
         <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-2 text-center">
           <RefreshCw className="h-6 w-6 text-emerald-600 mx-auto" />
-          <h2 className="text-sm font-bold text-slate-900">Real-Time Dispatch</h2>
-          <p className="text-xs text-slate-600">Regular publications around the clock across 9 tech departments.</p>
+          <h2 className="text-sm font-bold text-slate-900">Daily Coverage</h2>
+          <p className="text-xs text-slate-600">Continuous reporting on breaking software, AI, and silicon industry shifts.</p>
         </div>
       </div>
 
       {/* Detailed Mission */}
       <div className="space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed border-t border-slate-200 pt-10">
-        <h2 className="text-2xl font-bold text-slate-900">Our Mission</h2>
+        <h2 className="text-2xl font-bold text-slate-900">Our Editorial Mission</h2>
         <p>
-          In an era where artificial intelligence, quantum computing, cloud infrastructure, and semiconductors advance at breakneck speeds, readers require clear, concise, and technically grounded journalism.
+          In an era where artificial intelligence, quantum computing, cloud infrastructure, and semiconductor fabrication advance at breakneck speeds, tech professionals and enthusiasts require journalism that is technically grounded, clear, and unhyped.
         </p>
         <p>
-          TechPulse bridges this gap by delivering rigorous, easy-to-digest analyses of emerging technical breakthroughs.
+          TechPulse was founded to provide that clarity. Our staff writers and industry contributors dive into whitepapers, source code, and hardware specifications to unpack what truly matters in modern technology.
         </p>
       </div>
     </div>

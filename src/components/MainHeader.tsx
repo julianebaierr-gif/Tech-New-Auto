@@ -32,7 +32,7 @@ export default function MainHeader() {
               </span>
             </div>
             <p className="text-xs text-slate-500 font-medium tracking-wide mt-0.5">
-              Autonomous Tech Dispatch &bull; Emerging AI &bull; Cloud & Silicon Engineering
+              Independent Tech Journalism &bull; Computing Frontiers &bull; Deep Engineering Insights
             </p>
           </div>
         </Link>

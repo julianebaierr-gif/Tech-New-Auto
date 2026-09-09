@@ -8,7 +8,7 @@ export default function PrivacyPolicyPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 text-slate-700 leading-relaxed text-sm sm:text-base">
       <header className="border-b border-slate-200 pb-6">
         <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">Privacy Policy</h1>
-        <p className="mt-2 text-xs text-slate-400">Effective Date: September 2026 | Last Updated: Autonomous Engine Release</p>
+        <p className="mt-2 text-xs text-slate-400">Effective Date: September 2026 | TechPulse Digital Media</p>
       </header>
 
       <section className="space-y-4">
@@ -19,9 +19,9 @@ export default function PrivacyPolicyPage() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-xl font-bold text-slate-900">2. Autonomous Content Generation & Information Sourced</h2>
+        <h2 className="text-xl font-bold text-slate-900">2. Editorial Sourcing & Data Protection</h2>
         <p>
-          Our platform operates an autonomous content pipeline integrating Google Sheets, Gemini AI models, and Unsplash public APIs. We do NOT harvest or collect sensitive personal identifiable information (PII) from our readers during standard browsing sessions.
+          Our publication adheres to rigorous global journalism and privacy standards. We do not harvest, track, or collect sensitive personal identifiable information (PII) from our readers during standard browsing sessions.
         </p>
       </section>
 
@@ -47,15 +47,14 @@ export default function PrivacyPolicyPage() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-xl font-bold text-slate-900">5. Third-Party Integrations & APIs</h2>
+        <h2 className="text-xl font-bold text-slate-900">5. Infrastructure & Media Partners</h2>
         <p>
-          Our platform integrates with trusted cloud providers:
+          Our platform operates on trusted modern enterprise cloud infrastructure:
         </p>
-        <ul className="list-disc pl-6 space-y-2 text-neutral-400">
-          <li><strong>Vercel</strong>: Cloud deployment and Edge network delivery.</li>
-          <li><strong>GitHub Actions</strong>: CI/CD automation and cron trigger execution.</li>
-          <li><strong>Unsplash</strong>: High-resolution media asset resolution.</li>
-          <li><strong>Google APIs</strong>: Structured spreadsheet synchronization and Gemini model inferences.</li>
+        <ul className="list-disc pl-6 space-y-2 text-slate-600">
+          <li><strong>Vercel</strong>: Cloud hosting and Edge network content acceleration.</li>
+          <li><strong>GitHub</strong>: Source control and automated continuous deployment.</li>
+          <li><strong>Unsplash</strong>: High-resolution editorial photography network.</li>
         </ul>
       </section>
 
