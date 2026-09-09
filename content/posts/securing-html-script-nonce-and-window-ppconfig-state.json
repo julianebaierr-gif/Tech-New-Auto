@@ -1,8 +1,8 @@
 {
-  "title": "Securing HTML Script Nonce and Window ppConfig State",
-  "excerpt": "Learn how <!DOCTYPE html> script nonce attributes and window ppConfig inline scripts protect web applications while dynamically injecting web site data.",
+  "title": "Securing HTML Script Nonce and Dynamic Web Config",
+  "excerpt": "Learn how modern script nonce attributes and browser runtime configuration scripts protect web applications against unauthorized client script injection.",
   "coverImage": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
-  "coverImageAlt": "<!DOCTYPE html><html><head><script nonce=\"Pw5izHC_c7PCwR8mKb3Rzw\">window['ppConfig'] = {productName: '26981ed0d57bbad37e728ff58134270c' - Web Security Technology Architecture and Engineering Analysis",
+  "coverImageAlt": "Securing HTML Script Nonce and Dynamic Web Config - Web Security Architecture",
   "date": "2026-09-09",
   "createdAt": 1788962541518,
   "category": "Web Development",

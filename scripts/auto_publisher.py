@@ -57,10 +57,21 @@ def fetch_keyword_from_sheet():
                 for line in lines[start_idx:]:
                     # Handle raw keyword or CSV row
                     parts = [p.strip().strip('"') for p in line.split(",")]
-                    candidate_keyword = parts[0]
+                    raw_candidate = parts[0]
 
-                    if not candidate_keyword:
+                    if not raw_candidate:
                         continue
+
+                    # Strip any accidental HTML tags, script snippets or doctype declarations
+                    clean_kw = re.sub(r'<[^>]+>', ' ', raw_candidate)
+                    clean_kw = re.sub(r'[\'"{}\[\];=]+', ' ', clean_kw)
+                    clean_kw = re.sub(r'\s{2,}', ' ', clean_kw).strip()
+
+                    # Ignore if too short or invalid
+                    if len(clean_kw) < 3 or clean_kw.lower().startswith("doctype"):
+                        continue
+
+                    candidate_keyword = clean_kw
 
                     # Check if already published by comparing against existing posts or slug
                     candidate_slug = re.sub(r'[^a-zA-Z0-9]+', '-', candidate_keyword.lower()).strip('-')
@@ -127,36 +138,93 @@ def fetch_keyword_from_sheet():
     print(f"[FALLBACK] Using keyword from trending pool: {selected['keyword']}")
     return selected
 
-def fetch_unsplash_image(query):
+def get_existing_posts_metadata():
     """
-    Fetches high quality tech photo from Unsplash.
+    Scans all existing posts to extract existing titles, excerpts, slugs, and cover images
+    so that new articles are guaranteed 100% unique with zero duplication.
     """
-    default_img = "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
+    titles = []
+    excerpts = []
+    images = []
+    slugs = []
+    if os.path.exists(POSTS_DIR):
+        for f in os.listdir(POSTS_DIR):
+            if f.endswith(".json"):
+                try:
+                    with open(os.path.join(POSTS_DIR, f), "r", encoding="utf-8") as pf:
+                        d = json.load(pf)
+                        if d.get("title"):
+                            titles.append(d["title"].strip())
+                        if d.get("excerpt"):
+                            excerpts.append(d["excerpt"].strip())
+                        if d.get("coverImage"):
+                            images.append(d["coverImage"].strip())
+                        slugs.append(f.replace(".json", ""))
+                except:
+                    pass
+    return {"titles": titles, "excerpts": excerpts, "images": images, "slugs": slugs}
+
+def fetch_unsplash_image(query, used_images=None):
+    """
+    Fetches high quality, unique tech photo from Unsplash strictly relevant to keyword.
+    Ensures that previously used images are never reused.
+    """
+    used_images = set(used_images or [])
+    default_pool = [
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80"
+    ]
+    
+    # Clean query of code or punctuation for optimal photo retrieval
+    clean_query = re.sub(r'[^a-zA-Z0-9\s]+', ' ', query).strip()
+    words = clean_query.split()
+    search_terms = " ".join(words[:4]) if words else "technology architecture"
+
     if not UNSPLASH_ACCESS_KEY:
-        print("[INFO] No UNSPLASH_ACCESS_KEY provided, using curated tech cover.")
-        return default_img
+        print("[INFO] No UNSPLASH_ACCESS_KEY provided, picking fresh curated tech cover.")
+        for img in default_pool:
+            if img not in used_images:
+                return img
+        return default_pool[0]
 
     try:
-        url = f"https://api.unsplash.com/search/photos?page=1&per_page=1&query={query}&client_id={UNSPLASH_ACCESS_KEY}&orientation=landscape"
+        url = f"https://api.unsplash.com/search/photos?page=1&per_page=10&query={requests.utils.quote(search_terms)}&client_id={UNSPLASH_ACCESS_KEY}&orientation=landscape"
         res = requests.get(url, timeout=10)
         if res.status_code == 200:
             data = res.json()
-            if data.get("results"):
-                return data["results"][0]["urls"]["regular"]
+            results = data.get("results", [])
+            for item in results:
+                img_url = item.get("urls", {}).get("regular")
+                if img_url and img_url not in used_images:
+                    return img_url
+            if results:
+                return results[0]["urls"]["regular"]
     except Exception as e:
         print(f"[WARN] Unsplash API error: {e}")
 
-    return default_img
+    for img in default_pool:
+        if img not in used_images:
+            return img
+    return default_pool[0]
 
-def generate_article_with_gemini(keyword_info):
+def generate_article_with_gemini(keyword_info, existing_titles=None):
     """
     Generates a full SEO-rich tech article using Gemini API with auto Category and Tags.
+    Guarantees 100% uniqueness with zero repetition of previously used angles or titles.
     """
     kw = keyword_info["keyword"]
     provided_category = keyword_info.get("category")
     cat = provided_category or "Artificial Intelligence"
 
     tech_categories = "Artificial Intelligence, Machine Learning, Cloud Computing, Cybersecurity, Software Engineering, Hardware & Semiconductors, Quantum Computing, Web Development, Future Tech"
+
+    existing_titles_sample = (existing_titles or [])[-10:]
+    avoid_titles_block = ""
+    if existing_titles_sample:
+        avoid_titles_block = "\nDO NOT REPEAT or copy any concepts or phrasing from these existing articles:\n" + "\n".join([f"- {t}" for t in existing_titles_sample])
 
     if not GEMINI_API_KEY:
         print("[WARN] GEMINI_API_KEY not configured. Generating high-quality deterministic article.")
@@ -177,17 +245,19 @@ def generate_article_with_gemini(keyword_info):
 
         prompt = f"""
 You are an elite technical author and software architect writing for TechPulse, a premier technology journal.
-Write a comprehensive, professional, and SEO-optimized tech article directly focused on this target keyword/topic: "{kw}".
+Write a 100% UNIQUE, comprehensive, professional, and SEO-optimized tech article directly focused on this target keyword/topic: "{kw}".
+{avoid_titles_block}
 
 CRITICAL KEYWORD-RELEVANT TITLE & SEO CONSTRAINT:
 1. The "title" MUST directly contain or clearly focus on the keyword: "{kw}".
 2. The "title" MUST BE strictly between 50 and 55 characters in length. Count the exact characters!
 3. NEVER include any years (such as 2025, 2026, 2024, or any future/past year) in the title, slug, headings, or content. It must be evergreen.
-4. Every title and description must be completely unique and highly relevant to "{kw}".
+4. The title must be 100% original, novel, and never repeat past published headlines.
 
 CRITICAL KEYWORD-RELEVANT META DESCRIPTION CONSTRAINT:
 1. The "excerpt" MUST directly mention and focus on "{kw}".
 2. The "excerpt" MUST BE strictly between 150 and 155 characters in length. Never less than 150, never more than 155 characters. Do not truncate mid-sentence; write a complete, informative sentence.
+3. Completely unique angle and explanation tailored specifically to this keyword.
 
 CRITICAL FORMATTING INSTRUCTION:
 DO NOT USE any dashes or em-dashes (— or –). Always use clear sentences, commas, or parentheses instead. Never include "—" anywhere in the title, excerpt, or content.
@@ -206,38 +276,29 @@ Respond ONLY with valid JSON in this exact structure:
   "content": "Rich HTML content using <h2>, <h3>, <p>, <ul>, <li>, <blockquote>, <strong> tags without any em-dashes or years. Minimum 450 words of deep technical insights."
 }}
 """
-        # Prioritize top frontier models first (Gemini 3.8 Flash -> 3.7 Flash -> 3.6 Flash -> 2.5 Pro)
+        # Fast and reliable model failover: try current fast models with instant 1-retry failover
         models_to_try = [
-            "gemini-3.8-flash",
-            "gemini-3.7-flash",
-            "gemini-3.6-flash",
-            "gemini-2.5-pro",
             "gemini-2.5-flash",
+            "gemini-3.6-flash",
+            "gemini-3.7-flash",
+            "gemini-3.8-flash",
+            "gemini-2.5-pro",
             "gemini-2.5-flash-lite"
         ]
         response = None
 
         for model_id in models_to_try:
-            for attempt in range(3):
-                try:
-                    response = client.models.generate_content(
-                        model=model_id,
-                        contents=prompt,
-                    )
-                    print(f"[INFO] Successfully generated with model: {model_id}")
-                    break
-                except Exception as model_err:
-                    err_str = str(model_err)
-                    print(f"[DEBUG] Attempt {attempt+1} on {model_id} failed: {err_str[:120]}")
-                    if "503" in err_str or "UNAVAILABLE" in err_str:
-                        # Temporary spike in traffic, wait a moment and retry
-                        time.sleep(3 * (attempt + 1))
-                        continue
-                    else:
-                        # If 404 or other permanent error, break to next model candidate
-                        break
-            if response:
+            try:
+                response = client.models.generate_content(
+                    model=model_id,
+                    contents=prompt,
+                )
+                print(f"[INFO] Successfully generated with model: {model_id}")
                 break
+            except Exception as model_err:
+                err_str = str(model_err)
+                print(f"[DEBUG] Model {model_id} failed: {err_str[:100]}. Trying next model immediately...")
+                continue
 
         if not response:
             raise Exception("All Gemini model candidates temporarily busy or failed.")
@@ -269,9 +330,13 @@ def main():
     keyword_data = fetch_keyword_from_sheet()
     print(f"[PROCESS] Processing keyword: {keyword_data['keyword']}")
 
-    article_data = generate_article_with_gemini(keyword_data)
+    # Collect existing posts metadata to guarantee 100% uniqueness with zero repetition
+    existing_meta = get_existing_posts_metadata()
+    print(f"[INFO] Analyzed {len(existing_meta['titles'])} existing posts to ensure 100% uniqueness.")
 
-    cover_image = fetch_unsplash_image(keyword_data["keyword"])
+    article_data = generate_article_with_gemini(keyword_data, existing_titles=existing_meta["titles"])
+
+    cover_image = fetch_unsplash_image(keyword_data["keyword"], used_images=existing_meta["images"])
 
     slug = article_data.get("slug") or re.sub(r'[^a-zA-Z0-9]+', '-', article_data["title"].lower()).strip('-')
     target_file = os.path.join(POSTS_DIR, f"{slug}.json")

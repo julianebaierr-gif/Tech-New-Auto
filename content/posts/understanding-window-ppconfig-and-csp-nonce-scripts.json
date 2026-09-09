@@ -1,8 +1,8 @@
 {
-  "title": "Understanding window ppConfig and CSP Nonce Scripts",
-  "excerpt": "Analyze how window['ppConfig'] and CSP nonce script tags secure web configuration payloads like productName hashes against injection attacks in browsers.",
+  "title": "Understanding Browser Configs and CSP Nonce Scripts",
+  "excerpt": "Analyze how browser configuration objects and CSP nonce script tags secure web configuration payloads against script injection attacks in client browsers.",
   "coverImage": "https://images.unsplash.com/photo-1754239491656-a4e61850de54?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYwMzI3fDB8MXxzZWFyY2h8MXx8JTNDJTIxRE9DVFlQRSUyMGh0bWwlM0UlM0NodG1sJTNFJTNDaGVhZCUzRSUzQ3NjcmlwdCUyMG5vbmNlJTNEJTIyRi03ZFZORDNIZy00SUY5a1Q1Nk52USUyMiUzRXdpbmRvdyU1QiUyN3BwQ29uZmlnJTI3JTVEJTIwJTNEJTIwJTdCcHJvZHVjdE5hbWUlM0ElMjAlMjcyNjk4MWVkMGQ1N2JiYWQzN2U3MjhmZjU4MTM0MjcwYyUyN3xlbnwwfDB8fHwxNzg4OTYxNDM0fDA&ixlib=rb-4.1.0&q=80&w=1080",
-  "coverImageAlt": "<!DOCTYPE html><html><head><script nonce=\"F-7dVND3Hg-4IF9kT56NvQ\">window['ppConfig'] = {productName: '26981ed0d57bbad37e728ff58134270c' - Content Security Policy Technology Architecture and Engineering Analysis",
+  "coverImageAlt": "Understanding Browser Configs and CSP Nonce Scripts - Web Security Architecture",
   "date": "2026-09-09",
   "category": "Web Development",
   "author": {
