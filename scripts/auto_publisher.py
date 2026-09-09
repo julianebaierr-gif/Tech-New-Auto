@@ -174,18 +174,21 @@ def generate_article_with_gemini(keyword_info):
 You are an elite technical author and software architect writing for TechPulse, a premier technology journal.
 Write a comprehensive, professional, and SEO-optimized tech article based on this keyword/topic: "{kw}".
 
+CRITICAL FORMATTING INSTRUCTION:
+DO NOT USE any dashes or em-dashes (— or –). Always use clear sentences, commas, or parentheses instead. Never include "—" anywhere in the title, excerpt, or content.
+
 Automatically choose the most appropriate category from: [{tech_categories}].
 Automatically generate 4-5 relevant technical tags.
 
 Respond ONLY with valid JSON in this exact structure:
 {{
-  "title": "Engaging, authoritative title",
+  "title": "Engaging, authoritative title without dashes",
   "slug": "url-friendly-lowercase-slug-without-special-characters",
-  "excerpt": "Compelling 2-sentence summary of the article for social sharing and search meta",
+  "excerpt": "Compelling 2-sentence summary of the article for social sharing and search meta without dashes",
   "category": "Chosen Category",
   "readTime": "5 min read",
   "tags": ["Tag1", "Tag2", "Tag3", "Tag4"],
-  "content": "Rich HTML content using <h2>, <h3>, <p>, <ul>, <li>, <blockquote>, <strong> tags. Minimum 450 words of deep technical insights."
+  "content": "Rich HTML content using <h2>, <h3>, <p>, <ul>, <li>, <blockquote>, <strong> tags without any em-dashes. Minimum 450 words of deep technical insights."
 }}
 """
         # Robust retry with backoff for temporary 503 spikes, across supported models
@@ -256,9 +259,18 @@ def main():
         slug = f"{slug}-{int(time.time())}"
         target_file = os.path.join(POSTS_DIR, f"{slug}.json")
 
+    def clean_dashes(text):
+        if not isinstance(text, str):
+            return text
+        # Replace em-dashes and en-dashes with comma, colon or clean space
+        cleaned = text.replace("—", ", ").replace("–", "-")
+        cleaned = re.sub(r'\s*,\s*,+', ', ', cleaned)
+        cleaned = re.sub(r'\s{2,}', ' ', cleaned)
+        return cleaned
+
     post_record = {
-        "title": article_data["title"],
-        "excerpt": article_data["excerpt"],
+        "title": clean_dashes(article_data["title"]),
+        "excerpt": clean_dashes(article_data["excerpt"]),
         "coverImage": cover_image,
         "date": datetime.now().strftime("%Y-%m-%d"),
         "category": article_data.get("category", "Technology"),
@@ -268,8 +280,8 @@ def main():
             "role": "AI Research & Publishing Engine"
         },
         "readTime": article_data.get("readTime", "5 min read"),
-        "tags": article_data.get("tags", ["Tech", "AI", "Automation"]),
-        "content": article_data["content"]
+        "tags": [clean_dashes(t) for t in article_data.get("tags", ["Tech", "AI", "Automation"])],
+        "content": clean_dashes(article_data["content"])
     }
 
     with open(target_file, "w", encoding="utf-8") as f:
