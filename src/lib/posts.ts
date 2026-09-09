@@ -2,6 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
+export interface PostFAQ {
+  question: string;
+  answer: string;
+}
+
 export interface Post {
   slug: string;
   title: string;
@@ -20,6 +25,7 @@ export interface Post {
   readTime: string;
   tags: string[];
   content: string;
+  faqs?: PostFAQ[];
 }
 
 export function getPostImageAlt(post: Post): string {
