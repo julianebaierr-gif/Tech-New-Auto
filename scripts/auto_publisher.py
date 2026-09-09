@@ -14,8 +14,8 @@ os.environ["PYTHONWARNINGS"] = "ignore"
 # 1. Configuration & Secrets
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 UNSPLASH_ACCESS_KEY = os.environ.get("UNSPLASH_ACCESS_KEY")
-GOOGLE_SHEET_CSV_URL = os.environ.get("GOOGLE_SHEET_CSV_URL")
-GOOGLE_SHEET_ID = os.environ.get("GOOGLE_SHEET_ID")
+GOOGLE_SHEET_CSV_URL = os.environ.get("GOOGLE_SHEET_CSV_URL") or "https://docs.google.com/spreadsheets/d/1ksudXZ2GVgcCccHuvRRQC9OMTrBqjZtJYNxUEM1X93A/export?format=csv"
+GOOGLE_SHEET_ID = os.environ.get("GOOGLE_SHEET_ID") or "1ksudXZ2GVgcCccHuvRRQC9OMTrBqjZtJYNxUEM1X93A"
 POSTS_DIR = os.path.join(os.getcwd(), "content", "posts")
 
 os.makedirs(POSTS_DIR, exist_ok=True)
@@ -296,17 +296,20 @@ def main():
     webhook_url = os.environ.get("GOOGLE_SHEET_WEBHOOK_URL")
     if webhook_url:
         try:
-            print("[INFO] Syncing Category, Tags & Status to Google Sheet via Webhook...")
+            print(f"[INFO] Syncing to Google Sheet Webhook: {webhook_url[:30]}...")
             payload = {
                 "keyword": keyword_data["keyword"],
                 "category": post_record["category"],
                 "tags": post_record["tags"],
                 "status": "Published"
             }
-            webhook_res = requests.post(webhook_url, json=payload, timeout=15)
-            print(f"[SUCCESS] Google Sheet Webhook response: {webhook_res.text.strip()[:100]}")
+            # Google Apps Script requires allow_redirects=True (handles 302 redirect)
+            webhook_res = requests.post(webhook_url, json=payload, timeout=20, allow_redirects=True)
+            print(f"[SUCCESS] Google Sheet Webhook response code: {webhook_res.status_code}, content: {webhook_res.text.strip()[:100]}")
         except Exception as wh_err:
             print(f"[WARN] Failed to sync to Google Sheet: {wh_err}")
+    else:
+        print("[INFO] No GOOGLE_SHEET_WEBHOOK_URL provided in environment.")
 
     print("\n" + "="*60)
     print(">> [TECHPULSE AUTO PUBLISHER REPORT]")
