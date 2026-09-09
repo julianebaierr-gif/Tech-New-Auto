@@ -177,15 +177,17 @@ def generate_article_with_gemini(keyword_info):
 
         prompt = f"""
 You are an elite technical author and software architect writing for TechPulse, a premier technology journal.
-Write a comprehensive, professional, and SEO-optimized tech article based on this keyword/topic: "{kw}".
+Write a comprehensive, professional, and SEO-optimized tech article directly focused on this target keyword/topic: "{kw}".
 
-CRITICAL TITLE AND SEO CONSTRAINT:
-1. The "title" MUST BE strictly between 50 and 55 characters in length. Count the exact characters!
-2. NEVER include any years (such as 2025, 2026, 2024, or any future/past year) in the title, slug, headings, or content. It must be evergreen.
-3. Every title and description must be completely unique and specific to this topic.
+CRITICAL KEYWORD-RELEVANT TITLE & SEO CONSTRAINT:
+1. The "title" MUST directly contain or clearly focus on the keyword: "{kw}".
+2. The "title" MUST BE strictly between 50 and 55 characters in length. Count the exact characters!
+3. NEVER include any years (such as 2025, 2026, 2024, or any future/past year) in the title, slug, headings, or content. It must be evergreen.
+4. Every title and description must be completely unique and highly relevant to "{kw}".
 
-CRITICAL META DESCRIPTION CONSTRAINT:
-The "excerpt" MUST BE strictly between 150 and 155 characters in length. Never less than 150, never more than 155 characters. Do not truncate mid-sentence; write a complete, elegant sentence.
+CRITICAL KEYWORD-RELEVANT META DESCRIPTION CONSTRAINT:
+1. The "excerpt" MUST directly mention and focus on "{kw}".
+2. The "excerpt" MUST BE strictly between 150 and 155 characters in length. Never less than 150, never more than 155 characters. Do not truncate mid-sentence; write a complete, informative sentence.
 
 CRITICAL FORMATTING INSTRUCTION:
 DO NOT USE any dashes or em-dashes (— or –). Always use clear sentences, commas, or parentheses instead. Never include "—" anywhere in the title, excerpt, or content.
@@ -195,9 +197,9 @@ Automatically generate 4-5 relevant technical tags.
 
 Respond ONLY with valid JSON in this exact structure:
 {{
-  "title": "Authoritative title strictly between 50 and 55 chars",
+  "title": "Title with keyword strictly between 50 and 55 chars",
   "slug": "url-friendly-lowercase-slug-without-special-characters-or-years",
-  "excerpt": "Concise high-impact SEO meta summary strictly between 150 and 155 chars.",
+  "excerpt": "Meta description highlighting keyword strictly between 150 and 155 chars.",
   "category": "Chosen Category",
   "readTime": "5 min read",
   "tags": ["Tag1", "Tag2", "Tag3", "Tag4"],
