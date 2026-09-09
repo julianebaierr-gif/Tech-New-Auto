@@ -128,18 +128,8 @@ def fetch_keyword_from_sheet():
         except Exception as e:
             print(f"[WARN] Error with gspread: {e}")
 
-    # Fallback default trending tech topics pool if sheet is empty or unconfigured
-    fallback_pool = [
-        {"keyword": "Agentic AI Workflows and Tool Use in 2026", "category": "Artificial Intelligence", "tags": ["AI", "Agents", "Automation"]},
-        {"keyword": "Neuromorphic Computing and Energy-Efficient Chips", "category": "Hardware & Semiconductors", "tags": ["Hardware", "Chips", "Computing"]},
-        {"keyword": "Zero Trust Cloud Security for Modern Distributed Systems", "category": "Cybersecurity", "tags": ["Security", "Cloud", "DevOps"]},
-        {"keyword": "WebAssembly in Serverless Architectures", "category": "Software Engineering", "tags": ["WebAssembly", "Serverless", "Wasm"]},
-        {"keyword": "Post-Quantum Cryptography Migration Roadmaps", "category": "Cybersecurity", "tags": ["Cryptography", "Quantum", "Security"]}
-    ]
-    import random
-    selected = random.choice(fallback_pool)
-    print(f"[FALLBACK] Using keyword from trending pool: {selected['keyword']}")
-    return selected
+    # STRICT: Do not take keywords from anywhere else. If exhausted or unreadable, raise error.
+    raise Exception("[ERROR] Google Sheet me se koi naya ya un-published keyword nahi mila! Sheet check karein ya naye keywords add karein.")
 
 def get_existing_posts_metadata():
     """
