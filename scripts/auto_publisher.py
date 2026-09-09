@@ -188,10 +188,22 @@ Respond ONLY with valid JSON in this exact structure:
   "content": "Rich HTML content using <h2>, <h3>, <p>, <ul>, <li>, <blockquote>, <strong> tags. Minimum 450 words of deep technical insights."
 }}
 """
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt,
-        )
+        # Try modern gemini-3.6-flash first, then fallbacks
+        response = None
+        for model_id in ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"]:
+            try:
+                response = client.models.generate_content(
+                    model=model_id,
+                    contents=prompt,
+                )
+                print(f"[INFO] Successfully generated with model: {model_id}")
+                break
+            except Exception as model_err:
+                print(f"[DEBUG] Model {model_id} failed: {model_err}")
+                continue
+
+        if not response:
+            raise Exception("All Gemini model candidates failed.")
 
         raw_text = response.text.strip()
         # Clean potential markdown fences ```json ... ```
