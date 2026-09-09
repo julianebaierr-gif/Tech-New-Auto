@@ -7,6 +7,7 @@ export interface Post {
   title: string;
   excerpt: string;
   coverImage: string;
+  coverImageAlt?: string;
   date: string;
   category: string;
   author: {
@@ -18,6 +19,14 @@ export interface Post {
   readTime: string;
   tags: string[];
   content: string;
+}
+
+export function getPostImageAlt(post: Post): string {
+  if (post.coverImageAlt && post.coverImageAlt.trim()) {
+    return post.coverImageAlt.trim();
+  }
+  const primaryTag = post.tags && post.tags.length > 0 ? post.tags[0] : post.category;
+  return `${post.title} - ${primaryTag} Analysis`;
 }
 
 const postsDirectory = path.join(process.cwd(), 'content/posts');

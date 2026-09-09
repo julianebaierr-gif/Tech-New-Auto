@@ -51,7 +51,7 @@ export default async function CategoryPage({ params }: Props) {
               <div className="h-48 relative overflow-hidden bg-slate-100">
                 <img
                   src={post.coverImage}
-                  alt={post.title}
+                  alt={post.coverImageAlt || post.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />
               </div>

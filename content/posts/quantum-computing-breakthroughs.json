@@ -17,5 +17,6 @@
     "Cryptography",
     "Deep Tech"
   ],
-  "content": "<p>Quantum computing is exiting the purely theoretical phase and transitioning into physical fault tolerance. With recent breakthroughs in surface code error correction and neutral-atom hardware, the horizon for practical quantum advantage has moved dramatically closer.</p><h2>The Critical Role of Logical Qubits</h2><p>Physical qubits are inherently sensitive to environmental decoherence. The ultimate breakthrough lies in binding hundreds of noisy physical qubits into a single, fault-tolerant logical qubit capable of running complex quantum simulations without decay.</p>"
+  "content": "<p>Quantum computing is exiting the purely theoretical phase and transitioning into physical fault tolerance. With recent breakthroughs in surface code error correction and neutral-atom hardware, the horizon for practical quantum advantage has moved dramatically closer.</p><h2>The Critical Role of Logical Qubits</h2><p>Physical qubits are inherently sensitive to environmental decoherence. The ultimate breakthrough lies in binding hundreds of noisy physical qubits into a single, fault-tolerant logical qubit capable of running complex quantum simulations without decay.</p>",
+  "coverImageAlt": "Quantum Computing Fault-Tolerant Qubits and Error Correction Hardware"
 }

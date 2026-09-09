@@ -105,7 +105,7 @@ export default async function AuthorProfilePage({ params }: Props) {
                 <div className="h-48 relative overflow-hidden bg-slate-100">
                   <img
                     src={post.coverImage}
-                    alt={post.title}
+                    alt={post.coverImageAlt || post.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   />
                   <span className="absolute top-3 left-3 bg-white/95 backdrop-blur-md text-blue-700 text-[11px] font-bold px-2.5 py-1 rounded shadow-xs">

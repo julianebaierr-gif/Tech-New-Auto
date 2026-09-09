@@ -39,7 +39,7 @@ export default function BlogListPage() {
             <div className="h-52 relative overflow-hidden bg-slate-100">
               <img
                 src={post.coverImage}
-                alt={post.title}
+                alt={post.coverImageAlt || post.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
               />
               <span className="absolute top-3 left-3 text-xs font-bold uppercase px-2.5 py-1 rounded bg-white/90 text-blue-700 backdrop-blur-md shadow-xs">

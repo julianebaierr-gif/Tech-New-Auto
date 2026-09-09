@@ -28,7 +28,7 @@ export default function HomePage() {
               <div className="h-72 sm:h-96 relative overflow-hidden bg-slate-100">
                 <img
                   src={leadPost.coverImage}
-                  alt={leadPost.title}
+                  alt={leadPost.coverImageAlt || leadPost.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                 />
               </div>
@@ -84,7 +84,7 @@ export default function HomePage() {
                 <div className="w-24 h-20 shrink-0 rounded-lg overflow-hidden bg-slate-100">
                   <img
                     src={post.coverImage}
-                    alt={post.title}
+                    alt={post.coverImageAlt || post.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   />
                 </div>
@@ -117,7 +117,7 @@ export default function HomePage() {
               <div className="h-48 relative overflow-hidden bg-slate-100">
                 <img
                   src={post.coverImage}
-                  alt={post.title}
+                  alt={post.coverImageAlt || post.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />
               </div>
@@ -155,7 +155,7 @@ export default function HomePage() {
               <div className="h-48 relative overflow-hidden bg-slate-100">
                 <img
                   src={post.coverImage}
-                  alt={post.title}
+                  alt={post.coverImageAlt || post.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />
               </div>
@@ -193,7 +193,7 @@ export default function HomePage() {
               <div className="h-48 relative overflow-hidden bg-slate-100">
                 <img
                   src={post.coverImage}
-                  alt={post.title}
+                  alt={post.coverImageAlt || post.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />
               </div>

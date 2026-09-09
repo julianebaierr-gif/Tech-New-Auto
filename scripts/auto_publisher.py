@@ -341,10 +341,15 @@ def main():
     ]
     selected_author = random.choice(AUTHORS)
 
+    kw = keyword_data.get("keyword", "")
+    primary_tag = (article_data.get("tags") or ["Technology"])[0]
+    cover_alt = f"{kw} - {primary_tag} Technology Architecture and Engineering Analysis"
+
     post_record = {
         "title": clean_title(article_data["title"]),
         "excerpt": clean_excerpt(article_data["excerpt"]),
         "coverImage": cover_image,
+        "coverImageAlt": cover_alt,
         "date": datetime.now().strftime("%Y-%m-%d"),
         "category": article_data.get("category", "Technology"),
         "author": selected_author,

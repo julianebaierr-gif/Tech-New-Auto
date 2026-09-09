@@ -16,5 +16,6 @@
     "Software",
     "AI"
   ],
-  "content": "<p>Deep dive into Nvidia AI Chips and how modern engineering workflows are being transformed by high-speed automation and intelligent toolchains.</p>"
+  "content": "<p>Deep dive into Nvidia AI Chips and how modern engineering workflows are being transformed by high-speed automation and intelligent toolchains.</p>",
+  "coverImageAlt": "Nvidia AI Chips Tensor Core Microarchitecture and GPU Accelerators"
 }
