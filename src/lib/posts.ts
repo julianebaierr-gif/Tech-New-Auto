@@ -9,6 +9,7 @@ export interface Post {
   coverImage: string;
   coverImageAlt?: string;
   date: string;
+  createdAt?: number;
   category: string;
   author: {
     name: string;
@@ -41,22 +42,29 @@ export function getAllPosts(): Post[] {
     .filter((file) => file.endsWith('.md') || file.endsWith('.json'))
     .map((fileName) => {
       const fullPath = path.join(postsDirectory, fileName);
+      const stat = fs.statSync(fullPath);
+      const fileCreatedAt = stat.birthtimeMs || stat.ctimeMs || stat.mtimeMs;
+
       if (fileName.endsWith('.json')) {
         const fileContents = fs.readFileSync(fullPath, 'utf8');
         const data = JSON.parse(fileContents);
+        const timestamp = data.createdAt || fileCreatedAt;
         return {
           slug: fileName.replace(/\.json$/, ''),
+          createdAt: timestamp,
           ...data,
         } as Post;
       } else {
         const fileContents = fs.readFileSync(fullPath, 'utf8');
         const { data, content } = matter(fileContents);
+        const timestamp = data.createdAt || fileCreatedAt;
         return {
           slug: fileName.replace(/\.md$/, ''),
           title: data.title || 'Untitled',
           excerpt: data.excerpt || '',
           coverImage: data.coverImage || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
           date: data.date || new Date().toISOString().split('T')[0],
+          createdAt: timestamp,
           category: data.category || 'Tech & AI',
           author: data.author || {
             name: 'TechPulse AI',
@@ -70,7 +78,12 @@ export function getAllPosts(): Post[] {
       }
     });
 
-  return allPosts.sort((a, b) => (new Date(b.date).getTime() - new Date(a.date).getTime()));
+  // Sort descending: Latest published post first, oldest published post last
+  return allPosts.sort((a, b) => {
+    const timeA = a.createdAt || new Date(a.date).getTime();
+    const timeB = b.createdAt || new Date(b.date).getTime();
+    return timeB - timeA;
+  });
 }
 
 export function getPostBySlug(slug: string): Post | null {

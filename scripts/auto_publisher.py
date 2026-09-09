@@ -358,6 +358,7 @@ def main():
         "coverImage": cover_image,
         "coverImageAlt": cover_alt,
         "date": datetime.now().strftime("%Y-%m-%d"),
+        "createdAt": int(time.time() * 1000),
         "category": article_data.get("category", "Technology"),
         "author": selected_author,
         "readTime": article_data.get("readTime", "5 min read"),
