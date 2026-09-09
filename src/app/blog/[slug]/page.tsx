@@ -36,38 +36,38 @@ export default async function BlogPostPage({ params }: Props) {
     <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <Link
         href="/blog"
-        className="inline-flex items-center gap-2 text-xs font-semibold text-neutral-400 hover:text-cyan-400 transition mb-8"
+        className="inline-flex items-center gap-2 text-xs font-bold text-[#94a3b8] hover:text-[#ef233c] transition mb-6"
       >
-        <ArrowLeft className="h-4 w-4" /> Back to Articles
+        <ArrowLeft className="h-4 w-4" /> Back to Newsroom
       </Link>
 
-      <header className="space-y-6 mb-10">
+      <header className="space-y-4 mb-8">
         <div className="flex flex-wrap items-center gap-3 text-xs">
-          <span className="px-3 py-1 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 font-semibold uppercase">
+          <span className="section-tag-box text-[11px]">
             {post.category}
           </span>
-          <span className="flex items-center gap-1 text-neutral-400"><Calendar className="h-3.5 w-3.5" /> {post.date}</span>
-          <span className="flex items-center gap-1 text-neutral-400"><Clock className="h-3.5 w-3.5" /> {post.readTime}</span>
+          <span className="flex items-center gap-1 text-[#94a3b8]"><Calendar className="h-3.5 w-3.5" /> {post.date}</span>
+          <span className="flex items-center gap-1 text-[#94a3b8]"><Clock className="h-3.5 w-3.5" /> {post.readTime}</span>
         </div>
 
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+        <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
           {post.title}
         </h1>
 
-        <p className="text-lg text-neutral-300 leading-relaxed font-normal">
+        <p className="text-base sm:text-lg text-[#cbd5e1] leading-relaxed font-normal">
           {post.excerpt}
         </p>
 
-        <div className="flex items-center justify-between border-y border-neutral-800 py-4">
+        <div className="flex items-center justify-between border-y border-[#1f293d] py-3 text-xs">
           <div className="flex items-center gap-3">
             <img
               src={post.author.avatar}
               alt={post.author.name}
-              className="h-11 w-11 rounded-full border border-neutral-700 object-cover"
+              className="h-10 w-10 rounded-full border border-[#2b3a55] object-cover"
             />
             <div>
-              <p className="text-sm font-semibold text-white">{post.author.name}</p>
-              <p className="text-xs text-neutral-400">{post.author.role}</p>
+              <p className="font-bold text-white">{post.author.name}</p>
+              <p className="text-[#94a3b8] text-[11px]">{post.author.role}</p>
             </div>
           </div>
         </div>

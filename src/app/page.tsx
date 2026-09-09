@@ -1,162 +1,196 @@
 import Link from "next/link";
-import Image from "next/image";
 import { getAllPosts } from "@/lib/posts";
-import { ArrowRight, Clock, Calendar, Sparkles, TrendingUp, Cpu, Globe, Zap } from "lucide-react";
+import CategoryQuickBar from "@/components/CategoryQuickBar";
 
 export default function HomePage() {
   const posts = getAllPosts();
-  const featuredPost = posts[0];
-  const recentPosts = posts.slice(1, 7);
+  const leadPost = posts[0];
+  const sideArticles = posts.slice(1, 7);
+
+  // Group by category for magazine sections
+  const aiPosts = posts.filter(p => p.category.toLowerCase().includes("ai") || p.category.toLowerCase().includes("artificial") || p.category.toLowerCase().includes("agent")).slice(0, 3);
+  const webPosts = posts.filter(p => p.category.toLowerCase().includes("web") || p.category.toLowerCase().includes("software")).slice(0, 3);
+  const hardwarePosts = posts.filter(p => p.category.toLowerCase().includes("hardware") || p.category.toLowerCase().includes("quantum") || p.category.toLowerCase().includes("semiconductor")).slice(0, 3);
+  const generalPosts = posts.slice(4, 10);
 
   return (
-    <div className="space-y-16 pb-20">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-neutral-800 bg-gradient-to-b from-neutral-900/80 to-neutral-950 pt-20 pb-16">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(6,182,212,0.15),rgba(255,255,255,0))] pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-800/60 text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-6">
-            <Sparkles className="h-3.5 w-3.5" /> Modern Technology Journal
-          </div>
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white max-w-4xl leading-tight sm:leading-none">
-            Exploring the Frontier of <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500">Artificial Intelligence</span> & Future Tech
-          </h1>
-          <p className="mt-6 text-lg sm:text-xl text-neutral-400 max-w-2xl leading-relaxed">
-            Real-time tech insights, artificial intelligence breakthroughs, cloud innovations, and hardware evolution curated for engineers and innovators.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-neutral-950 font-semibold text-sm transition shadow-lg shadow-cyan-500/20"
-            >
-              Read Latest Stories <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/about"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 font-semibold text-sm transition"
-            >
-              About Our Editorial
-            </Link>
-          </div>
+    <div className="space-y-12">
+      <CategoryQuickBar />
 
-          <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 border-t border-neutral-800/60 text-xs text-neutral-400">
-            <div className="flex items-center gap-2">
-              <Zap className="h-4 w-4 text-cyan-400" />
-              <span>Real-Time Updates</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Cpu className="h-4 w-4 text-indigo-400" />
-              <span>Deep Technical Analysis</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Globe className="h-4 w-4 text-emerald-400" />
-              <span>Global Tech Coverage</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-purple-400" />
-              <span>Industry Insights</span>
-            </div>
+      {/* 1. LATEST STORIES (Pattern A: Big Lead Feature + Side Stories) */}
+      <section>
+        <div className="section-line">
+          <span className="section-tag-box">Latest Stories</span>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Main Big Lead Article */}
+          {leadPost && (
+            <article className="lg:col-span-7 bg-[#111827] rounded-lg overflow-hidden border border-[#1f293d] hover:border-[#c1121e] transition duration-200 flex flex-col">
+              <div className="h-72 sm:h-96 relative overflow-hidden bg-black">
+                <img
+                  src={leadPost.coverImage}
+                  alt={leadPost.title}
+                  className="w-full h-full object-cover hover:scale-105 transition duration-500"
+                />
+              </div>
+              <div className="p-6 sm:p-8 flex flex-col flex-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#ef233c] mb-2">
+                  {leadPost.category} &bull; Editorial Lead Feature
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-white hover:text-[#ef233c] transition leading-snug mb-3">
+                  <Link href={`/blog/${leadPost.slug}`}>{leadPost.title}</Link>
+                </h2>
+                <p className="text-sm sm:text-base text-[#94a3b8] leading-relaxed mb-6 line-clamp-3">
+                  {leadPost.excerpt}
+                </p>
+                <div className="mt-auto flex items-center justify-between pt-4 border-t border-[#1f293d] text-xs text-[#64748b]">
+                  <span>By <strong className="text-[#cbd5e1]">{leadPost.author.name}</strong></span>
+                  <span>{leadPost.date}</span>
+                </div>
+              </div>
+            </article>
+          )}
+
+          {/* Mini Side List */}
+          <div className="lg:col-span-5 flex flex-col gap-4">
+            {sideArticles.map((post) => (
+              <article
+                key={post.slug}
+                className="bg-[#111827] p-3.5 rounded-lg border border-[#1f293d] hover:border-[#c1121e] transition flex items-center gap-4 group"
+              >
+                <div className="w-24 h-20 shrink-0 rounded overflow-hidden bg-black">
+                  <img
+                    src={post.coverImage}
+                    alt={post.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-[11px] font-bold uppercase text-[#ef233c] block mb-1">
+                    {post.category}
+                  </span>
+                  <h3 className="text-xs sm:text-sm font-bold text-white group-hover:text-[#ef233c] transition line-clamp-2 leading-snug mb-1">
+                    <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                  </h3>
+                  <span className="text-[11px] text-[#64748b]">{post.date}</span>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Featured Story */}
-      {featuredPost && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-cyan-500 inline-block"></span> Featured Headline
-            </h2>
-          </div>
-          <Link
-            href={`/blog/${featuredPost.slug}`}
-            className="group block relative overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/60 hover:border-cyan-500/50 transition duration-300"
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 sm:p-8 items-center">
-              <div className="lg:col-span-7 space-y-4">
-                <div className="flex items-center gap-3 text-xs text-cyan-400 font-medium">
-                  <span className="px-2.5 py-1 rounded-md bg-cyan-950 border border-cyan-800">{featuredPost.category}</span>
-                  <span className="flex items-center gap-1 text-neutral-400"><Calendar className="h-3.5 w-3.5" /> {featuredPost.date}</span>
-                  <span className="flex items-center gap-1 text-neutral-400"><Clock className="h-3.5 w-3.5" /> {featuredPost.readTime}</span>
-                </div>
-                <h3 className="text-2xl sm:text-4xl font-bold text-white group-hover:text-cyan-400 transition-colors leading-snug">
-                  {featuredPost.title}
-                </h3>
-                <p className="text-neutral-400 text-sm sm:text-base leading-relaxed line-clamp-3">
-                  {featuredPost.excerpt}
-                </p>
-                <div className="flex items-center gap-3 pt-2">
-                  <img
-                    src={featuredPost.author.avatar}
-                    alt={featuredPost.author.name}
-                    className="h-10 w-10 rounded-full border border-neutral-700 object-cover"
-                  />
-                  <div>
-                    <p className="text-sm font-semibold text-white">{featuredPost.author.name}</p>
-                    <p className="text-xs text-neutral-400">{featuredPost.author.role}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="lg:col-span-5 h-64 sm:h-80 relative rounded-xl overflow-hidden">
-                <img
-                  src={featuredPost.coverImage}
-                  alt={featuredPost.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                />
-              </div>
-            </div>
-          </Link>
-        </section>
-      )}
-
-      {/* Recent Posts Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-2xl font-bold text-white">Latest Tech Dispatches</h2>
-            <p className="text-sm text-neutral-400 mt-1">Directly generated from curated keywords and industry trends</p>
-          </div>
-          <Link href="/blog" className="text-sm font-semibold text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
-            View Archive <ArrowRight className="h-4 w-4" />
-          </Link>
+      {/* 2. ARTIFICIAL INTELLIGENCE & AGENTS */}
+      <section>
+        <div className="section-line">
+          <span className="section-tag-box">Artificial Intelligence & Computing</span>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {recentPosts.map((post) => (
-            <Link
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {(aiPosts.length > 0 ? aiPosts : generalPosts.slice(0, 3)).map((post) => (
+            <article
               key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="group flex flex-col rounded-xl border border-neutral-800 bg-neutral-900/40 overflow-hidden hover:border-neutral-700 hover:bg-neutral-900/80 transition"
+              className="bg-[#111827] rounded-lg overflow-hidden border border-[#1f293d] hover:border-[#c1121e] transition flex flex-col group"
             >
-              <div className="h-48 relative overflow-hidden bg-neutral-950">
+              <div className="h-48 relative overflow-hidden bg-black">
                 <img
                   src={post.coverImage}
                   alt={post.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />
-                <span className="absolute top-3 left-3 text-[11px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded bg-neutral-950/80 text-cyan-400 backdrop-blur-md border border-neutral-800">
-                  {post.category}
-                </span>
               </div>
               <div className="p-5 flex flex-col flex-1">
-                <div className="flex items-center gap-2 text-xs text-neutral-400 mb-2">
-                  <span>{post.date}</span>
-                  <span>•</span>
-                  <span>{post.readTime}</span>
-                </div>
-                <h3 className="font-bold text-lg text-white group-hover:text-cyan-400 transition-colors line-clamp-2 mb-2">
-                  {post.title}
+                <span className="text-[11px] font-bold uppercase text-[#ef233c] mb-2">
+                  {post.category}
+                </span>
+                <h3 className="text-base font-bold text-white group-hover:text-[#ef233c] transition line-clamp-2 leading-snug mb-2">
+                  <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                 </h3>
-                <p className="text-neutral-400 text-xs line-clamp-3 leading-relaxed mb-4 flex-1">
+                <p className="text-xs text-[#94a3b8] line-clamp-3 leading-relaxed mb-4 flex-1">
                   {post.excerpt}
                 </p>
-                <div className="flex items-center justify-between pt-3 border-t border-neutral-800/80 text-xs">
-                  <span className="text-neutral-400 font-medium">{post.author.name}</span>
-                  <span className="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-1">
-                    Read More <ArrowRight className="h-3 w-3" />
-                  </span>
+                <div className="pt-3 border-t border-[#1f293d] flex items-center justify-between text-[11px] text-[#64748b]">
+                  <span>{post.author.name}</span>
+                  <span>{post.date}</span>
                 </div>
               </div>
-            </Link>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* 3. SOFTWARE ARCHITECTURE & CLOUD */}
+      <section>
+        <div className="section-line">
+          <span className="section-tag-box">Software Engineering & Web</span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {(webPosts.length > 0 ? webPosts : generalPosts.slice(3, 6)).map((post) => (
+            <article
+              key={post.slug}
+              className="bg-[#111827] rounded-lg overflow-hidden border border-[#1f293d] hover:border-[#c1121e] transition flex flex-col group"
+            >
+              <div className="h-48 relative overflow-hidden bg-black">
+                <img
+                  src={post.coverImage}
+                  alt={post.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                />
+              </div>
+              <div className="p-5 flex flex-col flex-1">
+                <span className="text-[11px] font-bold uppercase text-[#ef233c] mb-2">
+                  {post.category}
+                </span>
+                <h3 className="text-base font-bold text-white group-hover:text-[#ef233c] transition line-clamp-2 leading-snug mb-2">
+                  <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                </h3>
+                <p className="text-xs text-[#94a3b8] line-clamp-3 leading-relaxed mb-4 flex-1">
+                  {post.excerpt}
+                </p>
+                <div className="pt-3 border-t border-[#1f293d] flex items-center justify-between text-[11px] text-[#64748b]">
+                  <span>{post.author.name}</span>
+                  <span>{post.date}</span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* 4. HARDWARE, CHIPS & QUANTUM */}
+      <section>
+        <div className="section-line">
+          <span className="section-tag-box">Hardware, Semiconductors & Quantum</span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {(hardwarePosts.length > 0 ? hardwarePosts : generalPosts.slice(0, 3)).map((post) => (
+            <article
+              key={post.slug}
+              className="bg-[#111827] rounded-lg overflow-hidden border border-[#1f293d] hover:border-[#c1121e] transition flex flex-col group"
+            >
+              <div className="h-48 relative overflow-hidden bg-black">
+                <img
+                  src={post.coverImage}
+                  alt={post.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                />
+              </div>
+              <div className="p-5 flex flex-col flex-1">
+                <span className="text-[11px] font-bold uppercase text-[#ef233c] mb-2">
+                  {post.category}
+                </span>
+                <h3 className="text-base font-bold text-white group-hover:text-[#ef233c] transition line-clamp-2 leading-snug mb-2">
+                  <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                </h3>
+                <p className="text-xs text-[#94a3b8] line-clamp-3 leading-relaxed mb-4 flex-1">
+                  {post.excerpt}
+                </p>
+                <div className="pt-3 border-t border-[#1f293d] flex items-center justify-between text-[11px] text-[#64748b]">
+                  <span>{post.author.name}</span>
+                  <span>{post.date}</span>
+                </div>
+              </div>
+            </article>
           ))}
         </div>
       </section>

@@ -67,3 +67,11 @@ export function getPostBySlug(slug: string): Post | null {
   const posts = getAllPosts();
   return posts.find((p) => p.slug === slug) || null;
 }
+
+export function getPostsByCategory(categorySlug: string): Post[] {
+  const posts = getAllPosts();
+  return posts.filter((p) => {
+    const slugified = p.category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    return slugified === categorySlug || p.category.toLowerCase() === categorySlug.toLowerCase();
+  });
+}
