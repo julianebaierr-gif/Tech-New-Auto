@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { categories } from "./MainNavbar";
+import { categories } from "@/lib/categories";
 
 export default function Footer() {
   return (
