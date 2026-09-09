@@ -81,18 +81,18 @@ export interface Author {
 
 export const AUTHORS: Author[] = [
   {
-    slug: 'kaelen-vance',
-    name: 'Kaelen Vance',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+    slug: 'cora-lee',
+    name: 'Cora Lee',
+    avatar: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=80',
     role: 'Lead Systems Architect & Contributing Tech Editor',
     bio: 'Former kernel engineer and distributed systems researcher writing on microarchitectures, cloud infrastructure, and intelligent automation.',
     twitter: 'https://twitter.com',
     github: 'https://github.com',
   },
   {
-    slug: 'soraya-lindqvist',
-    name: 'Soraya Lindqvist',
-    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80',
+    slug: 'kellie-anne',
+    name: 'Kellie Anne',
+    avatar: 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=400&q=80',
     role: 'Principal AI & Silicon Research Analyst',
     bio: 'Hardware benchmark specialist and AI infrastructure journalist tracking frontier models, neuromorphic semiconductors, and quantum engineering.',
     twitter: 'https://twitter.com',

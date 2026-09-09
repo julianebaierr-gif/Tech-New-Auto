@@ -289,14 +289,14 @@ def main():
     import random
     AUTHORS = [
         {
-            "name": "Kaelen Vance",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+            "name": "Cora Lee",
+            "avatar": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=80",
             "role": "Lead Systems Architect & Contributing Tech Editor",
             "bio": "Former kernel engineer and distributed systems researcher writing on microarchitectures, cloud infrastructure, and intelligent automation."
         },
         {
-            "name": "Soraya Lindqvist",
-            "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80",
+            "name": "Kellie Anne",
+            "avatar": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=400&q=80",
             "role": "Principal AI & Silicon Research Analyst",
             "bio": "Hardware benchmark specialist and AI infrastructure journalist tracking frontier models, neuromorphic semiconductors, and quantum engineering."
         }

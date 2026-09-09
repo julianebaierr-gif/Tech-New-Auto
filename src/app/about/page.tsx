@@ -56,12 +56,12 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-xs flex items-start gap-4">
             <img
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80"
-              alt="Kaelen Vance"
+              src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=80"
+              alt="Cora Lee"
               className="h-16 w-16 rounded-xl object-cover shrink-0 border border-slate-200"
             />
             <div className="space-y-1">
-              <h3 className="font-bold text-slate-900 text-base">Kaelen Vance</h3>
+              <h3 className="font-bold text-slate-900 text-base">Cora Lee</h3>
               <p className="text-xs font-semibold text-blue-600">Lead Systems Architect & Contributing Tech Editor</p>
               <p className="text-xs text-slate-600 leading-relaxed pt-1">
                 Former kernel engineer and distributed systems researcher writing on microarchitectures, cloud infrastructure, and intelligent automation.
@@ -71,12 +71,12 @@ export default function AboutPage() {
 
           <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-xs flex items-start gap-4">
             <img
-              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80"
-              alt="Soraya Lindqvist"
+              src="https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=400&q=80"
+              alt="Kellie Anne"
               className="h-16 w-16 rounded-xl object-cover shrink-0 border border-slate-200"
             />
             <div className="space-y-1">
-              <h3 className="font-bold text-slate-900 text-base">Soraya Lindqvist</h3>
+              <h3 className="font-bold text-slate-900 text-base">Kellie Anne</h3>
               <p className="text-xs font-semibold text-blue-600">Principal AI & Silicon Research Analyst</p>
               <p className="text-xs text-slate-600 leading-relaxed pt-1">
                 Hardware benchmark specialist and AI infrastructure journalist tracking frontier models, neuromorphic semiconductors, and quantum engineering.
