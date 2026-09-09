@@ -336,9 +336,9 @@ CRITICAL SEO & GOOGLE 2026 HELPFUL CONTENT GUIDELINES:
    - Must directly mention "{kw}".
    - Strictly between 150 and 155 characters in length. Complete sentence, never truncated.
 5. FREQUENTLY ASKED QUESTIONS (FAQPAGE SCHEMA):
-   - Provide 4-5 high-value, unique FAQs specifically about "{kw}".
-   - Each question must be what real engineers and tech leaders search on Google.
-   - Each answer must be comprehensive (50-80 words) and provide concrete technical insight.
+   - Provide 3-4 short, punchy, and direct FAQs specifically about "{kw}".
+   - Each question must be clear and commonly searched.
+   - Each answer must be SHORT, direct, and concise (strictly 25-40 words or 1-2 direct sentences). Do not write long paragraphs.
 6. NO DASHES: Do NOT use any em-dashes (— or –). Use clean commas, colons, or parentheses.
 
 Respond ONLY with valid JSON:
