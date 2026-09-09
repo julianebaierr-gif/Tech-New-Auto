@@ -18,9 +18,35 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const author = getAuthorBySlug(slug);
   if (!author) return { title: "Author Not Found" };
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://techpulse-journal.vercel.app";
+  const authorUrl = `${siteUrl}/author/${author.slug}`;
+
   return {
-    title: `${author.name} | Editorial Profile & Published Articles | TechPulse`,
-    description: author.bio.slice(0, 145),
+    title: `${author.name} | Staff Journalist & Analyst`,
+    description: author.bio,
+    alternates: {
+      canonical: authorUrl,
+    },
+    openGraph: {
+      type: "profile",
+      url: authorUrl,
+      title: `${author.name} | Staff Journalist & Analyst | TechPulse`,
+      description: author.bio,
+      images: [
+        {
+          url: author.avatar,
+          width: 400,
+          height: 400,
+          alt: `${author.name} - ${author.role}`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary",
+      title: `${author.name} | Staff Journalist & Analyst`,
+      description: author.bio,
+      images: [author.avatar],
+    },
   };
 }
 
@@ -32,10 +58,32 @@ export default async function AuthorProfilePage({ params }: Props) {
     notFound();
   }
 
-  const posts = getPostsByAuthor(author.slug);
+  const posts = getPostsByAuthor(author.name);
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://techpulse-journal.vercel.app";
+  const authorUrl = `${siteUrl}/author/${author.slug}`;
+
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: author.name,
+    jobTitle: author.role,
+    description: author.bio,
+    image: author.avatar,
+    url: authorUrl,
+    worksFor: {
+      "@type": "NewsMediaOrganization",
+      name: "TechPulse Magazine",
+      url: siteUrl,
+    },
+    sameAs: [author.twitter, author.github].filter(Boolean),
+  };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
       <Link
         href="/authors"
         className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition"

@@ -19,15 +19,47 @@ export async function generateMetadata({ params }: Props) {
   const post = getPostBySlug(slug);
   if (!post) return { title: "Article Not Found" };
   
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://techpulse-journal.vercel.app";
+  const postUrl = `${siteUrl}/blog/${post.slug}`;
   let desc = post.excerpt.trim();
   if (desc.length > 155) {
     const lastSpace = desc.slice(0, 155).lastIndexOf(" ");
     desc = (lastSpace > 140 ? desc.slice(0, lastSpace) : desc.slice(0, 152)).replace(/[.,;:-]+$/, "") + "...";
   }
 
+  const imageAlt = post.coverImageAlt || `${post.title} - ${post.category}`;
+
   return {
     title: post.title,
     description: desc,
+    alternates: {
+      canonical: postUrl,
+    },
+    keywords: post.tags,
+    openGraph: {
+      type: "article",
+      url: postUrl,
+      title: post.title,
+      description: desc,
+      publishedTime: post.date,
+      authors: [post.author.name],
+      section: post.category,
+      tags: post.tags,
+      images: [
+        {
+          url: post.coverImage,
+          width: 1200,
+          height: 630,
+          alt: imageAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: desc,
+      images: [post.coverImage],
+    },
   };
 }
 
@@ -39,8 +71,79 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://techpulse-journal.vercel.app";
+  const postUrl = `${siteUrl}/blog/${post.slug}`;
+  const authorSlug = post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const authorUrl = `${siteUrl}/author/${authorSlug}`;
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: post.title,
+    description: post.excerpt,
+    image: [post.coverImage],
+    datePublished: post.date,
+    dateModified: post.date,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": postUrl,
+    },
+    author: [
+      {
+        "@type": "Person",
+        name: post.author.name,
+        url: authorUrl,
+        jobTitle: post.author.role,
+      },
+    ],
+    publisher: {
+      "@type": "NewsMediaOrganization",
+      name: "TechPulse Magazine",
+      url: siteUrl,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteUrl}/logo.png`,
+      },
+    },
+    articleSection: post.category,
+    keywords: post.tags.join(", "),
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: post.category,
+        item: `${siteUrl}/category/${post.category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.title,
+        item: postUrl,
+      },
+    ],
+  };
+
   return (
     <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <Link
         href="/blog"
         className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition mb-6"
