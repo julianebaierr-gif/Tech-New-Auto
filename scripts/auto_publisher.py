@@ -292,6 +292,22 @@ def main():
     with open(target_file, "w", encoding="utf-8") as f:
         json.dump(post_record, f, indent=2)
 
+    # Update Google Sheet if Webhook URL provided
+    webhook_url = os.environ.get("GOOGLE_SHEET_WEBHOOK_URL")
+    if webhook_url:
+        try:
+            print("[INFO] Syncing Category, Tags & Status to Google Sheet via Webhook...")
+            payload = {
+                "keyword": keyword_data["keyword"],
+                "category": post_record["category"],
+                "tags": post_record["tags"],
+                "status": "Published"
+            }
+            webhook_res = requests.post(webhook_url, json=payload, timeout=15)
+            print(f"[SUCCESS] Google Sheet Webhook response: {webhook_res.text.strip()[:100]}")
+        except Exception as wh_err:
+            print(f"[WARN] Failed to sync to Google Sheet: {wh_err}")
+
     print("\n" + "="*60)
     print(">> [TECHPULSE AUTO PUBLISHER REPORT]")
     print("="*60)
