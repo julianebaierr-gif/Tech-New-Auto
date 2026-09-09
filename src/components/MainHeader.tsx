@@ -45,12 +45,6 @@ export default function MainHeader() {
           >
             <Send className="h-3.5 w-3.5" /> Submit Story / News Tip
           </Link>
-          <Link
-            href="/blog"
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold transition shadow-xs"
-          >
-            Explore All
-          </Link>
         </div>
       </div>
     </header>
