@@ -1,73 +1,100 @@
 import Link from "next/link";
 import { getAuthors, getPostsByAuthor } from "@/lib/posts";
-import { ArrowRight, BookOpen, ShieldCheck } from "lucide-react";
+import { ArrowRight, BookOpen, ShieldCheck, Award, GraduationCap, CheckCircle2 } from "lucide-react";
 
 export const metadata = {
-  title: "Editorial Authors and Contributors | TechPulse",
-  description: "Meet the investigative journalists, systems architects, and research analysts authoring technical reports for TechPulse.",
+  title: "Editorial Masthead & Contributing Authors | TechPulse",
+  description: "Meet the verified system architects, distributed systems researchers, and artificial intelligence analysts authoring technical evaluations for TechPulse.",
 };
 
 export default function AuthorsIndexPage() {
   const authors = getAuthors();
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
-      <div className="border-b border-slate-200 pb-8">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-600 mb-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
-          Editorial Masthead
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+      {/* Page Header */}
+      <div className="border-b border-slate-200 pb-8 space-y-3">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold uppercase tracking-wider border border-blue-200">
+          <ShieldCheck className="h-3.5 w-3.5" /> Editorial Transparency &amp; E-E-A-T
         </div>
         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
-          Authors and Contributors
+          Editorial Masthead &amp; Authors
         </h1>
-        <p className="max-w-2xl text-sm sm:text-base text-slate-600 mt-2 leading-relaxed">
-          Our technical journalism is written by dedicated engineering practitioners and computing analysts with firsthand industry experience.
+        <p className="max-w-3xl text-sm sm:text-base text-slate-600 leading-relaxed">
+          At TechPulse, every technical guide, software benchmark, and architectural review is authored by seasoned practitioners with demonstrable engineering and research experience.
         </p>
       </div>
 
+      {/* Author Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {authors.map((author) => {
           const authorPosts = getPostsByAuthor(author.slug);
           return (
             <article
               key={author.slug}
-              className="bg-white rounded-2xl border border-slate-200 p-8 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+              className="bg-white rounded-3xl border border-slate-200 p-8 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
             >
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
+              <div className="space-y-5">
+                <div className="flex items-start gap-5">
                   <img
                     src={author.avatar}
                     alt={author.name}
-                    className="h-20 w-20 rounded-2xl object-cover shrink-0 border border-slate-200 group-hover:scale-105 transition duration-300"
+                    className="h-24 w-24 rounded-2xl object-cover shrink-0 border-2 border-slate-100 group-hover:scale-105 transition duration-300 shadow-xs"
                   />
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h2 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h2 className="text-xl sm:text-2xl font-black text-slate-900 group-hover:text-blue-600 transition">
                         <Link href={`/author/${author.slug}`}>{author.name}</Link>
                       </h2>
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
-                        Verified
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <CheckCircle2 className="h-3 w-3" /> Verified Author
                       </span>
                     </div>
-                    <p className="text-xs text-blue-600 font-semibold mt-0.5">{author.role}</p>
-                    <span className="inline-flex items-center gap-1 text-xs text-slate-400 mt-1">
-                      <BookOpen className="h-3 w-3" /> {authorPosts.length} Published Articles
-                    </span>
+                    <p className="text-xs font-semibold text-blue-600">{author.role}</p>
+                    <div className="flex items-center gap-3 text-xs text-slate-500 pt-1">
+                      <span className="inline-flex items-center gap-1 font-medium">
+                        <BookOpen className="h-3.5 w-3.5 text-blue-600" /> {authorPosts.length} Articles
+                      </span>
+                      <span>&bull;</span>
+                      <span className="inline-flex items-center gap-1 font-medium">
+                        <Award className="h-3.5 w-3.5 text-amber-600" /> Peer Reviewed
+                      </span>
+                    </div>
                   </div>
                 </div>
 
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   {author.bio}
                 </p>
+
+                {/* Expertise Badges */}
+                <div className="pt-2">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Core Competencies:</div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {author.slug === "cora-lee" ? (
+                      <>
+                        <span className="text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 font-medium">Distributed Systems</span>
+                        <span className="text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 font-medium">Linux Kernels</span>
+                        <span className="text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 font-medium">Zero-Trust Cloud</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 font-medium">Frontier AI &amp; LLMs</span>
+                        <span className="text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 font-medium">Neuromorphic Silicon</span>
+                        <span className="text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 font-medium">Quantum Hardware</span>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
 
               <div className="pt-6 border-t border-slate-100 flex items-center justify-between text-xs mt-6">
-                <span className="text-slate-500 font-medium">Contributing Tech Writer</span>
+                <span className="text-slate-500 font-medium">Full Editorial Profile</span>
                 <Link
                   href={`/author/${author.slug}`}
-                  className="inline-flex items-center gap-1 font-bold text-blue-600 hover:text-blue-700 group-hover:translate-x-1 transition-transform"
+                  className="inline-flex items-center gap-1.5 font-bold text-blue-600 hover:text-blue-700 group-hover:translate-x-1 transition-transform"
                 >
-                  View Author Profile &amp; Articles <ArrowRight className="h-3.5 w-3.5" />
+                  Read Authored Guides <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
             </article>
