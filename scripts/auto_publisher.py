@@ -250,14 +250,12 @@ def generate_article_with_gemini(keyword_info, existing_titles=None):
     from google import genai
     client = genai.Client(api_key=GEMINI_API_KEY)
 
-    # Official supported Gemini models with resilient fallback
+    # Official active models based on current Gemini SDK:
     models_to_try = [
-        "gemini-2.0-flash",
-        "gemini-2.0-flash-lite",
-        "gemini-2.5-pro",
-        "gemini-3-flash-preview",
-        "gemini-2.5-flash",
-        "gemini-3-pro-preview"
+        "gemini-3.7-flash",
+        "gemini-3.5-flash-lite",
+        "gemini-3.1-pro-preview",
+        "gemini-3-flash-preview"
     ]
 
     # --- PHASE 1: Generate Outline, Semantic Keywords & Visual Concept ---
@@ -288,7 +286,7 @@ Respond ONLY with valid JSON:
     outline_data = None
     for model_id in models_to_try:
         success = False
-        for attempt in range(3):
+        for attempt in range(4):
             try:
                 res = client.models.generate_content(model=model_id, contents=outline_prompt)
                 clean_res = re.sub(r'^```json\s*', '', res.text.strip())
@@ -299,9 +297,9 @@ Respond ONLY with valid JSON:
                 break
             except Exception as e:
                 err_msg = str(e)
-                if ("503" in err_msg or "UNAVAILABLE" in err_msg) and attempt < 2:
-                    wait_time = (attempt + 1) * 3
-                    print(f"[RETRY] Model {model_id} hit 503 UNAVAILABLE. Retrying in {wait_time}s (attempt {attempt + 1}/3)...")
+                if ("503" in err_msg or "UNAVAILABLE" in err_msg or "RESOURCE_EXHAUSTED" in err_msg) and attempt < 3:
+                    wait_time = (attempt + 1) * 4
+                    print(f"[RETRY] Model {model_id} hit transient capacity ({err_msg[:60]}). Retrying in {wait_time}s (attempt {attempt + 1}/4)...")
                     time.sleep(wait_time)
                     continue
                 print(f"[DEBUG] Phase 1 on {model_id} failed: {err_msg[:100]}. Switching to next model...")
@@ -370,7 +368,7 @@ Respond ONLY with valid JSON:
     article_data = None
     for model_id in models_to_try:
         success = False
-        for attempt in range(3):
+        for attempt in range(4):
             try:
                 res = client.models.generate_content(model=model_id, contents=write_prompt)
                 clean_res = re.sub(r'^```json\s*', '', res.text.strip())
@@ -381,9 +379,9 @@ Respond ONLY with valid JSON:
                 break
             except Exception as e:
                 err_msg = str(e)
-                if ("503" in err_msg or "UNAVAILABLE" in err_msg) and attempt < 2:
-                    wait_time = (attempt + 1) * 3
-                    print(f"[RETRY] Model {model_id} hit 503 UNAVAILABLE during Phase 2. Retrying in {wait_time}s (attempt {attempt + 1}/3)...")
+                if ("503" in err_msg or "UNAVAILABLE" in err_msg or "RESOURCE_EXHAUSTED" in err_msg) and attempt < 3:
+                    wait_time = (attempt + 1) * 4
+                    print(f"[RETRY] Model {model_id} hit transient capacity during Phase 2 ({err_msg[:60]}). Retrying in {wait_time}s (attempt {attempt + 1}/4)...")
                     time.sleep(wait_time)
                     continue
                 print(f"[DEBUG] Phase 2 on {model_id} failed: {err_msg[:100]}. Switching to next model...")
