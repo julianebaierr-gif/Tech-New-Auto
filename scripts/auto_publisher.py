@@ -38,16 +38,34 @@ def fetch_keyword_from_sheet():
                     pass
 
     # Method A: Google Sheet CSV link
-    if GOOGLE_SHEET_CSV_URL:
-        try:
-            print("[INFO] Fetching keywords from Google Sheet...")
-            # Normalize export url to csv if standard sharing url passed
-            sheet_url = GOOGLE_SHEET_CSV_URL
-            if "/edit" in sheet_url:
-                sheet_url = sheet_url.split("/edit")[0] + "/export?format=csv"
+    # The sheet ID extracted from user sheet: 1ksudXZ2GVgcCccHuvRRQC9OMTrBqjZtJYNxUEM1X93A
+    sheet_id = "1ksudXZ2GVgcCccHuvRRQC9OMTrBqjZtJYNxUEM1X93A"
+    if GOOGLE_SHEET_ID and GOOGLE_SHEET_ID.strip():
+        sheet_id = GOOGLE_SHEET_ID.strip()
 
-            res = requests.get(sheet_url, timeout=15)
+    candidate_urls = [
+        f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv",
+        f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
+    ]
+    if GOOGLE_SHEET_CSV_URL and GOOGLE_SHEET_CSV_URL.strip():
+        custom_url = GOOGLE_SHEET_CSV_URL.strip()
+        if "/edit" in custom_url:
+            custom_url = custom_url.split("/edit")[0] + "/gviz/tq?tqx=out:csv"
+        candidate_urls.insert(0, custom_url)
+
+    for sheet_url in candidate_urls:
+        try:
+            print(f"[INFO] Fetching keywords from Google Sheet URL: {sheet_url}")
+            headers = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            }
+            res = requests.get(sheet_url, headers=headers, timeout=20)
             if res.status_code == 200 and res.text.strip():
+                # If Google returns HTML instead of CSV (e.g. login redirect), skip this URL
+                if "<!DOCTYPE html>" in res.text or "<html" in res.text.lower():
+                    print("[WARN] Received HTML response instead of CSV, trying next endpoint...")
+                    continue
+
                 import csv
                 reader = csv.reader(res.text.splitlines())
                 for row_idx, row in enumerate(reader):
