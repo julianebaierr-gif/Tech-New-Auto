@@ -18,5 +18,6 @@
     "Cloud"
   ],
   "content": "<p>Building globally scalable web applications once required complex multi-region cluster management. Today, the convergence of <strong>Next.js App Router</strong> and <strong>Vercel Edge Network</strong> has fundamentally redefined performance standards.</p><h2>Zero-Latency Edge Delivery</h2><p>By shifting computational execution to nodes located nearest to the end user, round-trip latency drops to sub-50 milliseconds worldwide. Dynamic content is rendered instantaneously while static assets remain permanently cached across distributed CDNs.</p><h3>Why Server Components Change Everything</h3><ul><li><strong>Zero Client Bundle Overhead:</strong> Heavy markdown parsers and database drivers execute entirely on the server.</li><li><strong>Instant Streaming:</strong> Critical layout scaffolding loads immediately while slow asynchronous blocks stream in concurrently.</li><li><strong>Enhanced Security:</strong> Sensitive credentials and API tokens never leak into client browser bundles.</li></ul>",
-  "coverImageAlt": "Next.js Serverless Architecture and Edge Network Infrastructure"
+  "coverImageAlt": "Next.js Serverless Architecture and Edge Network Infrastructure",
+  "createdAt": 1788952826000
 }
