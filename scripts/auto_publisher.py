@@ -249,7 +249,17 @@ def main():
     with open(target_file, "w", encoding="utf-8") as f:
         json.dump(post_record, f, indent=2)
 
-    print(f"[SUCCESS] Successfully published: {target_file}")
+    print("\n" + "="*60)
+    print("🚀 [TECHPULSE AUTO PUBLISHER REPORT]")
+    print("="*60)
+    print(f"📌 KEYWORD  : {keyword_data['keyword']}")
+    print(f"📂 CATEGORY : {post_record['category']}")
+    print(f"🏷️ TAGS     : {', '.join(post_record['tags'])}")
+    print(f"📰 TITLE    : {post_record['title']}")
+    print(f"🔗 SLUG     : {slug}")
+    print(f"⏱️ STATUS   : PUBLISHED (Date: {post_record['date']})")
+    print(f"🖼️ COVER IMG: {post_record['coverImage']}")
+    print("="*60 + "\n")
 
 if __name__ == "__main__":
     main()
