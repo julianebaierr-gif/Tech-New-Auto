@@ -93,8 +93,27 @@ export default async function BlogPostPage({ params }: Props) {
         />
       </div>
 
+      {/* Author Bio Box */}
+      <div className="mt-10 p-6 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-4">
+        <img
+          src={post.author.avatar}
+          alt={post.author.name}
+          className="h-14 w-14 rounded-xl object-cover shrink-0 border border-slate-300"
+        />
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <h3 className="font-bold text-slate-900 text-sm">{post.author.name}</h3>
+            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 text-blue-700">Verified Author</span>
+          </div>
+          <p className="text-xs text-blue-600 font-semibold">{post.author.role}</p>
+          <p className="text-xs text-slate-600 leading-relaxed pt-1">
+            {post.author.bio || "Engineering journalist and technology specialist covering modern computing paradigms, semiconductors, and architectural design."}
+          </p>
+        </div>
+      </div>
+
       {/* Tags Section */}
-      <footer className="mt-12 pt-8 border-t border-slate-200">
+      <footer className="mt-10 pt-8 border-t border-slate-200">
         <div className="flex flex-wrap items-center gap-2">
           <Tag className="h-4 w-4 text-blue-600 mr-2" />
           {post.tags.map((tag) => (

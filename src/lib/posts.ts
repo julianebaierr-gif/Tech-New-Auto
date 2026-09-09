@@ -13,6 +13,7 @@ export interface Post {
     name: string;
     avatar: string;
     role: string;
+    bio?: string;
   };
   readTime: string;
   tags: string[];

@@ -5,9 +5,10 @@
   "date": "2026-09-07",
   "category": "Hardware & Quantum",
   "author": {
-    "name": "Dr. Marcus Vance",
-    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
-    "role": "Quantum Research Fellow"
+    "name": "Kaelen Vance",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+    "role": "Lead Systems Architect & Contributing Tech Editor",
+    "bio": "Former kernel engineer and distributed systems researcher writing on microarchitectures, cloud infrastructure, and intelligent automation."
   },
   "readTime": "6 min read",
   "tags": [

@@ -45,6 +45,47 @@ export default function AboutPage() {
         </div>
       </div>
 
+      {/* Editorial Team Profiles */}
+      <div className="space-y-6">
+        <div>
+          <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">Masthead & Authors</span>
+          <h2 className="text-2xl font-bold text-slate-900">Lead Editors & Contributing Journalists</h2>
+          <p className="text-sm text-slate-500 mt-1">Our technical reporting is researched and authored by dedicated engineering writers.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-xs flex items-start gap-4">
+            <img
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80"
+              alt="Kaelen Vance"
+              className="h-16 w-16 rounded-xl object-cover shrink-0 border border-slate-200"
+            />
+            <div className="space-y-1">
+              <h3 className="font-bold text-slate-900 text-base">Kaelen Vance</h3>
+              <p className="text-xs font-semibold text-blue-600">Lead Systems Architect & Contributing Tech Editor</p>
+              <p className="text-xs text-slate-600 leading-relaxed pt-1">
+                Former kernel engineer and distributed systems researcher writing on microarchitectures, cloud infrastructure, and intelligent automation.
+              </p>
+            </div>
+          </div>
+
+          <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-xs flex items-start gap-4">
+            <img
+              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80"
+              alt="Soraya Lindqvist"
+              className="h-16 w-16 rounded-xl object-cover shrink-0 border border-slate-200"
+            />
+            <div className="space-y-1">
+              <h3 className="font-bold text-slate-900 text-base">Soraya Lindqvist</h3>
+              <p className="text-xs font-semibold text-blue-600">Principal AI & Silicon Research Analyst</p>
+              <p className="text-xs text-slate-600 leading-relaxed pt-1">
+                Hardware benchmark specialist and AI infrastructure journalist tracking frontier models, neuromorphic semiconductors, and quantum engineering.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Detailed Mission */}
       <div className="space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed border-t border-slate-200 pt-10">
         <h2 className="text-2xl font-bold text-slate-900">Our Editorial Mission</h2>

@@ -5,9 +5,10 @@
   "date": "2026-09-08",
   "category": "Web Development",
   "author": {
-    "name": "Elena Rostova",
-    "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
-    "role": "Cloud Architect"
+    "name": "Kaelen Vance",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+    "role": "Lead Systems Architect & Contributing Tech Editor",
+    "bio": "Former kernel engineer and distributed systems researcher writing on microarchitectures, cloud infrastructure, and intelligent automation."
   },
   "readTime": "4 min read",
   "tags": [

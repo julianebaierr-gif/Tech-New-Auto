@@ -5,9 +5,10 @@
   "date": "2026-09-09",
   "category": "Web Development",
   "author": {
-    "name": "TechPulse Editorial",
-    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-    "role": "Senior Tech Editor"
+    "name": "Soraya Lindqvist",
+    "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80",
+    "role": "Principal AI & Silicon Research Analyst",
+    "bio": "Hardware benchmark specialist and AI infrastructure journalist tracking frontier models, neuromorphic semiconductors, and quantum engineering."
   },
   "readTime": "5 min read",
   "tags": [

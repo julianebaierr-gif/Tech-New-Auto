@@ -273,19 +273,32 @@ def main():
         cleaned = re.sub(r'\s{2,}', ' ', cleaned)
         return cleaned
 
+    import random
+    AUTHORS = [
+        {
+            "name": "Kaelen Vance",
+            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+            "role": "Lead Systems Architect & Contributing Tech Editor",
+            "bio": "Former kernel engineer and distributed systems researcher writing on microarchitectures, cloud infrastructure, and intelligent automation."
+        },
+        {
+            "name": "Soraya Lindqvist",
+            "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80",
+            "role": "Principal AI & Silicon Research Analyst",
+            "bio": "Hardware benchmark specialist and AI infrastructure journalist tracking frontier models, neuromorphic semiconductors, and quantum engineering."
+        }
+    ]
+    selected_author = random.choice(AUTHORS)
+
     post_record = {
         "title": clean_dashes(article_data["title"]),
         "excerpt": clean_dashes(article_data["excerpt"]),
         "coverImage": cover_image,
         "date": datetime.now().strftime("%Y-%m-%d"),
         "category": article_data.get("category", "Technology"),
-        "author": {
-            "name": "TechPulse Editorial",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-            "role": "Senior Tech Editor"
-        },
+        "author": selected_author,
         "readTime": article_data.get("readTime", "5 min read"),
-        "tags": [clean_dashes(t) for t in article_data.get("tags", ["Tech", "AI", "Automation"])],
+        "tags": article_data.get("tags", ["Tech", "Engineering"]),
         "content": clean_dashes(article_data["content"])
     }
 
