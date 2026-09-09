@@ -149,13 +149,13 @@ def generate_article_with_gemini(keyword_info):
     """
     kw = keyword_info["keyword"]
     provided_category = keyword_info.get("category")
+    cat = provided_category or "Artificial Intelligence"
 
     tech_categories = "Artificial Intelligence, Machine Learning, Cloud Computing, Cybersecurity, Software Engineering, Hardware & Semiconductors, Quantum Computing, Web Development, Future Tech"
 
     if not GEMINI_API_KEY:
         print("[WARN] GEMINI_API_KEY not configured. Generating high-quality deterministic article.")
         slug = re.sub(r'[^a-zA-Z0-9]+', '-', kw.lower()).strip('-')
-        cat = provided_category or "Technology"
         return {
             "title": f"The Evolution of {kw}: Strategic Insights for Modern Engineering",
             "slug": slug,
@@ -199,6 +199,8 @@ Respond ONLY with valid JSON in this exact structure:
         raw_text = re.sub(r'\s*```$', '', raw_text)
 
         article = json.loads(raw_text)
+        if "category" not in article or not article["category"]:
+            article["category"] = cat
         return article
     except Exception as e:
         print(f"[ERROR] Gemini generation failed: {e}")
