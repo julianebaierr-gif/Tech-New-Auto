@@ -37,7 +37,7 @@ export default function HomePage() {
                   {leadPost.category} &bull; Editorial Lead Feature
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-black text-slate-900 group-hover:text-blue-600 transition leading-snug mb-3">
-                  <Link href={`/blog/${leadPost.slug}`}>{leadPost.title}</Link>
+                  <Link href={`/${leadPost.slug}`}>{leadPost.title}</Link>
                 </h2>
                 {(() => {
                   const content = leadPost.content || "";
@@ -93,7 +93,7 @@ export default function HomePage() {
                     {post.category}
                   </span>
                   <h3 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-blue-600 transition line-clamp-2 leading-snug mb-1">
-                    <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                    <Link href={`/${post.slug}`}>{post.title}</Link>
                   </h3>
                   <span className="text-[11px] text-slate-400">{post.date}</span>
                 </div>
@@ -126,7 +126,7 @@ export default function HomePage() {
                   {post.category}
                 </span>
                 <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition line-clamp-2 leading-snug mb-2">
-                  <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                  <Link href={`/${post.slug}`}>{post.title}</Link>
                 </h3>
                 <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4 flex-1">
                   {post.excerpt}
@@ -164,7 +164,7 @@ export default function HomePage() {
                   {post.category}
                 </span>
                 <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition line-clamp-2 leading-snug mb-2">
-                  <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                  <Link href={`/${post.slug}`}>{post.title}</Link>
                 </h3>
                 <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4 flex-1">
                   {post.excerpt}
@@ -202,7 +202,7 @@ export default function HomePage() {
                   {post.category}
                 </span>
                 <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition line-clamp-2 leading-snug mb-2">
-                  <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                  <Link href={`/${post.slug}`}>{post.title}</Link>
                 </h3>
                 <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4 flex-1">
                   {post.excerpt}

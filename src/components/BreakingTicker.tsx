@@ -17,7 +17,7 @@ export default function BreakingTicker() {
             {[...posts, ...posts].map((post, idx) => (
               <Link
                 key={`${post.slug}-${idx}`}
-                href={`/blog/${post.slug}`}
+                href={`/${post.slug}`}
                 className="hover:text-blue-600 transition inline-flex items-center gap-2 font-medium shrink-0"
               >
                 <span className="text-blue-500 font-bold text-sm">&bull;</span>
