@@ -39,6 +39,7 @@ export default function Footer() {
             Editorial & Organization
           </h4>
           <ul className="space-y-2 text-xs">
+            <li><Link href="/authors" className="hover:text-blue-400 transition">Our Authors & Masthead</Link></li>
             <li><Link href="/about" className="hover:text-blue-400 transition">About Our Journal</Link></li>
             <li><Link href="/contact" className="hover:text-blue-400 transition">Contact Newsroom</Link></li>
           </ul>

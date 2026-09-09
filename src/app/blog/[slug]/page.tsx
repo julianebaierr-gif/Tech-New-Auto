@@ -66,17 +66,20 @@ export default async function BlogPostPage({ params }: Props) {
         </p>
 
         <div className="flex items-center justify-between border-y border-slate-200 py-3.5 text-xs">
-          <div className="flex items-center gap-3">
+          <Link
+            href={`/author/${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+            className="flex items-center gap-3 group"
+          >
             <img
               src={post.author.avatar}
               alt={post.author.name}
-              className="h-10 w-10 rounded-full border border-slate-300 object-cover"
+              className="h-10 w-10 rounded-full border border-slate-300 object-cover group-hover:ring-2 group-hover:ring-blue-500 transition"
             />
             <div>
-              <p className="font-bold text-slate-900">{post.author.name}</p>
+              <p className="font-bold text-slate-900 group-hover:text-blue-600 transition">{post.author.name}</p>
               <p className="text-slate-500 text-[11px]">{post.author.role}</p>
             </div>
-          </div>
+          </Link>
         </div>
       </header>
 
@@ -101,19 +104,33 @@ export default async function BlogPostPage({ params }: Props) {
       </div>
 
       {/* Author Bio Box */}
-      <div className="mt-10 p-6 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-4">
-        <img
-          src={post.author.avatar}
-          alt={post.author.name}
-          className="h-14 w-14 rounded-xl object-cover shrink-0 border border-slate-300"
-        />
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h3 className="font-bold text-slate-900 text-sm">{post.author.name}</h3>
-            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 text-blue-700">Verified Author</span>
+      <div className="mt-10 p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start gap-4 group">
+        <Link href={`/author/${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="shrink-0">
+          <img
+            src={post.author.avatar}
+            alt={post.author.name}
+            className="h-16 w-16 rounded-xl object-cover border border-slate-300 group-hover:ring-2 group-hover:ring-blue-500 transition"
+          />
+        </Link>
+        <div className="space-y-1.5 flex-1">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <h3 className="font-bold text-slate-900 text-sm hover:text-blue-600 transition">
+                <Link href={`/author/${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}>
+                  {post.author.name}
+                </Link>
+              </h3>
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 text-blue-700">Verified Author</span>
+            </div>
+            <Link
+              href={`/author/${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+              className="text-xs font-bold text-blue-600 hover:text-blue-700 transition hidden sm:inline"
+            >
+              All Articles &rarr;
+            </Link>
           </div>
           <p className="text-xs text-blue-600 font-semibold">{post.author.role}</p>
-          <p className="text-xs text-slate-600 leading-relaxed pt-1">
+          <p className="text-xs text-slate-600 leading-relaxed">
             {post.author.bio || "Engineering journalist and technology specialist covering modern computing paradigms, semiconductors, and architectural design."}
           </p>
         </div>

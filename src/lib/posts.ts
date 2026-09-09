@@ -69,10 +69,58 @@ export function getPostBySlug(slug: string): Post | null {
   return posts.find((p) => p.slug === slug) || null;
 }
 
+export interface Author {
+  slug: string;
+  name: string;
+  avatar: string;
+  role: string;
+  bio: string;
+  twitter?: string;
+  github?: string;
+}
+
+export const AUTHORS: Author[] = [
+  {
+    slug: 'kaelen-vance',
+    name: 'Kaelen Vance',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+    role: 'Lead Systems Architect & Contributing Tech Editor',
+    bio: 'Former kernel engineer and distributed systems researcher writing on microarchitectures, cloud infrastructure, and intelligent automation.',
+    twitter: 'https://twitter.com',
+    github: 'https://github.com',
+  },
+  {
+    slug: 'soraya-lindqvist',
+    name: 'Soraya Lindqvist',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80',
+    role: 'Principal AI & Silicon Research Analyst',
+    bio: 'Hardware benchmark specialist and AI infrastructure journalist tracking frontier models, neuromorphic semiconductors, and quantum engineering.',
+    twitter: 'https://twitter.com',
+    github: 'https://github.com',
+  },
+];
+
+export function getAuthors(): Author[] {
+  return AUTHORS;
+}
+
+export function getAuthorBySlug(slug: string): Author | null {
+  return AUTHORS.find((a) => a.slug === slug || a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === slug) || null;
+}
+
+export function getPostsByAuthor(authorNameOrSlug: string): Post[] {
+  const posts = getAllPosts();
+  return posts.filter((p) => {
+    const slugified = p.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    return slugified === authorNameOrSlug || p.author.name.toLowerCase() === authorNameOrSlug.toLowerCase();
+  });
+}
+
 export function getPostsByCategory(categorySlug: string): Post[] {
   const posts = getAllPosts();
   return posts.filter((p) => {
-    const slugified = p.category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    return slugified === categorySlug || p.category.toLowerCase() === categorySlug.toLowerCase();
+    const pSlug = p.category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    return pSlug === categorySlug || p.category.toLowerCase().includes(categorySlug.replace(/-/g, ' '));
   });
 }
+
