@@ -26,14 +26,22 @@ def fetch_keyword_from_sheet():
     User only needs to add raw keywords in Column A.
     The script automatically determines if it's already published on the site.
     """
-    existing_posts = []
+    # Collect all already covered keywords and slugs from published posts
+    used_keywords = set()
+    used_slugs = set()
     if os.path.exists(POSTS_DIR):
         for f in os.listdir(POSTS_DIR):
             if f.endswith(".json"):
+                used_slugs.add(f.replace(".json", "").lower())
                 try:
                     with open(os.path.join(POSTS_DIR, f), "r", encoding="utf-8") as post_file:
                         data = json.load(post_file)
-                        existing_posts.append(data.get("title", "").lower())
+                        if data.get("target_keyword"):
+                            used_keywords.add(data["target_keyword"].strip().lower())
+                        if data.get("title"):
+                            used_keywords.add(data["title"].strip().lower())
+                        for tag in data.get("tags", []):
+                            used_keywords.add(tag.strip().lower())
                 except:
                     pass
 
@@ -95,9 +103,16 @@ def fetch_keyword_from_sheet():
                     candidate_keyword = clean_kw
                     candidate_slug = re.sub(r'[^a-zA-Z0-9]+', '-', candidate_keyword.lower()).strip('-')
 
-                    # Check if already published on site
-                    if os.path.exists(os.path.join(POSTS_DIR, f"{candidate_slug}.json")):
-                        print(f"[SKIP] Keyword '{candidate_keyword}' already published.")
+                    # Check if already published on site (match by keyword, slug, or title)
+                    norm_candidate = candidate_keyword.lower()
+                    already_covered = (
+                        norm_candidate in used_keywords or
+                        candidate_slug in used_slugs or
+                        any(norm_candidate in uk for uk in used_keywords)
+                    )
+
+                    if already_covered:
+                        print(f"[SKIP] Keyword '{candidate_keyword}' already published on site.")
                         continue
 
                     print(f"[FOUND] Picked verified keyword from sheet: '{candidate_keyword}'")
@@ -501,6 +516,7 @@ def main():
 
     post_record = {
         "title": clean_title(article_data["title"]),
+        "target_keyword": keyword_data["keyword"],
         "excerpt": clean_excerpt(article_data["excerpt"]),
         "coverImage": cover_image,
         "coverImageAlt": cover_alt,
