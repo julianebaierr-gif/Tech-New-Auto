@@ -206,8 +206,15 @@ Respond ONLY with valid JSON in this exact structure:
   "content": "Rich HTML content using <h2>, <h3>, <p>, <ul>, <li>, <blockquote>, <strong> tags without any em-dashes or years. Minimum 450 words of deep technical insights."
 }}
 """
-        # Robust retry with backoff for temporary 503 spikes, across supported models
-        models_to_try = ["gemini-3.6-flash", "gemini-2.5-pro", "gemini-2.5-flash-lite"]
+        # Prioritize top frontier models first (Gemini 3.8 Flash -> 3.7 Flash -> 3.6 Flash -> 2.5 Pro)
+        models_to_try = [
+            "gemini-3.8-flash",
+            "gemini-3.7-flash",
+            "gemini-3.6-flash",
+            "gemini-2.5-pro",
+            "gemini-2.5-flash",
+            "gemini-2.5-flash-lite"
+        ]
         response = None
 
         for model_id in models_to_try:
