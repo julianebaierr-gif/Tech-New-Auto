@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAllPosts, getPostsByCategory } from "@/lib/posts";
-import CategoryQuickBar from "@/components/CategoryQuickBar";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -30,8 +29,6 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <div className="space-y-8">
-      <CategoryQuickBar />
-
       <div className="section-line">
         <span className="section-tag-box">{categoryTitle}</span>
       </div>

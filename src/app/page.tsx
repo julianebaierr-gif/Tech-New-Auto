@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
-import CategoryQuickBar from "@/components/CategoryQuickBar";
 
 export default function HomePage() {
   const posts = getAllPosts();
@@ -15,7 +14,6 @@ export default function HomePage() {
 
   return (
     <div className="space-y-12">
-      <CategoryQuickBar />
 
       {/* 1. LATEST STORIES (Pattern A: Big Lead Feature + Side Stories) */}
       <section>
