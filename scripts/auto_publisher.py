@@ -59,9 +59,15 @@ def fetch_keyword_from_sheet():
                     if row_idx == 0 and raw_candidate.lower() in ["keyword", "keywords", "topic", "topics"]:
                         continue
 
-                    # Strict check: Must not contain any HTML, script, doctype, curly braces, or code fragments
-                    if any(bad in raw_candidate.lower() for bad in ["<", ">", "doctype", "script", "ppconfig", "window[", "{", "}", "nonce", "http", "var ", "const "]):
-                        print(f"[REJECT CODE] Ignored non-keyword code string: '{raw_candidate[:40]}'")
+                    # Strict check: Must not contain any HTML, script, doctype, curly braces, code tokens or minified JS
+                    code_indicators = ["<", ">", "doctype", "script", "ppconfig", "window", "{", "}", "nonce", "http", "var ", "const ", "let ", "function", "return", "typeof", "null", "undefined", "(", ")", ";", "="]
+                    if any(bad in raw_candidate.lower() for bad in code_indicators):
+                        print(f"[REJECT CODE] Ignored code string: '{raw_candidate[:40]}'")
+                        continue
+
+                    # Must look like a real keyword/topic (has letters and words, not single-word obfuscated identifiers like qObjectis)
+                    if bool(re.search(r'^[a-z]+[A-Z][a-zA-Z0-9]*$', raw_candidate)) or raw_candidate.startswith("qObject"):
+                        print(f"[REJECT CODE] Ignored obfuscated JavaScript variable: '{raw_candidate[:40]}'")
                         continue
 
                     clean_kw = re.sub(r'[^a-zA-Z0-9\s\-]+', '', raw_candidate).strip()
@@ -236,13 +242,14 @@ def generate_article_with_gemini(keyword_info, existing_titles=None):
     from google import genai
     client = genai.Client(api_key=GEMINI_API_KEY)
 
+    # Official supported Gemini models with resilient fallback
     models_to_try = [
-        "gemini-2.5-flash",
-        "gemini-3.6-flash",
-        "gemini-3.7-flash",
-        "gemini-3.8-flash",
+        "gemini-2.0-flash",
+        "gemini-2.0-flash-lite",
         "gemini-2.5-pro",
-        "gemini-2.5-flash-lite"
+        "gemini-3-flash-preview",
+        "gemini-2.5-flash",
+        "gemini-3-pro-preview"
     ]
 
     # --- PHASE 1: Generate Outline, Semantic Keywords & Visual Concept ---
@@ -272,16 +279,27 @@ Respond ONLY with valid JSON:
 """
     outline_data = None
     for model_id in models_to_try:
-        try:
-            res = client.models.generate_content(model=model_id, contents=outline_prompt)
-            clean_res = re.sub(r'^```json\s*', '', res.text.strip())
-            clean_res = re.sub(r'\s*```$', '', clean_res)
-            outline_data = json.loads(clean_res)
-            print(f"[INFO] Phase 1 Outline & Semantic Blueprint generated successfully with: {model_id}")
+        success = False
+        for attempt in range(3):
+            try:
+                res = client.models.generate_content(model=model_id, contents=outline_prompt)
+                clean_res = re.sub(r'^```json\s*', '', res.text.strip())
+                clean_res = re.sub(r'\s*```$', '', clean_res)
+                outline_data = json.loads(clean_res)
+                print(f"[INFO] Phase 1 Outline & Semantic Blueprint generated successfully with: {model_id}")
+                success = True
+                break
+            except Exception as e:
+                err_msg = str(e)
+                if ("503" in err_msg or "UNAVAILABLE" in err_msg) and attempt < 2:
+                    wait_time = (attempt + 1) * 3
+                    print(f"[RETRY] Model {model_id} hit 503 UNAVAILABLE. Retrying in {wait_time}s (attempt {attempt + 1}/3)...")
+                    time.sleep(wait_time)
+                    continue
+                print(f"[DEBUG] Phase 1 on {model_id} failed: {err_msg[:100]}. Switching to next model...")
+                break
+        if success:
             break
-        except Exception as e:
-            print(f"[DEBUG] Phase 1 on {model_id} failed: {str(e)[:100]}. Switching to next model...")
-            continue
 
     if not outline_data:
         raise Exception("Could not generate outline from Gemini API.")
@@ -343,16 +361,27 @@ Respond ONLY with valid JSON:
 """
     article_data = None
     for model_id in models_to_try:
-        try:
-            res = client.models.generate_content(model=model_id, contents=write_prompt)
-            clean_res = re.sub(r'^```json\s*', '', res.text.strip())
-            clean_res = re.sub(r'\s*```$', '', clean_res)
-            article_data = json.loads(clean_res)
-            print(f"[INFO] Phase 2 Full Article (1000+ words + FAQs) generated successfully with: {model_id}")
+        success = False
+        for attempt in range(3):
+            try:
+                res = client.models.generate_content(model=model_id, contents=write_prompt)
+                clean_res = re.sub(r'^```json\s*', '', res.text.strip())
+                clean_res = re.sub(r'\s*```$', '', clean_res)
+                article_data = json.loads(clean_res)
+                print(f"[INFO] Phase 2 Full Article (1000+ words + FAQs) generated successfully with: {model_id}")
+                success = True
+                break
+            except Exception as e:
+                err_msg = str(e)
+                if ("503" in err_msg or "UNAVAILABLE" in err_msg) and attempt < 2:
+                    wait_time = (attempt + 1) * 3
+                    print(f"[RETRY] Model {model_id} hit 503 UNAVAILABLE during Phase 2. Retrying in {wait_time}s (attempt {attempt + 1}/3)...")
+                    time.sleep(wait_time)
+                    continue
+                print(f"[DEBUG] Phase 2 on {model_id} failed: {err_msg[:100]}. Switching to next model...")
+                break
+        if success:
             break
-        except Exception as e:
-            print(f"[DEBUG] Phase 2 on {model_id} failed: {str(e)[:100]}. Switching to next model...")
-            continue
 
     if not article_data:
         raise Exception("Could not generate complete article from Gemini API.")
