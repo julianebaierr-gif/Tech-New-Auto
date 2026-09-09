@@ -33,3 +33,22 @@ body {
   border-bottom: 2px solid #2563eb;
   margin-bottom: 1.5rem;
 }
+
+@keyframes tickerMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-ticker {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: tickerMarquee 40s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
