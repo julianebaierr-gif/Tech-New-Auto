@@ -61,7 +61,7 @@ export default function BlogListPage() {
               <div className="flex items-center justify-between pt-4 border-t border-slate-100 text-xs">
                 <span className="text-slate-700 font-semibold">{post.author.name}</span>
                 <Link
-                  href={`/blog/${post.slug}`}
+                  href={`/${post.slug}`}
                   className="text-blue-600 font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1"
                 >
                   Full Story <ArrowRight className="h-3 w-3" />

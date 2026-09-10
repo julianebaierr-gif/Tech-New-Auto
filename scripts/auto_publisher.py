@@ -501,7 +501,8 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
    - Complete the title into a concise, professional, and SEO-friendly headline.
    - Understand the article's topic, audience, and main focus, then craft the most natural, engaging, and relevant ending.
    - DO NOT force fixed phrases (like "for Modern Systems" or "Guide and Analysis").
-   - Strictly between 50 and 55 characters in length. Natural, human-written, and engaging.
+   - Strictly between 50 and 65 characters in length (optimal SEO headline range, never truncating mid-thought).
+   - NEVER cut words in half. The headline must read like a complete, natural sentence or title.
    - NEVER include any years (such as 2025, 2026, etc.). Evergreen content only.
 
 4. META DESCRIPTION (EXCERPT):
@@ -609,19 +610,14 @@ def main():
 
     def clean_title(title):
         cleaned = clean_dashes(remove_years(title)).strip()
-        # If Gemini generated slightly over 55, trim cleanly at word boundary
-        if len(cleaned) > 55:
-            words = cleaned.split()
-            buf = ""
-            for w in words:
-                if len(buf + " " + w if buf else w) <= 55:
-                    buf = buf + " " + w if buf else w
-                else:
-                    break
-            if len(buf) >= 45:
-                cleaned = buf
+        # Google search title optimal limit is ~65 chars.
+        # If Gemini generated over 68 characters, cleanly trim at the last word boundary before 65
+        if len(cleaned) > 68:
+            words = cleaned[:65].split()
+            if len(words) > 1:
+                cleaned = ' '.join(words[:-1]).rstrip('.,;:- ')
             else:
-                cleaned = cleaned[:55].rstrip('.,;:- ')
+                cleaned = cleaned[:65].rstrip('.,;:- ')
         return cleaned
 
     def clean_excerpt(text):
