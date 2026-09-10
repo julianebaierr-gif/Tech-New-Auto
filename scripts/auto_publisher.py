@@ -304,19 +304,39 @@ def generate_article_with_gemini(keyword_info, existing_titles=None):
         "gemma-4-26b-a4b-it"
     ]
 
+    # Detect if the keyword is a numbered listicle (e.g., "5 Best AI Tools", "10 Tips for SEO", "12 Local SEO Strategies")
+    import re
+    num_match = re.search(r'\b(\d+)\b', kw)
+    list_count = int(num_match.group(1)) if num_match else 0
+    is_listicle = list_count >= 2
+
+    if is_listicle:
+        outline_structure_rule = f"""
+CRITICAL LISTICLE REQUIREMENTS FOR "{kw}":
+- The keyword specifies a list of {list_count} items.
+- You MUST create an outline with EXACTLY {list_count} numbered points (1 to {list_count}).
+- Structure format:
+  Use an overarching <h2> for the list (or intro), and each of the {list_count} items MUST be an individual point (e.g. "1. Tool Name / Strategy", "2. Tool Name / Strategy", ..., "{list_count}. Tool Name / Strategy").
+- DO NOT create unnecessary or empty <h4> headings under these {list_count} items. Keep them as distinct, high-value numbered sections with deep content paragraphs directly under each item.
+"""
+    else:
+        outline_structure_rule = """
+STANDARD TECHNICAL ARCHITECTURE REQUIREMENTS:
+- Create a clean heading outline with natural H2, H3, and H4 sections specifically tailored to the topic.
+- NEVER use hierarchical prefix numbers like "1.", "1.1", "2.", "2.1" in H2 or H3 titles.
+- Headings must be clean, natural, and editorial (e.g., "Foundations of Modern Architecture", "The Psychology of Visual Perception").
+"""
+
     # --- PHASE 1: Generate Outline, Semantic Keywords & Visual Concept ---
     outline_prompt = f"""
 You are an expert SEO strategist and Chief Technology Architect.
 Generate an extensive, deep architectural outline and semantic keyword blueprint for an authoritative technical guide on: "{kw}".
 
+{outline_structure_rule}
+
 Requirements:
-1. Create a clean heading outline with H2, H3, and H4 sections specifically tailored to "{kw}".
-2. STRICT NUMBERING RULES FOR HEADINGS:
-   - NEVER use hierarchical prefix numbers like "1.", "1.1", "2.", "2.1" in H2 or H3 titles.
-   - Headings must be clean, natural, and editorial (e.g., "Foundations of Data Visualization", "The Psychology of Visual Perception").
-   - ONLY if the topic specifically demands a numbered list (e.g. "5 Key Principles", "7 Best Practices"), you may use simple numbers ("1. Principle Name", "2. Principle Name") in H3 directly under that H2. In that case, DO NOT create H4 under those list items.
-3. Identify at least 30-50 high-relevance semantic entities, technical jargon, LSI keywords, and related concepts that Google's Knowledge Graph associates with "{kw}".
-4. Provide a 2-3 word visual photo subject query for Unsplash that best represents "{kw}" (e.g. for "Renewable Energy" -> "solar wind turbine", for "Electric Vehicles" -> "ev charging car", etc.).
+1. Identify at least 30-50 high-relevance semantic entities, technical jargon, LSI keywords, and related concepts that Google's Knowledge Graph associates with "{kw}".
+2. Provide a 2-3 word visual photo subject query for Unsplash that best represents "{kw}" (e.g. for "Renewable Energy" -> "solar wind turbine", for "Electric Vehicles" -> "ev charging car", etc.).
 
 Respond ONLY with valid JSON:
 {{
@@ -325,9 +345,9 @@ Respond ONLY with valid JSON:
   "semantic_keywords": ["keyword1", "keyword2", "keyword3", "etc..."],
   "outline": [
     {{
-      "h2": "Clean H2 section title without prefix numbers",
+      "h2": "Section or List Overview Title",
       "subsections": [
-        {{"h3": "Clean H3 title without prefix numbers", "h4": ["Granular H4 title 1", "Granular H4 title 2"]}}
+        {{"h3": "Item or Subsection Title", "h4": []}}
       ]
     }}
   ]
@@ -370,6 +390,29 @@ Respond ONLY with valid JSON:
     visual_subject = outline_data.get("visual_subject") or kw
 
     # --- PHASE 2: Write Comprehensive 1000+ Words Content & Google FAQs ---
+    if is_listicle:
+        write_structure_rule = f"""
+SPECIAL LISTICLE NUMBERING AND STRUCTURE RULES (EXACTLY {list_count} POINTS):
+- The article is a curated listicle of {list_count} items for: "{kw}".
+- You MUST write EXACTLY {list_count} individual points numbered 1 to {list_count} (e.g. <h3>1. Name of Tool or Tip</h3>, <h3>2. Name of Tool or Tip</h3>, ..., <h3>{list_count}. Name of Tool or Tip</h3>).
+- Each numbered item MUST be an <h3> tag followed by a thorough, in-depth evaluation and breakdown (<p>...</p> paragraphs, features, pros, use cases).
+- DO NOT create any <h4> headings under these {list_count} points. Keep the structure clean and readable just like top tech publication reviews.
+- Include a brief introductory section before the list and a concise summary/verdict at the end.
+"""
+    else:
+        write_structure_rule = """
+STANDARD TECHNICAL ARCHITECTURE RULES:
+1. CONTENT PARAGRAPH UNDER EVERY HEADING LEVEL (NO EMPTY STACKED HEADINGS):
+   - Every <h2> MUST be immediately followed by an introductory and contextual paragraph (<p>...</p>) BEFORE opening an <h3>.
+   - Every <h3> MUST be followed by its own detailed conceptual paragraph (<p>...</p>) BEFORE opening an <h4>.
+   - Every <h4> MUST have its own detailed implementation paragraph (<p>...</p>).
+   - NEVER place an <h3> directly below an <h2> without explanatory text in between!
+
+2. NO HIERARCHICAL PREFIX NUMBERING:
+   - DO NOT write "1.", "1.1", "2.1", "3.2" anywhere in <h2>, <h3>, or <h4>.
+   - All headings must be clean, natural, and editorial (e.g. "Foundations of Modern Architecture", "The Psychology of Visual Perception").
+"""
+
     write_prompt = f"""
 You are a Principal Software Engineer and elite tech journalist writing for TechPulse Magazine.
 Write a comprehensive, professional, 1000+ WORD deeply technical, and SEO-optimized article on: "{kw}".
@@ -382,23 +425,7 @@ SEMANTIC ENTITIES & LSI TOPICS TO NATURALLY INTEGRATE (for Google 2026 E-E-A-T &
 {', '.join(semantic_kw_list[:40])}
 
 CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
-1. CONTENT PARAGRAPH UNDER EVERY HEADING LEVEL (NO EMPTY STACKED HEADINGS):
-   - Every <h2> MUST be immediately followed by an introductory and contextual paragraph (<p>...</p>) BEFORE opening an <h3>.
-   - Every <h3> MUST be followed by its own detailed conceptual paragraph (<p>...</p>) BEFORE opening an <h4>.
-   - Every <h4> MUST have its own detailed implementation paragraph (<p>...</p>).
-   - NEVER place an <h3> directly below an <h2> without explanatory text in between!
-   - Visual flow must look like:
-     <h2>Section Title</h2>
-     <p>Detailed introductory text explaining the overarching concept...</p>
-     <h3>Subsection Title</h3>
-     <p>Detailed technical context explaining the mechanism...</p>
-     <h4>Granular Detail Title</h4>
-     <p>Deep implementation walkthrough and code/analysis...</p>
-
-2. NO HIERARCHICAL PREFIX NUMBERING:
-   - DO NOT write "1.", "1.1", "2.1", "3.2" anywhere in <h2>, <h3>, or <h4>.
-   - All headings must be clean, natural, and editorial (e.g. "Foundations of Data Visualization", "The Psychology of Visual Perception").
-   - EXCEPTION: Only if the article explicitly presents a numbered sequence (e.g., "5 Key Pillars" or "7 Architectural Rules"), you may use simple numbers ("1. Name", "2. Name") on the <h3> tags directly under that section. When doing so, DO NOT create <h4> tags under those numbered items.
+{write_structure_rule}
 
 3. CONTENT LENGTH & QUALITY:
    - Minimum 1000 words. Deep technical, architectural, and production-ready analysis. Never write shallow summaries.
@@ -582,8 +609,14 @@ def main():
         if not isinstance(html_text, str):
             return html_text
         text = clean_dashes(remove_years(html_text))
-        # Strip hierarchical numbering like "1. ", "1.1 ", "2.1 " from <h2> and <h3>
-        text = re.sub(r'(<h[23][^>]*>)\s*(\d+\.\d+\.?|\d+\.)\s*', r'\1', text, flags=re.IGNORECASE)
+        num_match = re.search(r'\b(\d+)\b', kw)
+        kw_list_count = int(num_match.group(1)) if num_match else 0
+        if kw_list_count >= 2:
+            # For listicles, strip hierarchical decimals like "1.1 ", "2.1 " but keep "1. ", "2. "
+            text = re.sub(r'(<h[234][^>]*>)\s*\d+\.\d+\.?\s*', r'\1', text, flags=re.IGNORECASE)
+        else:
+            # For standard articles, strip all numerical prefixes like "1. ", "1.1 ", "2.1 " from headings
+            text = re.sub(r'(<h[234][^>]*>)\s*(\d+\.\d+\.?|\d+\.)\s*', r'\1', text, flags=re.IGNORECASE)
         return text
 
     post_record = {
