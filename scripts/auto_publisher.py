@@ -38,10 +38,6 @@ def fetch_keyword_from_sheet():
                         data = json.load(post_file)
                         if data.get("target_keyword"):
                             used_keywords.add(data["target_keyword"].strip().lower())
-                        if data.get("title"):
-                            used_keywords.add(data["title"].strip().lower())
-                        for tag in data.get("tags", []):
-                            used_keywords.add(tag.strip().lower())
                 except:
                     pass
 
@@ -100,26 +96,31 @@ def fetch_keyword_from_sheet():
                     if len(clean_kw) < 3:
                         continue
 
-                    candidate_keyword = clean_kw
-                    candidate_slug = re.sub(r'[^a-zA-Z0-9]+', '-', candidate_keyword.lower()).strip('-')
+                    # Extract Sheet Column Data if available
+                    # Header format: ['Keywords', 'Category', 'Tags', 'Status', 'Post Url', 'Post Date / Tmie']
+                    cat_val = row[1].strip() if len(row) > 1 else None
+                    tags_val = [t.strip() for t in row[2].split(",") if t.strip()] if len(row) > 2 else []
+                    status_val = row[3].strip().lower() if len(row) > 3 else ""
+                    post_url_val = row[4].strip() if len(row) > 4 else ""
 
-                    # Check if already published on site (match by keyword, slug, or title)
-                    norm_candidate = candidate_keyword.lower()
-                    already_covered = (
-                        norm_candidate in used_keywords or
-                        candidate_slug in used_slugs or
-                        any(norm_candidate in uk for uk in used_keywords)
-                    )
-
-                    if already_covered:
-                        print(f"[SKIP] Keyword '{candidate_keyword}' already published on site.")
+                    # 1. If explicitly marked "Published" in the sheet or already has a live URL, skip it
+                    if status_val == "published" or post_url_val:
+                        print(f"[SKIP] Row {row_idx + 1} '{clean_kw}' is already marked as Published / has URL in Google Sheet.")
                         continue
 
-                    print(f"[FOUND] Picked verified keyword from sheet: '{candidate_keyword}'")
+                    # 2. Check if already strictly published on site by exact slug or exact target_keyword
+                    candidate_slug = re.sub(r'[^a-zA-Z0-9]+', '-', clean_kw.lower()).strip('-')
+                    norm_candidate = clean_kw.lower()
+                    if candidate_slug in used_slugs or norm_candidate in used_keywords:
+                        print(f"[SKIP] Row {row_idx + 1} '{clean_kw}' already exists on site.")
+                        continue
+
+                    print(f"[FOUND] Picked next pending keyword from Google Sheet (Row {row_idx + 1}): '{clean_kw}'")
                     return {
-                        "keyword": candidate_keyword,
-                        "category": None,
-                        "tags": []
+                        "keyword": clean_kw,
+                        "category": cat_val or None,
+                        "tags": tags_val,
+                        "_sheet_row_idx": row_idx + 1
                     }
         except Exception as e:
             print(f"[WARN] Error reading sheet: {e}")
@@ -140,12 +141,17 @@ def fetch_keyword_from_sheet():
             records = sheet.get_all_records()
             for idx, row in enumerate(records, start=2):
                 status = str(row.get("Status", "")).strip().lower()
-                if status in ["pending", "new", "queued", ""]:
-                    kw = str(row.get("Keyword", "")).strip()
+                post_url_val = str(row.get("Post Url", "")).strip() or str(row.get("url", "")).strip()
+                if status not in ["published"] and not post_url_val:
+                    kw = str(row.get("Keywords", "")).strip() or str(row.get("Keyword", "")).strip()
                     if kw:
+                        candidate_slug = re.sub(r'[^a-zA-Z0-9]+', '-', kw.lower()).strip('-')
+                        norm_candidate = kw.lower()
+                        if candidate_slug in used_slugs or norm_candidate in used_keywords:
+                            continue
+
                         # Mark as Published in sheet
                         try:
-                            # Update Status column (assuming col 3 or named Status)
                             headers = sheet.row_values(1)
                             if "Status" in headers:
                                 col_idx = headers.index("Status") + 1
