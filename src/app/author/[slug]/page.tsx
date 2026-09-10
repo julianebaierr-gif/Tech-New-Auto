@@ -104,7 +104,7 @@ export default async function AuthorProfilePage({ params }: Props) {
               {author.name}
             </h1>
             <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-blue-50 text-blue-700 border border-blue-200">
-              Verified Journalist
+              Editorial Staff
             </span>
           </div>
 

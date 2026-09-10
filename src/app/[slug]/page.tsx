@@ -267,7 +267,7 @@ export default async function BlogPostPage({ params }: Props) {
                   {post.author.name}
                 </Link>
               </h3>
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 text-blue-700">Verified Author</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 text-blue-700">Editorial Staff</span>
             </div>
             <Link
               href={`/author/${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}

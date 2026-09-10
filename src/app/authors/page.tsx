@@ -46,8 +46,8 @@ export default function AuthorsIndexPage() {
                       <h2 className="text-xl sm:text-2xl font-black text-slate-900 group-hover:text-blue-600 transition">
                         <Link href={`/author/${author.slug}`}>{author.name}</Link>
                       </h2>
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        <CheckCircle2 className="h-3 w-3" /> Verified Author
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+                        Editorial Staff
                       </span>
                     </div>
                     <p className="text-xs font-semibold text-blue-600">{author.role}</p>
@@ -56,8 +56,8 @@ export default function AuthorsIndexPage() {
                         <BookOpen className="h-3.5 w-3.5 text-blue-600" /> {authorPosts.length} Articles
                       </span>
                       <span>&bull;</span>
-                      <span className="inline-flex items-center gap-1 font-medium">
-                        <Award className="h-3.5 w-3.5 text-amber-600" /> Peer Reviewed
+                      <span className="inline-flex items-center gap-1 font-medium text-slate-600">
+                        Technical Editorial
                       </span>
                     </div>
                   </div>

@@ -19,7 +19,7 @@ export default function PrivacyPolicyPage() {
       <section className="space-y-4">
         <h2 className="text-2xl font-bold text-slate-900 tracking-tight">1. Commitment to Reader Privacy</h2>
         <p>
-          At <strong>TechPulse</strong> (accessible via our primary domain and network mirrors), we are committed to maintaining the highest degree of user privacy, digital transparency, and ethical publishing. As an independent technical intelligence publication, we believe that tracking readers across the web is antithetical to objective journalism.
+          At <strong>TechPulse</strong>, we are committed to maintaining the highest degree of user privacy, digital transparency, and ethical publishing. As an independent technical intelligence publication, we believe that tracking readers across the web is antithetical to objective journalism.
         </p>
         <p>
           This Privacy Policy outlines the categories of information collected, processed, and maintained when you browse our articles, interact with our interactive diagrams, or communicate with our newsroom. We comply strictly with the European Union General Data Protection Regulation (<strong>GDPR</strong>), the California Consumer Privacy Act (<strong>CCPA/CPRA</strong>), and global privacy benchmarks.
