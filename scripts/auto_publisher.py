@@ -402,13 +402,15 @@ Generate an extensive, engaging, and high-value architectural outline and semant
 CORE REQUIREMENTS:
 1. Identify 25-40 high-relevance semantic entities, technical jargon, LSI keywords, and related concepts that Google's Knowledge Graph directly associates with "{kw}". Avoid generic fluff words.
 2. Provide a 2-3 word visual photo subject query for Unsplash that best represents "{kw}" (e.g. for "Renewable Energy" -> "solar wind turbine", for "Electric Vehicles" -> "ev charging car", etc.).
-3. The outline must be designed to engage human readers immediately, answering their real engineering problems rather than reciting dictionary definitions.
+3. Identify 5 to 8 real, high-intent questions that 99% of everyday people actually search on Google ("People Also Ask") for "{kw}".
+4. The outline must be designed to engage human readers immediately, answering their real engineering problems rather than reciting dictionary definitions.
 
 Respond ONLY with valid JSON:
 {{
   "category": "Most appropriate category from [{tech_categories}]",
   "visual_subject": "2-3 word visual search term for Unsplash photo",
   "semantic_keywords": ["keyword1", "keyword2", "keyword3", "etc..."],
+  "people_also_ask_questions": ["Real query 1?", "Real query 2?", "Real query 3?", "Real query 4?", "Real query 5?"],
   "outline": [
     {{
       "h2": "Natural, Topic-Specific H2 Title",
@@ -452,6 +454,7 @@ Respond ONLY with valid JSON:
 
     chosen_category = outline_data.get("category") or cat
     semantic_kw_list = outline_data.get("semantic_keywords", [])
+    paa_questions_list = outline_data.get("people_also_ask_questions", [])
     outline_json_str = json.dumps(outline_data.get("outline", []), indent=2)
     visual_subject = outline_data.get("visual_subject") or kw
 
@@ -492,6 +495,10 @@ FLEXIBLE EDITORIAL STRUCTURE & NATURAL FLOW:
     target_words = random.choice([850, 920, 980, 1050, 1120, 1180])
     read_time_calc = f"{max(5, round(target_words / 150))} min read"
 
+    paa_prompt_block = ""
+    if paa_questions_list:
+        paa_prompt_block = "\nREAL GOOGLE SEARCH QUESTIONS (PEOPLE ALSO ASK) IDENTIFIED FOR THIS TOPIC:\n" + "\n".join([f"- {q}" for q in paa_questions_list]) + "\n"
+
     write_prompt = f"""
 You are a Principal Software Engineer and elite tech journalist writing for TechPulse Magazine.
 Write a comprehensive, compelling, deeply engaging, and SEO-optimized technical article on: "{kw}".
@@ -502,7 +509,7 @@ OUTLINE TO EXPAND:
 
 SEMANTIC ENTITIES & LSI TOPICS TO NATURALLY INTEGRATE (for Google 2026 E-E-A-T & Knowledge Graph):
 {', '.join(semantic_kw_list[:40])}
-
+{paa_prompt_block}
 CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
 {write_structure_rule}
 
@@ -530,10 +537,12 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
    - Must directly mention "{kw}".
    - Strictly between 150 and 155 characters in length. Complete sentence, never truncated.
 
-5. FREQUENTLY ASKED QUESTIONS (FAQPAGE SCHEMA):
-   - Provide 3-4 short, punchy, and direct FAQs specifically about "{kw}".
-   - Each question must be clear and commonly searched.
-   - Each answer must be SHORT, direct, and concise (strictly 25-40 words or 1-2 direct sentences). Do not write long paragraphs.
+5. FREQUENTLY ASKED QUESTIONS (REAL GOOGLE 'PEOPLE ALSO ASK' / FAQPAGE SCHEMA):
+   - You MUST provide between 5 to 8 FAQs (minimum 5, maximum 8).
+   - Questions MUST be the exact high-intent questions that 99% of real people actually search on Google for "{kw}" (real Google 'People Also Ask' style).
+   - Ensure questions cover common practical doubts, beginner confusions, implementation concerns, cost/safety/troubleshooting, and comparative decisions.
+   - Each answer must be directly HELPFUL, clear, concise, and structured for Google Featured Snippets (strictly 25 to 45 words or 1 to 2 direct sentences).
+   - NEVER write generic fluff, filler, or duplicate questions. Every single FAQ must solve a real user query directly.
 
 6. NO DASHES: Do NOT use any em-dashes (— or –). Use clean commas, colons, or parentheses.
 
@@ -558,8 +567,24 @@ Respond ONLY with valid JSON:
   }},
   "faqs": [
     {{
-      "question": "Specific question about {kw}?",
-      "answer": "Detailed technical answer."
+      "question": "1st commonly searched question 99% of people ask about {kw}?",
+      "answer": "Concise direct answer (25-45 words) structured for Google rich snippets."
+    }},
+    {{
+      "question": "2nd practical user question about {kw}?",
+      "answer": "Concise direct answer (25-45 words)."
+    }},
+    {{
+      "question": "3rd real-world question about {kw}?",
+      "answer": "Concise direct answer (25-45 words)."
+    }},
+    {{
+      "question": "4th troubleshooting / cost / decision question about {kw}?",
+      "answer": "Concise direct answer (25-45 words)."
+    }},
+    {{
+      "question": "5th essential question about {kw}?",
+      "answer": "Concise direct answer (25-45 words)."
     }}
   ],
   "content": "Rich HTML content (around {target_words} words) including the Final Thoughts / Field Perspective H2 section before conclusion, containing exactly 1 natural external authoritative link."
