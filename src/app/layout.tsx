@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://techpulse-journal.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tech-new-auto.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -18,16 +18,7 @@ export const metadata: Metadata = {
     template: "%s | TechPulse",
   },
   description: "Independent tech journalism reporting on emerging AI models, software architecture, semiconductors, cybersecurity, and future computing.",
-  keywords: [
-    "Artificial Intelligence",
-    "Machine Learning",
-    "Software Architecture",
-    "Semiconductors",
-    "Cybersecurity",
-    "Cloud Computing",
-    "Quantum Computing",
-    "DevOps Automation",
-  ],
+
   authors: [
     { name: "Cora Lee", url: `${siteUrl}/author/cora-lee` },
     { name: "Kellie Anne", url: `${siteUrl}/author/kellie-anne` },

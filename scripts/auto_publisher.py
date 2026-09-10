@@ -626,18 +626,18 @@ def main():
 
     def clean_excerpt(text):
         cleaned = clean_dashes(remove_years(text)).strip()
-        if len(cleaned) > 155:
-            words = cleaned.split()
-            buf = ""
-            for w in words:
-                if len(buf + " " + w if buf else w) <= 154:
-                    buf = buf + " " + w if buf else w
-                else:
-                    break
-            cleaned = buf.rstrip('.,;:- ') + '.'
-        if len(cleaned) < 150:
-            pad = " Comprehensive engineering overview and production analysis."
-            cleaned = (cleaned.rstrip('. ') + pad)[:154].rstrip('.,;:- ') + '.'
+        # Ensure it ends with proper terminal punctuation
+        if not cleaned.endswith(('.', '!', '?')):
+            cleaned = cleaned.rstrip('.,;:- ') + '.'
+        # If over 160 characters, truncate at the last complete sentence or clean word boundary with period
+        if len(cleaned) > 160:
+            # Check if there is a sentence ending before 160
+            m = re.search(r'^(.*?[.!?])\s+[A-Z]', cleaned[:160])
+            if m and len(m.group(1)) >= 100:
+                cleaned = m.group(1)
+            else:
+                words = cleaned[:155].split()
+                cleaned = ' '.join(words[:-1]).rstrip('.,;:- ') + '.'
         return cleaned
 
     import random

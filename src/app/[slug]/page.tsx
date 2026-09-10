@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props) {
   const post = getPostBySlug(slug);
   if (!post) return { title: "Article Not Found" };
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://techpulse-journal.vercel.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tech-new-auto.vercel.app";
   const postUrl = `${siteUrl}/${post.slug}`;
   let desc = post.excerpt.trim();
   if (desc.length > 155) {
@@ -71,7 +71,7 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://techpulse-journal.vercel.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tech-new-auto.vercel.app";
   const postUrl = `${siteUrl}/${post.slug}`;
   const authorSlug = post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   const authorUrl = `${siteUrl}/author/${authorSlug}`;

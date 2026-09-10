@@ -30,7 +30,7 @@ export default function ContactPage() {
               <span className="font-bold text-slate-900 text-sm">Editorial Desk</span>
             </div>
             <p className="text-xs text-slate-500">For news scoops, product reviews &amp; press releases:</p>
-            <p className="text-xs text-blue-600 font-mono font-medium">editor@techpulse-auto.com</p>
+            <p className="text-xs text-blue-600 font-mono font-medium">newsroom@tech-new-auto.vercel.app</p>
           </div>
 
           <div className="p-6 rounded-2xl border border-slate-200 bg-white space-y-2 shadow-xs">
@@ -39,7 +39,7 @@ export default function ContactPage() {
               <span className="font-bold text-slate-900 text-sm">Corrections Desk</span>
             </div>
             <p className="text-xs text-slate-500">Notice a technical inaccuracy or outdated code block?</p>
-            <p className="text-xs text-amber-600 font-mono font-medium">corrections@techpulse-auto.com</p>
+            <p className="text-xs text-amber-600 font-mono font-medium">corrections@tech-new-auto.vercel.app</p>
           </div>
 
           <div className="p-6 rounded-2xl border border-slate-200 bg-white space-y-2 shadow-xs">

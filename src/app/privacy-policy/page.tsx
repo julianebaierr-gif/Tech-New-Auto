@@ -104,7 +104,7 @@ export default function PrivacyPolicyPage() {
         <div className="p-5 rounded-2xl bg-slate-100 border border-slate-200 text-xs sm:text-sm font-mono text-slate-800 space-y-1">
           <p><strong>TechPulse Editorial Newsroom</strong></p>
           <p>Attn: Privacy &amp; Data Governance Desk</p>
-          <p>Email: <a href="mailto:privacy@techpulse-auto.com" className="text-blue-600 underline">privacy@techpulse-auto.com</a></p>
+          <p>Email: <a href="mailto:privacy@tech-new-auto.vercel.app" className="text-blue-600 underline">privacy@tech-new-auto.vercel.app</a></p>
           <p>Official Newsroom Inquiries: <a href="/contact" className="text-blue-600 underline">tech-new-auto.vercel.app/contact</a></p>
         </div>
       </section>

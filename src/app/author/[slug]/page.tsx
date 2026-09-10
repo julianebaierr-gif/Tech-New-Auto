@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const author = getAuthorBySlug(slug);
   if (!author) return { title: "Author Not Found" };
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://techpulse-journal.vercel.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tech-new-auto.vercel.app";
   const authorUrl = `${siteUrl}/author/${author.slug}`;
 
   return {
@@ -59,7 +59,7 @@ export default async function AuthorProfilePage({ params }: Props) {
   }
 
   const posts = getPostsByAuthor(author.name);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://techpulse-journal.vercel.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tech-new-auto.vercel.app";
   const authorUrl = `${siteUrl}/author/${author.slug}`;
 
   const personSchema = {

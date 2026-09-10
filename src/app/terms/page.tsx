@@ -76,7 +76,7 @@ export default function TermsPage() {
       <section className="space-y-4 border-t border-slate-200 pt-8">
         <h2 className="text-2xl font-bold text-slate-900 tracking-tight">6. Newsroom Contact &amp; Legal Notices</h2>
         <p className="text-sm text-slate-600">
-          Formal legal notices, DMCA inquiries, or copyright dispute submissions should be directed in writing to our legal desk at <a href="mailto:legal@techpulse-auto.com" className="text-blue-600 underline">legal@techpulse-auto.com</a> or via our <a href="/contact" className="text-blue-600 underline">contact page</a>.
+          Formal legal notices, DMCA inquiries, or copyright dispute submissions should be directed in writing to our legal desk at <a href="mailto:legal@tech-new-auto.vercel.app" className="text-blue-600 underline">legal@tech-new-auto.vercel.app</a> or via our <a href="/contact" className="text-blue-600 underline">contact page</a>.
         </p>
       </section>
     </div>

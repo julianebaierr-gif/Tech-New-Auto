@@ -2,7 +2,7 @@
   "title": "Autonomous AI Agents and Multi-Agent Orchestration",
   "excerpt": "How autonomous agent swarms, deterministic verification loops, and self-evaluating prompts are redefining scalable automation across engineering teams.",
   "coverImage": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
-  "date": "2026-09-09",
+  "date": "2026-06-30",
   "category": "Artificial Intelligence",
   "author": {
     "name": "Cora Lee",
@@ -19,5 +19,5 @@
   ],
   "content": "<p>The era of static, prompt-and-response chatbots has decisively passed. In modern, the forefront of computer science belongs to <strong>Autonomous AI Agents</strong>, systems endowed with persistent memory, native tool access, and the capability to decompose ambiguous objectives into executable milestones.</p><h2>From Passive Completion to Active Orchestration</h2><p>Traditional language models excelled at producing text when prompted. However, modern autonomous agents operate in persistent feedback loops: planning, executing terminal operations, inspecting feedback, correcting runtime exceptions, and verifying results.</p><h3>Key Architectural Innovations</h3><ul><li><strong>Function Calling & MCP (Model Context Protocol):</strong> Enabling models to query local databases, invoke cloud APIs, and inspect filesystem state dynamically.</li><li><strong>Multi-Agent Consensus:</strong> Dividing responsibilities among dedicated researcher, planner, and executor agents to minimize hallucination.</li><li><strong>Self-Healing Pipelines:</strong> Detecting compilation or lint errors and patching source code in-place without human intervention.</li></ul><blockquote>'The true milestone of modern computing is not whether a model can write code, but whether it can debug, test, and deploy software autonomously.'</blockquote><h2>The Impact on Enterprise Software</h2><p>Engineering teams are shifting from manual boilerplate coding to guiding autonomous agents. As these models gain deeper reasoning and tighter integration with platforms like GitHub and cloud infrastructure, software deployment velocity is accelerating exponentially.</p>",
   "coverImageAlt": "Autonomous AI Agents Swarm Architecture and Software Automation Loop",
-  "createdAt": 1788952826000
+  "createdAt": 1782796860000
 }

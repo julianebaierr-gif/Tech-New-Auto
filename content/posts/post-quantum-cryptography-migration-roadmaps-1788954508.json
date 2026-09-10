@@ -2,7 +2,7 @@
   "title": "Post-Quantum Cryptography Migration for Modern Infra",
   "excerpt": "Strategic roadmaps and cryptographic migration best practices for securing cloud services against prospective quantum compute threats and quantum decoders.",
   "coverImage": "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80",
-  "date": "2026-09-09",
+  "date": "2026-07-02",
   "category": "Cybersecurity",
   "author": {
     "name": "Cora Lee",
@@ -18,5 +18,5 @@
   ],
   "content": "<p>Deep dive into Post-Quantum Cryptography Migration Roadmaps and how modern engineering workflows are being transformed by high-speed automation and intelligent toolchains.</p>",
   "coverImageAlt": "Post-Quantum Cryptography Migration and Quantum-Resistant Algorithms",
-  "createdAt": 1788954523000
+  "createdAt": 1782971340000
 }
