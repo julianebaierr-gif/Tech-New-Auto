@@ -28,7 +28,9 @@ import {
   Calendar,
   Layers,
   Sparkles,
-  Info
+  Info,
+  Download,
+  FileSpreadsheet
 } from 'lucide-react';
 import { Post } from '@/lib/posts';
 import { categories } from '@/lib/categories';
@@ -75,6 +77,13 @@ export default function PortalDeskClient({ initialPosts }: Props) {
   const [activeTab, setActiveTab] = useState<'posts' | 'settings'>('posts');
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [isNewPost, setIsNewPost] = useState<boolean>(false);
+
+  // Google Docs Import state
+  const [showDocsModal, setShowDocsModal] = useState(false);
+  const [docsUrlInput, setDocsUrlInput] = useState('');
+  const [docsRawTextInput, setDocsRawTextInput] = useState('');
+  const [isImportingDocs, setIsImportingDocs] = useState(false);
+  const [docsImportMode, setDocsImportMode] = useState<'url' | 'paste'>('url');
 
   // Posts state
   const [postsList, setPostsList] = useState<Post[]>(initialPosts);
@@ -172,6 +181,214 @@ export default function PortalDeskClient({ initialPosts }: Props) {
     };
     setEditingPost(newPostObj);
     setIsNewPost(true);
+  };
+
+  // Helper: Extract Doc ID from Google Docs URL
+  const extractDocId = (url: string): string => {
+    const cleanUrl = url.trim();
+    const match = cleanUrl.match(/\/d\/([a-zA-Z0-9-_]+)/);
+    if (match && match[1]) {
+      return match[1];
+    }
+    return cleanUrl;
+  };
+
+  // Helper: Parse Google Doc exported text into Post object
+  const parseDocTextToPost = (rawText: string): Post => {
+    const cleanText = rawText.replace(/^\uFEFF/, '').trim();
+    const lines = cleanText.split('\n').map((l) => l.trim()).filter(Boolean);
+
+    if (lines.length === 0) {
+      throw new Error('Document appears to be empty.');
+    }
+
+    let title = lines[0] || 'Imported Article';
+    let metaDes = '';
+    let targetKeyword = '';
+    const bodyLines: string[] = [];
+
+    // Extract title, meta description, and target keywords
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i];
+      const lower = line.toLowerCase();
+      if (lower.startsWith('meta des:') || lower.startsWith('meta description:')) {
+        metaDes = line.split(':')[1]?.trim() || '';
+      } else if (i === 1 && line.length < 80 && !metaDes && !line.includes('.')) {
+        // Second line might be target keyword or secondary tag
+        targetKeyword = line;
+      } else {
+        bodyLines.push(line);
+      }
+    }
+
+    if (!metaDes && bodyLines.length > 0) {
+      metaDes = bodyLines[0].slice(0, 155) + '...';
+    }
+
+    // Convert raw document text into clean semantic HTML with headings, lists, and paragraphs
+    const htmlParts: string[] = [];
+    let inList = false;
+
+    for (let i = 0; i < bodyLines.length; i++) {
+      const line = bodyLines[i];
+
+      // Bullet points (* or - or •)
+      if (line.startsWith('*') || line.startsWith('-') || line.startsWith('•')) {
+        if (!inList) {
+          htmlParts.push('<ul className="list-disc pl-6 space-y-1.5 my-4">');
+          inList = true;
+        }
+        const itemText = line.replace(/^[*•-]\s*/, '').trim();
+        htmlParts.push(`<li>${itemText}</li>`);
+        continue;
+      }
+
+      // Close list if currently open
+      if (inList) {
+        htmlParts.push('</ul>');
+        inList = false;
+      }
+
+      // Check for headings
+      const isHeading =
+        line.length < 85 &&
+        !line.endsWith('.') &&
+        !line.endsWith('!') &&
+        !line.endsWith(',') &&
+        !line.startsWith('http') &&
+        (i < bodyLines.length - 1 && bodyLines[i + 1].length > 40);
+
+      if (isHeading) {
+        if (
+          line.toLowerCase().includes('faqs') ||
+          line.toLowerCase().includes('frequently asked questions') ||
+          line.toLowerCase().includes('final thoughts') ||
+          line.toLowerCase().includes('conclusion')
+        ) {
+          htmlParts.push(`<h2>${line}</h2>`);
+        } else {
+          htmlParts.push(`<h3>${line}</h3>`);
+        }
+        continue;
+      }
+
+      // Links or standard paragraph
+      if (line.startsWith('http://') || line.startsWith('https://')) {
+        htmlParts.push(`<p><a href="${line}" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">${line}</a></p>`);
+      } else {
+        htmlParts.push(`<p>${line}</p>`);
+      }
+    }
+
+    if (inList) {
+      htmlParts.push('</ul>');
+    }
+
+    const htmlContent = htmlParts.join('\n');
+
+    // Generate unique slug from title
+    const slug = title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '')
+      .slice(0, 70);
+
+    // Auto calculate read time (~200 words per min)
+    const wordCount = cleanText.split(/\s+/).length;
+    const minutes = Math.max(3, Math.ceil(wordCount / 200));
+
+    // Fallback tech cover image
+    const coverImage =
+      'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80';
+
+    return {
+      slug: slug || `post-${Date.now()}`,
+      title,
+      excerpt: metaDes || title,
+      coverImage,
+      coverImageAlt: `${title} - Tech Analysis`,
+      date: new Date().toISOString().split('T')[0],
+      createdAt: Date.now(),
+      category: categories[0]?.name || 'Software Engineering',
+      author: {
+        name: 'Cora Lee',
+        avatar: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=80',
+        role: 'Lead Systems Architect & Contributing Tech Editor',
+        bio: 'Distributed systems researcher writing on microarchitectures, cloud infrastructure, and intelligent automation.',
+      },
+      readTime: `${minutes} min read`,
+      tags: targetKeyword ? [targetKeyword, 'Software Engineering', 'Technology'] : ['Software Engineering', 'Technology', 'Architecture'],
+      content: htmlContent,
+    };
+  };
+
+  // Handler: Import Google Doc
+  const handleImportGoogleDoc = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsImportingDocs(true);
+
+    try {
+      let rawContent = '';
+
+      if (docsImportMode === 'paste') {
+        if (!docsRawTextInput.trim()) {
+          throw new Error('Please paste document content.');
+        }
+        rawContent = docsRawTextInput;
+      } else {
+        if (!docsUrlInput.trim()) {
+          throw new Error('Please enter a Google Docs link.');
+        }
+
+        const docId = extractDocId(docsUrlInput);
+        if (!docId || docId.length < 10) {
+          throw new Error('Invalid Google Docs URL. Please make sure it looks like docs.google.com/document/d/...');
+        }
+
+        // Try direct fetch or cors proxy
+        let fetched = false;
+        const exportUrl = `https://docs.google.com/document/d/${docId}/export?format=txt`;
+        const proxyUrls = [
+          exportUrl,
+          `https://corsproxy.io/?${encodeURIComponent(exportUrl)}`,
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(exportUrl)}`,
+        ];
+
+        for (const url of proxyUrls) {
+          try {
+            const res = await fetch(url);
+            if (res.ok) {
+              const txt = await res.text();
+              if (txt && !txt.startsWith('<!DOCTYPE html>') && txt.length > 50) {
+                rawContent = txt;
+                fetched = true;
+                break;
+              }
+            }
+          } catch {
+            // try next proxy
+          }
+        }
+
+        if (!fetched) {
+          throw new Error(
+            'Could not auto-fetch from Google Docs export URL (Google requires the document to be "Anyone with the link can view"). You can switch to "Paste Content" tab or verify the link is public.'
+          );
+        }
+      }
+
+      const importedPost = parseDocTextToPost(rawContent);
+      setEditingPost(importedPost);
+      setIsNewPost(true);
+      setShowDocsModal(false);
+      setDocsUrlInput('');
+      setDocsRawTextInput('');
+      showNotice(`Successfully imported "${importedPost.title}"! Review & click "Save & Publish" to post it live.`, 'success');
+    } catch (err: any) {
+      showNotice(err.message || 'Failed to import document.', 'error');
+    } finally {
+      setIsImportingDocs(false);
+    }
   };
 
   // Commit changes to GitHub via REST API
@@ -522,6 +739,17 @@ export default function PortalDeskClient({ initialPosts }: Props) {
                 <Plus className="w-4 h-4 text-blue-400" />
                 <span>Write New Article</span>
               </button>
+
+              <button
+                onClick={() => {
+                  setShowDocsModal(true);
+                  setDocsImportMode('url');
+                }}
+                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-blue-300 bg-blue-950/40 border border-blue-800/40 hover:bg-blue-900/40 transition"
+              >
+                <FileSpreadsheet className="w-4 h-4 text-blue-400" />
+                <span>Import Google Doc</span>
+              </button>
             </nav>
 
             <div className="pt-4 border-t border-slate-800/80">
@@ -823,13 +1051,25 @@ export default function PortalDeskClient({ initialPosts }: Props) {
                     Total {postsList.length} articles published across all categories.
                   </p>
                 </div>
-                <button
-                  onClick={handleOpenNew}
-                  className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-blue-600/25 self-start sm:self-auto"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span>Write New Article</span>
-                </button>
+                <div className="flex items-center gap-2.5 self-start sm:self-auto">
+                  <button
+                    onClick={() => {
+                      setShowDocsModal(true);
+                      setDocsImportMode('url');
+                    }}
+                    className="px-4 py-2.5 bg-blue-950/60 hover:bg-blue-900/60 text-blue-300 border border-blue-800/60 text-xs font-bold rounded-xl transition flex items-center gap-2 shadow-xs"
+                  >
+                    <FileSpreadsheet className="w-4 h-4 text-blue-400" />
+                    <span>Import Google Doc</span>
+                  </button>
+                  <button
+                    onClick={handleOpenNew}
+                    className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-blue-600/25"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Write New Article</span>
+                  </button>
+                </div>
               </div>
 
               {/* Filters */}
@@ -1023,6 +1263,122 @@ export default function PortalDeskClient({ initialPosts }: Props) {
                   className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md shadow-blue-600/30"
                 >
                   Save Token
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Google Docs Import Modal */}
+      {showDocsModal && (
+        <div className="fixed inset-0 z-[10000] bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="w-full max-w-xl bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-5 shadow-2xl">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <FileSpreadsheet className="w-5 h-5 text-blue-400" />
+                <h3 className="font-bold text-white text-base">
+                  Import Article from Google Docs
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowDocsModal(false)}
+                className="text-slate-400 hover:text-white"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="flex items-center gap-2 p-1 bg-slate-950 rounded-xl border border-slate-800 text-xs">
+              <button
+                type="button"
+                onClick={() => setDocsImportMode('url')}
+                className={`flex-1 py-2 px-3 rounded-lg font-semibold transition ${
+                  docsImportMode === 'url'
+                    ? 'bg-blue-600 text-white shadow-xs'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Google Docs URL
+              </button>
+              <button
+                type="button"
+                onClick={() => setDocsImportMode('paste')}
+                className={`flex-1 py-2 px-3 rounded-lg font-semibold transition ${
+                  docsImportMode === 'paste'
+                    ? 'bg-blue-600 text-white shadow-xs'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Direct Paste Content
+              </button>
+            </div>
+
+            <form onSubmit={handleImportGoogleDoc} className="space-y-4">
+              {docsImportMode === 'url' ? (
+                <div className="space-y-3">
+                  <div className="p-3 bg-blue-950/40 border border-blue-800/60 rounded-xl text-xs text-blue-200 leading-relaxed space-y-1">
+                    <p className="font-semibold flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+                      Auto-Extract Engine:
+                    </p>
+                    <p className="text-[11px] text-blue-300/90">
+                      Google Doc ka link enter karein. System khud ba khud Title, Meta Description, H2/H3 Headings, Bullet Lists, Links aur Content ko clean magazine article format me convert kar dega.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                      Google Docs Link *
+                    </label>
+                    <input
+                      type="url"
+                      value={docsUrlInput}
+                      onChange={(e) => setDocsUrlInput(e.target.value)}
+                      placeholder="https://docs.google.com/document/d/17ND6lms5aIZ4lNP9Ks1lYzwZjGqLU0PvMH6dkG-tUy0/edit..."
+                      required
+                      className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:outline-none focus:border-blue-500"
+                    />
+                    <p className="text-[11px] text-slate-500 mt-1">
+                      Tip: Ensure Doc share settings are set to &quot;Anyone with the link can view&quot;.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+                    Paste Google Doc Text Content *
+                  </label>
+                  <textarea
+                    rows={10}
+                    value={docsRawTextInput}
+                    onChange={(e) => setDocsRawTextInput(e.target.value)}
+                    placeholder="Paste entire text from Google Docs here (including Title, Meta Des, Headings, Bullet lists)..."
+                    required
+                    className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono leading-relaxed focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+              )}
+
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowDocsModal(false)}
+                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isImportingDocs}
+                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md shadow-blue-600/30 flex items-center gap-2 disabled:opacity-50"
+                >
+                  {isImportingDocs ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Download className="w-4 h-4" />
+                  )}
+                  <span>{isImportingDocs ? 'Extracting Data...' : 'Auto-Extract & Create Post'}</span>
                 </button>
               </div>
             </form>
