@@ -2,14 +2,21 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAllPosts, getPostsByCategory } from "@/lib/posts";
 
+import { categories as configuredCategories } from "@/lib/categories";
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
   const allPosts = getAllPosts();
-  const categories = Array.from(new Set(allPosts.map(p => p.category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""))));
-  return categories.map(slug => ({ slug }));
+  const postCategories = allPosts.map(p => p.category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""));
+  const configuredSlugs = configuredCategories.map(c => c.slug);
+  // Also include legacy/alias slugs like 'cloud', 'software', 'hardware', 'ai' so old links or shortened URLs never 404
+  const aliases = ["cloud", "software", "hardware", "ai", "quantum", "chips"];
+  
+  const allCategorySlugs = Array.from(new Set([...postCategories, ...configuredSlugs, ...aliases]));
+  return allCategorySlugs.map(slug => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -25,10 +32,15 @@ export default async function CategoryPage({ params }: Props) {
   const { slug } = await params;
   const allPosts = getAllPosts();
   
-  // Find matching posts
+  // Find matching posts with intelligent fallback/alias mapping
   const posts = allPosts.filter(p => {
     const pSlug = p.category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-    return pSlug === slug || p.category.toLowerCase().includes(slug.replace(/-/g, " "));
+    if (pSlug === slug) return true;
+    
+    // Check keyword inclusion (e.g. 'cloud' matches 'Cloud Computing', 'software' matches 'Software Engineering')
+    const cleanCategory = p.category.toLowerCase();
+    const cleanSearch = slug.replace(/-/g, " ").toLowerCase();
+    return cleanCategory.includes(cleanSearch) || cleanSearch.includes(cleanCategory);
   });
 
   const categoryTitle = slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());

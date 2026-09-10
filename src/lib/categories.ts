@@ -5,13 +5,11 @@ export interface Category {
 }
 
 export const categories: Category[] = [
-  { name: 'News', slug: 'news', emoji: '🏛️' },
-  { name: 'Business', slug: 'business', emoji: '💼' },
   { name: 'Artificial Intelligence', slug: 'artificial-intelligence', emoji: '🤖' },
-  { name: 'Software', slug: 'software', emoji: '💻' },
-  { name: 'Hardware', slug: 'hardware', emoji: '⚡' },
+  { name: 'Cloud Computing', slug: 'cloud-computing', emoji: '☁️' },
   { name: 'Cybersecurity', slug: 'cybersecurity', emoji: '🛡️' },
-  { name: 'Cloud', slug: 'cloud', emoji: '☁️' },
-  { name: 'Games', slug: 'games', emoji: '🎮' },
+  { name: 'Software Engineering', slug: 'software-engineering', emoji: '💻' },
+  { name: 'Hardware & Semiconductors', slug: 'hardware-semiconductors', emoji: '⚡' },
   { name: 'Future Tech', slug: 'future-tech', emoji: '🚀' },
+  { name: 'Web Development', slug: 'web-development', emoji: '🌐' },
 ];
