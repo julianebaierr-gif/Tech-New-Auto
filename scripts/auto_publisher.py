@@ -321,22 +321,26 @@ CRITICAL LISTICLE REQUIREMENTS FOR "{kw}":
 """
     else:
         outline_structure_rule = """
-STANDARD TECHNICAL ARCHITECTURE REQUIREMENTS:
-- Create a clean heading outline with natural H2, H3, and H4 sections specifically tailored to the topic.
-- NEVER use hierarchical prefix numbers like "1.", "1.1", "2.", "2.1" in H2 or H3 titles.
-- Headings must be clean, natural, and editorial (e.g., "Foundations of Modern Architecture", "The Psychology of Visual Perception").
+DYNAMIC OUTLINE & HEADING ARCHITECTURE:
+- Let the topic dictate the outline naturally. DO NOT force rigid counts.
+- Create between 5 to 8 major H2 sections depending strictly on what "{kw}" genuinely requires for full conceptual coverage.
+- Under each H2, include 1 to 3 H3 subsections ONLY when the concept has clear sub-dimensions or components. If an H2 is concise or focused, 0 or 1 H3 is completely acceptable.
+- Use H4 headings sparingly (0 to 2 max), only when explaining specific technical configurations, code parameters, or detailed sub-points. Never add H4 just for the sake of adding headings.
+- NEVER use hierarchical prefix numbers like "1.", "1.1", "2.", "2.1" in H2, H3, or H4 titles.
+- Headings must be organic, engaging, and editorial (e.g. "Foundations of Modern Architecture", "The Real-World Latency Trap").
 """
 
     # --- PHASE 1: Generate Outline, Semantic Keywords & Visual Concept ---
     outline_prompt = f"""
 You are an expert SEO strategist and Chief Technology Architect.
-Generate an extensive, deep architectural outline and semantic keyword blueprint for an authoritative technical guide on: "{kw}".
+Generate an extensive, engaging, and high-value architectural outline and semantic keyword blueprint for: "{kw}".
 
 {outline_structure_rule}
 
-Requirements:
-1. Identify at least 30-50 high-relevance semantic entities, technical jargon, LSI keywords, and related concepts that Google's Knowledge Graph associates with "{kw}".
+CORE REQUIREMENTS:
+1. Identify 25-40 high-relevance semantic entities, technical jargon, LSI keywords, and related concepts that Google's Knowledge Graph directly associates with "{kw}". Avoid generic fluff words.
 2. Provide a 2-3 word visual photo subject query for Unsplash that best represents "{kw}" (e.g. for "Renewable Energy" -> "solar wind turbine", for "Electric Vehicles" -> "ev charging car", etc.).
+3. The outline must be designed to engage human readers immediately, answering their real engineering problems rather than reciting dictionary definitions.
 
 Respond ONLY with valid JSON:
 {{
@@ -345,9 +349,9 @@ Respond ONLY with valid JSON:
   "semantic_keywords": ["keyword1", "keyword2", "keyword3", "etc..."],
   "outline": [
     {{
-      "h2": "Section or List Overview Title",
+      "h2": "Natural, Topic-Specific H2 Title",
       "subsections": [
-        {{"h3": "Item or Subsection Title", "h4": []}}
+        {{"h3": "Focused H3 Subsection Title (omit or leave empty if not needed)", "h4": []}}
       ]
     }}
   ]
@@ -401,16 +405,21 @@ SPECIAL LISTICLE NUMBERING AND STRUCTURE RULES (EXACTLY {list_count} POINTS):
 """
     else:
         write_structure_rule = """
-STANDARD TECHNICAL ARCHITECTURE RULES:
-1. CONTENT PARAGRAPH UNDER EVERY HEADING LEVEL (NO EMPTY STACKED HEADINGS):
-   - Every <h2> MUST be immediately followed by an introductory and contextual paragraph (<p>...</p>) BEFORE opening an <h3>.
-   - Every <h3> MUST be followed by its own detailed conceptual paragraph (<p>...</p>) BEFORE opening an <h4>.
-   - Every <h4> MUST have its own detailed implementation paragraph (<p>...</p>).
-   - NEVER place an <h3> directly below an <h2> without explanatory text in between!
+FLEXIBLE EDITORIAL STRUCTURE & NATURAL FLOW:
+1. CONTENT PARAGRAPH UNDER EVERY HEADING:
+   - When an H2 is followed by an H3, always write a brief framing paragraph (<p>...</p>) under the H2 before the first H3.
+   - If an H2 has NO H3 subsections, simply write 2 to 3 substantive, well-structured paragraphs directly under that H2.
+   - H3 subsections should only have H4s if deep technical breakdown or parameter specs are required. If an H3 is already self-contained, do NOT force an H4.
+   - NEVER leave empty stacked headings (e.g. an H2 immediately followed by an H3 with no content between them).
 
 2. NO HIERARCHICAL PREFIX NUMBERING:
-   - DO NOT write "1.", "1.1", "2.1", "3.2" anywhere in <h2>, <h3>, or <h4>.
-   - All headings must be clean, natural, and editorial (e.g. "Foundations of Modern Architecture", "The Psychology of Visual Perception").
+   - DO NOT write "1.", "1.1", "2.1", "3.2" anywhere in headings. Keep all headings clean, natural, and journalistic.
+
+3. HUMAN-GRADE WRITING (PREVENT GOOGLE PENALTIES & DE-INDEXING):
+   - Do NOT write like a boring textbook or robotic AI summary.
+   - Use crisp, engaging, active voice with vivid real-world tech examples, concrete tradeoffs, and direct insights.
+   - Avoid generic buzzword stuffing ("In today's fast-paced digital world", "Delve into", "Tapestry", "Crucial component").
+   - A human reader should feel they are learning directly from a battle-tested Senior Staff Engineer.
 """
 
     # Dynamic word count variation (800 - 1200 words) so articles don't have identical lengths
@@ -420,7 +429,7 @@ STANDARD TECHNICAL ARCHITECTURE RULES:
 
     write_prompt = f"""
 You are a Principal Software Engineer and elite tech journalist writing for TechPulse Magazine.
-Write a comprehensive, professional, authoritative, and SEO-optimized article on: "{kw}".
+Write a comprehensive, compelling, deeply engaging, and SEO-optimized technical article on: "{kw}".
 {avoid_titles_block}
 
 OUTLINE TO EXPAND:
@@ -432,18 +441,18 @@ SEMANTIC ENTITIES & LSI TOPICS TO NATURALLY INTEGRATE (for Google 2026 E-E-A-T &
 CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
 {write_structure_rule}
 
-3. CONTENT LENGTH & NATURAL VARIATION:
+1. CONTENT LENGTH & NATURAL VARIATION:
    - Target word count: approximately {target_words} words (strictly within 800 to 1200 words).
-   - Never write repetitive fluff. Every paragraph must provide distinct, practical, production-grade insights.
+   - Ensure complete conceptual closure: the article must feel thoroughly researched, practical, and fully resolved.
    - Use rich semantic HTML: <p>, <ul><li>, <ol><li>, <blockquote>, and <strong>.
 
-4. MANDATORY PRE-FAQ CLOSING H2 ("Final Thoughts & Practitioner Perspective"):
+2. MANDATORY PRE-FAQ CLOSING H2 ("Final Thoughts & Practitioner Perspective"):
    - Directly before the article ends (before FAQs), you MUST include an overarching <h2> section titled with a natural, varied name such as:
      "Final Thoughts and Engineering Takeaways", "Key Takeaways and Architectural Verdict", "Field Notes and Implementation Realities", or "Architectural Verdict: Practical Considerations".
    - Under this <h2>, write 1-2 rich paragraphs sharing REAL PRACTITIONER/HUMAN EXPERIENCE (e.g. real-world trade-offs observed in production, common pitfalls teams hit when migrating, latency vs cost realities, or hands-on benchmarks).
-   - This directly builds Google E-E-A-T trust and dramatically boosts user engagement and CTR.
+   - This directly builds Google E-E-A-T trust, stops boring generic text, and prevents Google helpful content penalties.
 
-5. TITLE REQUIREMENT:
+3. TITLE REQUIREMENT:
    - Must naturally feature or strictly relate to "{kw}".
    - Complete the title into a concise, professional, and SEO-friendly headline.
    - Understand the article's topic, audience, and main focus, then craft the most natural, engaging, and relevant ending.
@@ -451,16 +460,16 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
    - Strictly between 50 and 55 characters in length. Natural, human-written, and engaging.
    - NEVER include any years (such as 2025, 2026, etc.). Evergreen content only.
 
-6. META DESCRIPTION (EXCERPT):
+4. META DESCRIPTION (EXCERPT):
    - Must directly mention "{kw}".
    - Strictly between 150 and 155 characters in length. Complete sentence, never truncated.
 
-7. FREQUENTLY ASKED QUESTIONS (FAQPAGE SCHEMA):
+5. FREQUENTLY ASKED QUESTIONS (FAQPAGE SCHEMA):
    - Provide 3-4 short, punchy, and direct FAQs specifically about "{kw}".
    - Each question must be clear and commonly searched.
    - Each answer must be SHORT, direct, and concise (strictly 25-40 words or 1-2 direct sentences). Do not write long paragraphs.
 
-8. NO DASHES: Do NOT use any em-dashes (— or –). Use clean commas, colons, or parentheses.
+6. NO DASHES: Do NOT use any em-dashes (— or –). Use clean commas, colons, or parentheses.
 
 Respond ONLY with valid JSON:
 {{
