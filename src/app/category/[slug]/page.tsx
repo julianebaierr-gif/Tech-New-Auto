@@ -6,6 +6,12 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+export async function generateStaticParams() {
+  const allPosts = getAllPosts();
+  const categories = Array.from(new Set(allPosts.map(p => p.category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""))));
+  return categories.map(slug => ({ slug }));
+}
+
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const formatted = slug.replace(/-/g, " ").toUpperCase();

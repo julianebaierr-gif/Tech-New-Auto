@@ -2,6 +2,9 @@ import { MetadataRoute } from 'next';
 import { getAllPosts, getAuthors } from '@/lib/posts';
 import { categories } from '@/lib/categories';
 
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://techpulse-journal.vercel.app';
   const posts = getAllPosts();
