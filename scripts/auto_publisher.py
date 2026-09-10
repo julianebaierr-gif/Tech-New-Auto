@@ -305,9 +305,13 @@ You are an expert SEO strategist and Chief Technology Architect.
 Generate an extensive, deep architectural outline and semantic keyword blueprint for an authoritative technical guide on: "{kw}".
 
 Requirements:
-1. Create a detailed heading outline containing multiple H2, H3, and H4 sections specifically tailored to "{kw}".
-2. Identify at least 30-50 high-relevance semantic entities, technical jargon, LSI keywords, and related concepts that Google's Knowledge Graph associates with "{kw}".
-3. Provide a 2-3 word visual photo subject query for Unsplash that best represents "{kw}" (e.g. for "Renewable Energy" -> "solar wind turbine", for "Electric Vehicles" -> "ev charging car", etc.).
+1. Create a clean heading outline with H2, H3, and H4 sections specifically tailored to "{kw}".
+2. STRICT NUMBERING RULES FOR HEADINGS:
+   - NEVER use hierarchical prefix numbers like "1.", "1.1", "2.", "2.1" in H2 or H3 titles.
+   - Headings must be clean, natural, and editorial (e.g., "Foundations of Data Visualization", "The Psychology of Visual Perception").
+   - ONLY if the topic specifically demands a numbered list (e.g. "5 Key Principles", "7 Best Practices"), you may use simple numbers ("1. Principle Name", "2. Principle Name") in H3 directly under that H2. In that case, DO NOT create H4 under those list items.
+3. Identify at least 30-50 high-relevance semantic entities, technical jargon, LSI keywords, and related concepts that Google's Knowledge Graph associates with "{kw}".
+4. Provide a 2-3 word visual photo subject query for Unsplash that best represents "{kw}" (e.g. for "Renewable Energy" -> "solar wind turbine", for "Electric Vehicles" -> "ev charging car", etc.).
 
 Respond ONLY with valid JSON:
 {{
@@ -316,9 +320,9 @@ Respond ONLY with valid JSON:
   "semantic_keywords": ["keyword1", "keyword2", "keyword3", "etc..."],
   "outline": [
     {{
-      "h2": "Main section title",
+      "h2": "Clean H2 section title without prefix numbers",
       "subsections": [
-        {{"h3": "Subsection title", "h4": ["Detailed point 1", "Detailed point 2"]}}
+        {{"h3": "Clean H3 title without prefix numbers", "h4": ["Granular H4 title 1", "Granular H4 title 2"]}}
       ]
     }}
   ]
@@ -368,28 +372,47 @@ OUTLINE TO EXPAND:
 SEMANTIC ENTITIES & LSI TOPICS TO NATURALLY INTEGRATE (for Google 2026 E-E-A-T & Knowledge Graph):
 {', '.join(semantic_kw_list[:40])}
 
-CRITICAL SEO & GOOGLE 2026 HELPFUL CONTENT GUIDELINES:
-1. CONTENT LENGTH: Minimum 1000 words. Provide thorough, hands-on architectural analysis, operational benchmarks, and production guidance. Never write shallow overviews.
-2. HEADING STRUCTURE: Use semantic HTML hierarchy:
-   - <h2> for all major sections
-   - <h3> for technical mechanism subsections
-   - <h4> for granular implementation details
-   - Structure with rich <p>, <ul><li>, <ol><li>, <blockquote>, and <strong> tags.
-3. TITLE REQUIREMENT:
+CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
+1. CONTENT PARAGRAPH UNDER EVERY HEADING LEVEL (NO EMPTY STACKED HEADINGS):
+   - Every <h2> MUST be immediately followed by an introductory and contextual paragraph (<p>...</p>) BEFORE opening an <h3>.
+   - Every <h3> MUST be followed by its own detailed conceptual paragraph (<p>...</p>) BEFORE opening an <h4>.
+   - Every <h4> MUST have its own detailed implementation paragraph (<p>...</p>).
+   - NEVER place an <h3> directly below an <h2> without explanatory text in between!
+   - Visual flow must look like:
+     <h2>Section Title</h2>
+     <p>Detailed introductory text explaining the overarching concept...</p>
+     <h3>Subsection Title</h3>
+     <p>Detailed technical context explaining the mechanism...</p>
+     <h4>Granular Detail Title</h4>
+     <p>Deep implementation walkthrough and code/analysis...</p>
+
+2. NO HIERARCHICAL PREFIX NUMBERING:
+   - DO NOT write "1.", "1.1", "2.1", "3.2" anywhere in <h2>, <h3>, or <h4>.
+   - All headings must be clean, natural, and editorial (e.g. "Foundations of Data Visualization", "The Psychology of Visual Perception").
+   - EXCEPTION: Only if the article explicitly presents a numbered sequence (e.g., "5 Key Pillars" or "7 Architectural Rules"), you may use simple numbers ("1. Name", "2. Name") on the <h3> tags directly under that section. When doing so, DO NOT create <h4> tags under those numbered items.
+
+3. CONTENT LENGTH & QUALITY:
+   - Minimum 1000 words. Deep technical, architectural, and production-ready analysis. Never write shallow summaries.
+   - Use rich semantic HTML: <p>, <ul><li>, <ol><li>, <blockquote>, and <strong>.
+
+4. TITLE REQUIREMENT:
    - Must naturally feature or strictly relate to "{kw}".
    - Complete the title into a concise, professional, and SEO-friendly headline.
-   - Automatically understand the article's topic, audience, and main focus, then craft the most natural, engaging, and relevant ending.
+   - Understand the article's topic, audience, and main focus, then craft the most natural, engaging, and relevant ending.
    - DO NOT force fixed phrases (like "for Modern Systems" or "Guide and Analysis").
    - Strictly between 50 and 55 characters in length. Natural, human-written, and engaging.
    - NEVER include any years (such as 2025, 2026, etc.). Evergreen content only.
-4. META DESCRIPTION (EXCERPT):
+
+5. META DESCRIPTION (EXCERPT):
    - Must directly mention "{kw}".
    - Strictly between 150 and 155 characters in length. Complete sentence, never truncated.
-5. FREQUENTLY ASKED QUESTIONS (FAQPAGE SCHEMA):
+
+6. FREQUENTLY ASKED QUESTIONS (FAQPAGE SCHEMA):
    - Provide 3-4 short, punchy, and direct FAQs specifically about "{kw}".
    - Each question must be clear and commonly searched.
    - Each answer must be SHORT, direct, and concise (strictly 25-40 words or 1-2 direct sentences). Do not write long paragraphs.
-6. NO DASHES: Do NOT use any em-dashes (— or –). Use clean commas, colons, or parentheses.
+
+7. NO DASHES: Do NOT use any em-dashes (— or –). Use clean commas, colons, or parentheses.
 
 Respond ONLY with valid JSON:
 {{
@@ -406,7 +429,7 @@ Respond ONLY with valid JSON:
       "answer": "Detailed technical answer."
     }}
   ],
-  "content": "Rich HTML content exceeding 1000 words adhering strictly to the H2, H3, H4 hierarchy."
+  "content": "Rich HTML content exceeding 1000 words adhering strictly to the H2 -> P -> H3 -> P -> H4 -> P structure."
 }}
 """
     article_data = None
@@ -542,6 +565,14 @@ def main():
                 "answer": clean_dashes(remove_years(f["answer"])).strip()
             })
 
+    def clean_content(html_text):
+        if not isinstance(html_text, str):
+            return html_text
+        text = clean_dashes(remove_years(html_text))
+        # Strip hierarchical numbering like "1. ", "1.1 ", "2.1 " from <h2> and <h3>
+        text = re.sub(r'(<h[23][^>]*>)\s*(\d+\.\d+\.?|\d+\.)\s*', r'\1', text, flags=re.IGNORECASE)
+        return text
+
     post_record = {
         "title": clean_title(article_data["title"]),
         "target_keyword": keyword_data["keyword"],
@@ -554,7 +585,7 @@ def main():
         "author": selected_author,
         "readTime": article_data.get("readTime", "8 min read"),
         "tags": article_data.get("tags", ["Tech", "Engineering"]),
-        "content": clean_dashes(remove_years(article_data["content"])),
+        "content": clean_content(article_data["content"]),
         "faqs": cleaned_faqs
     }
 
