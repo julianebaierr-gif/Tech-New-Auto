@@ -82,6 +82,7 @@ export default function PortalDeskClient({ initialPosts }: Props) {
   const [showDocsModal, setShowDocsModal] = useState(false);
   const [docsUrlInput, setDocsUrlInput] = useState('');
   const [docsRawTextInput, setDocsRawTextInput] = useState('');
+  const [docsCustomImageInput, setDocsCustomImageInput] = useState('');
   const [isImportingDocs, setIsImportingDocs] = useState(false);
   const [docsImportMode, setDocsImportMode] = useState<'url' | 'paste'>('url');
 
@@ -193,8 +194,12 @@ export default function PortalDeskClient({ initialPosts }: Props) {
     return cleanUrl;
   };
 
-  // Helper: Parse Google Doc exported text into Post object
-  const parseDocTextToPost = (rawText: string): Post => {
+  // Helper: Parse Google Doc exported text & extracted images into Post object
+  const parseDocTextToPost = (
+    rawText: string,
+    extractedImages: string[] = [],
+    customCoverImage?: string
+  ): Post => {
     const cleanText = rawText.replace(/^\uFEFF/, '').trim();
     const lines = cleanText.split('\n').map((l) => l.trim()).filter(Boolean);
 
@@ -224,6 +229,17 @@ export default function PortalDeskClient({ initialPosts }: Props) {
     if (!metaDes && bodyLines.length > 0) {
       metaDes = bodyLines[0].slice(0, 155) + '...';
     }
+
+    // 1st image from Google Docs is the Featured / Cover Image
+    const coverImage =
+      customCoverImage?.trim() ||
+      (extractedImages.length > 0
+        ? extractedImages[0]
+        : 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80');
+
+    // Subsequent images (2nd, 3rd, etc.) belong inside the content body
+    const contentImages = extractedImages.slice(1);
+    let contentImageIndex = 0;
 
     // Convert raw document text into clean semantic HTML with headings, lists, and paragraphs
     const htmlParts: string[] = [];
@@ -278,10 +294,26 @@ export default function PortalDeskClient({ initialPosts }: Props) {
       } else {
         htmlParts.push(`<p>${line}</p>`);
       }
+
+      // Insert in-content document images between major paragraphs
+      if (contentImageIndex < contentImages.length && i > 0 && i % 4 === 0) {
+        const nextImg = contentImages[contentImageIndex++];
+        htmlParts.push(
+          `<div className="my-6 rounded-2xl overflow-hidden border border-slate-200"><img src="${nextImg}" alt="${title} Content Illustration" className="w-full h-auto object-cover rounded-xl" /></div>`
+        );
+      }
     }
 
     if (inList) {
       htmlParts.push('</ul>');
+    }
+
+    // If any content images remain, append them near the end
+    while (contentImageIndex < contentImages.length) {
+      const remainingImg = contentImages[contentImageIndex++];
+      htmlParts.push(
+        `<div className="my-6 rounded-2xl overflow-hidden border border-slate-200"><img src="${remainingImg}" alt="${title} Figure" className="w-full h-auto object-cover rounded-xl" /></div>`
+      );
     }
 
     const htmlContent = htmlParts.join('\n');
@@ -296,10 +328,6 @@ export default function PortalDeskClient({ initialPosts }: Props) {
     // Auto calculate read time (~200 words per min)
     const wordCount = cleanText.split(/\s+/).length;
     const minutes = Math.max(3, Math.ceil(wordCount / 200));
-
-    // Fallback tech cover image
-    const coverImage =
-      'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80';
 
     return {
       slug: slug || `post-${Date.now()}`,
@@ -329,6 +357,7 @@ export default function PortalDeskClient({ initialPosts }: Props) {
 
     try {
       let rawContent = '';
+      const extractedImages: string[] = [];
 
       if (docsImportMode === 'paste') {
         if (!docsRawTextInput.trim()) {
@@ -345,23 +374,21 @@ export default function PortalDeskClient({ initialPosts }: Props) {
           throw new Error('Invalid Google Docs URL. Please make sure it looks like docs.google.com/document/d/...');
         }
 
-        // Try direct fetch or cors proxy
-        let fetched = false;
-        const exportUrl = `https://docs.google.com/document/d/${docId}/export?format=txt`;
-        const proxyUrls = [
-          exportUrl,
-          `https://corsproxy.io/?${encodeURIComponent(exportUrl)}`,
-          `https://api.allorigins.win/raw?url=${encodeURIComponent(exportUrl)}`,
+        // 1. Fetch TXT content
+        const exportTxtUrl = `https://docs.google.com/document/d/${docId}/export?format=txt`;
+        const proxyTxtUrls = [
+          exportTxtUrl,
+          `https://corsproxy.io/?${encodeURIComponent(exportTxtUrl)}`,
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(exportTxtUrl)}`,
         ];
 
-        for (const url of proxyUrls) {
+        for (const url of proxyTxtUrls) {
           try {
             const res = await fetch(url);
             if (res.ok) {
               const txt = await res.text();
               if (txt && !txt.startsWith('<!DOCTYPE html>') && txt.length > 50) {
                 rawContent = txt;
-                fetched = true;
                 break;
               }
             }
@@ -370,20 +397,57 @@ export default function PortalDeskClient({ initialPosts }: Props) {
           }
         }
 
-        if (!fetched) {
+        // 2. Fetch HTML content to extract embedded images (base64 or URLs)
+        const exportHtmlUrl = `https://docs.google.com/document/d/${docId}/export?format=html`;
+        const proxyHtmlUrls = [
+          exportHtmlUrl,
+          `https://corsproxy.io/?${encodeURIComponent(exportHtmlUrl)}`,
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(exportHtmlUrl)}`,
+        ];
+
+        for (const url of proxyHtmlUrls) {
+          try {
+            const res = await fetch(url);
+            if (res.ok) {
+              const html = await res.text();
+              if (html && html.includes('<img')) {
+                // Extract all img src attributes
+                const imgRegex = /<img[^>]+src=["']([^"']+)["']/gi;
+                let match;
+                while ((match = imgRegex.exec(html)) !== null) {
+                  const src = match[1];
+                  if (src && !extractedImages.includes(src)) {
+                    extractedImages.push(src);
+                  }
+                }
+                break;
+              }
+            }
+          } catch {
+            // try next proxy
+          }
+        }
+
+        if (!rawContent) {
           throw new Error(
-            'Could not auto-fetch from Google Docs export URL (Google requires the document to be "Anyone with the link can view"). You can switch to "Paste Content" tab or verify the link is public.'
+            'Could not auto-fetch from Google Docs export URL (Google requires the document to be "Anyone with the link can view"). You can switch to "Direct Paste Content" tab or verify the link is public.'
           );
         }
       }
 
-      const importedPost = parseDocTextToPost(rawContent);
+      const importedPost = parseDocTextToPost(
+        rawContent,
+        extractedImages,
+        docsCustomImageInput
+      );
+
       setEditingPost(importedPost);
       setIsNewPost(true);
       setShowDocsModal(false);
       setDocsUrlInput('');
       setDocsRawTextInput('');
-      showNotice(`Successfully imported "${importedPost.title}"! Review & click "Save & Publish" to post it live.`, 'success');
+      setDocsCustomImageInput('');
+      showNotice(`Successfully imported "${importedPost.title}" with document images! Review & click "Save & Publish" to post it live.`, 'success');
     } catch (err: any) {
       showNotice(err.message || 'Failed to import document.', 'error');
     } finally {
@@ -1343,20 +1407,51 @@ export default function PortalDeskClient({ initialPosts }: Props) {
                       Tip: Ensure Doc share settings are set to &quot;Anyone with the link can view&quot;.
                     </p>
                   </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                      Cover / Featured Image URL (Optional)
+                    </label>
+                    <input
+                      type="url"
+                      value={docsCustomImageInput}
+                      onChange={(e) => setDocsCustomImageInput(e.target.value)}
+                      placeholder="https://... (Leave blank to auto-extract from Google Doc)"
+                      className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:outline-none focus:border-blue-500"
+                    />
+                    <p className="text-[11px] text-slate-500 mt-1">
+                      Doc ki pehli image khud ba khud Feature Image ban jayegi, aur baqi images content me lag jayengi.
+                    </p>
+                  </div>
                 </div>
               ) : (
-                <div className="space-y-2">
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
-                    Paste Google Doc Text Content *
-                  </label>
-                  <textarea
-                    rows={10}
-                    value={docsRawTextInput}
-                    onChange={(e) => setDocsRawTextInput(e.target.value)}
-                    placeholder="Paste entire text from Google Docs here (including Title, Meta Des, Headings, Bullet lists)..."
-                    required
-                    className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono leading-relaxed focus:outline-none focus:border-blue-500"
-                  />
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                      Cover / Featured Image URL (Optional)
+                    </label>
+                    <input
+                      type="url"
+                      value={docsCustomImageInput}
+                      onChange={(e) => setDocsCustomImageInput(e.target.value)}
+                      placeholder="https://... (Optional cover image for pasted text)"
+                      className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+                      Paste Google Doc Text Content *
+                    </label>
+                    <textarea
+                      rows={9}
+                      value={docsRawTextInput}
+                      onChange={(e) => setDocsRawTextInput(e.target.value)}
+                      placeholder="Paste entire text from Google Docs here (including Title, Meta Des, Headings, Bullet lists)..."
+                      required
+                      className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono leading-relaxed focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
                 </div>
               )}
 
