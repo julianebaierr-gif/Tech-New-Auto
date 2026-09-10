@@ -10,15 +10,17 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/'],
+        disallow: ['/api/', '/portal-desk', '/portal-desk/'],
       },
       {
         userAgent: 'Googlebot',
         allow: '/',
+        disallow: ['/portal-desk', '/portal-desk/'],
       },
       {
         userAgent: 'Bingbot',
         allow: '/',
+        disallow: ['/portal-desk', '/portal-desk/'],
       },
     ],
     sitemap: baseUrl + '/sitemap.xml',
