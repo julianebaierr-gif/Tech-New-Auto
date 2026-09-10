@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getPostBySlug, getAllPosts } from "@/lib/posts";
-import { ArrowLeft, Calendar, Clock, Share2, Tag, CheckCircle2 } from "lucide-react";
+import { getPostBySlug, getAllPosts, getRelatedPosts } from "@/lib/posts";
+import { ArrowLeft, ArrowRight, Calendar, Clock, Share2, Tag, BookOpen } from "lucide-react";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -71,6 +71,7 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
+  const relatedPosts = getRelatedPosts(post.slug, 3);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tech-new-auto.vercel.app";
   const postUrl = `${siteUrl}/${post.slug}`;
   const authorSlug = post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -282,6 +283,68 @@ export default async function BlogPostPage({ params }: Props) {
           </p>
         </div>
       </div>
+
+      {/* Related Technical Analyses & Internal Cross-Links */}
+      {relatedPosts.length > 0 && (
+        <section className="mt-14 pt-10 border-t-2 border-slate-200">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">Internal Reference &amp; Research</span>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                Related Technical Analyses
+              </h2>
+            </div>
+            <Link
+              href="/blog"
+              className="text-xs font-bold text-blue-600 hover:text-blue-700 hidden sm:inline-flex items-center gap-1"
+            >
+              Browse Newsroom <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {relatedPosts.map((rel) => (
+              <article
+                key={rel.slug}
+                className="group flex flex-col rounded-2xl border border-slate-200 bg-white overflow-hidden hover:border-blue-400 hover:shadow-lg transition duration-300"
+              >
+                <div className="h-40 relative overflow-hidden bg-slate-100">
+                  <img
+                    src={rel.coverImage}
+                    alt={rel.coverImageAlt || rel.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                  />
+                  <span className="absolute top-2.5 left-2.5 text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-white/95 text-blue-700 backdrop-blur-md shadow-xs">
+                    {rel.category}
+                  </span>
+                </div>
+                <div className="p-4 flex flex-col flex-1">
+                  <div className="flex items-center gap-2 text-[11px] text-slate-400 mb-2">
+                    <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {rel.date}</span>
+                    <span>&bull;</span>
+                    <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {rel.readTime}</span>
+                  </div>
+                  <h3 className="font-bold text-sm sm:text-base text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-2 leading-snug">
+                    <Link href={`/${rel.slug}`}>{rel.title}</Link>
+                  </h3>
+                  <p className="text-slate-600 text-xs line-clamp-2 leading-relaxed mb-4 flex-1">
+                    {rel.excerpt}
+                  </p>
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span className="text-slate-600 font-semibold text-[11px]">{rel.author.name}</span>
+                    <Link
+                      href={`/${rel.slug}`}
+                      className="text-blue-600 font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1 text-[11px]"
+                    >
+                      Read Analysis <ArrowRight className="h-3 w-3" />
+                    </Link>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Tags Section */}
       <footer className="mt-10 pt-8 border-t border-slate-200">

@@ -152,3 +152,46 @@ export function getPostsByCategory(categorySlug: string): Post[] {
   });
 }
 
+export function getRelatedPosts(currentSlug: string, limit: number = 3): Post[] {
+  const allPosts = getAllPosts();
+  const currentPost = allPosts.find((p) => p.slug === currentSlug);
+  if (!currentPost) return [];
+
+  const currentTags = new Set((currentPost.tags || []).map((t) => t.toLowerCase()));
+  const currentCategory = (currentPost.category || '').toLowerCase();
+  const currentWords = new Set(
+    (currentPost.title || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, '')
+      .split(/\s+/)
+      .filter((w) => w.length >= 4)
+  );
+
+  const scored = allPosts
+    .filter((p) => p.slug !== currentSlug)
+    .map((p) => {
+      let score = 0;
+      const pCat = (p.category || '').toLowerCase();
+      if (pCat && pCat === currentCategory) {
+        score += 5;
+      }
+      const pTags = (p.tags || []).map((t) => t.toLowerCase());
+      pTags.forEach((t) => {
+        if (currentTags.has(t)) score += 4;
+      });
+      const pWords = (p.title || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, '')
+        .split(/\s+/)
+        .filter((w) => w.length >= 4);
+      pWords.forEach((w) => {
+        if (currentWords.has(w)) score += 2;
+      });
+
+      return { post: p, score };
+    });
+
+  scored.sort((a, b) => b.score - a.score);
+  return scored.slice(0, limit).map((s) => s.post);
+}
+

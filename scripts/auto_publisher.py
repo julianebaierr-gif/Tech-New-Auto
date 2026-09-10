@@ -175,20 +175,23 @@ def extract_unsplash_id(url):
 
 def get_existing_posts_metadata():
     """
-    Scans all existing posts to extract existing titles, excerpts, slugs, and cover images
-    so that new articles are guaranteed 100% unique with zero duplication.
+    Scans all existing posts to extract existing titles, excerpts, slugs, cover images,
+    and post items so that new articles are guaranteed 100% unique with zero duplication
+    and can automatically link to relevant context.
     """
     titles = []
     excerpts = []
     images = []
     image_ids = set()
     slugs = []
+    posts = []
     if os.path.exists(POSTS_DIR):
         for f in os.listdir(POSTS_DIR):
             if f.endswith(".json"):
                 try:
                     with open(os.path.join(POSTS_DIR, f), "r", encoding="utf-8") as pf:
                         d = json.load(pf)
+                        post_slug = f.replace(".json", "")
                         if d.get("title"):
                             titles.append(d["title"].strip())
                         if d.get("excerpt"):
@@ -199,10 +202,16 @@ def get_existing_posts_metadata():
                             img_id = extract_unsplash_id(c_img)
                             if img_id:
                                 image_ids.add(img_id)
-                        slugs.append(f.replace(".json", ""))
+                        slugs.append(post_slug)
+                        posts.append({
+                            "slug": post_slug,
+                            "title": d.get("title", "").strip(),
+                            "category": d.get("category", "").strip(),
+                            "tags": d.get("tags", [])
+                        })
                 except:
                     pass
-    return {"titles": titles, "excerpts": excerpts, "images": images, "image_ids": image_ids, "slugs": slugs}
+    return {"titles": titles, "excerpts": excerpts, "images": images, "image_ids": image_ids, "slugs": slugs, "posts": posts}
 
 def fetch_unsplash_image(query, used_image_ids=None, visual_subject=None):
     """
@@ -695,6 +704,47 @@ def main():
         else:
             # For standard articles, strip all numerical prefixes like "1. ", "1.1 ", "2.1 " from headings
             text = re.sub(r'(<h[234][^>]*>)\s*(\d+\.\d+\.?|\d+\.)\s*', r'\1', text, flags=re.IGNORECASE)
+
+        # Automated Contextual Internal Linking to Existing Relevant Posts
+        existing_pool = existing_meta.get("posts", [])
+        if existing_pool and len(paras := list(re.finditer(r'<p>([\s\S]*?)</p>', text))) >= 4:
+            curr_cat = (article_data.get("category") or "").lower()
+            curr_tags = set(t.lower() for t in (article_data.get("tags") or []))
+            curr_words = set(re.findall(r'\b[a-z]{4,}\b', (article_data.get("title") or "").lower()))
+
+            scored_candidates = []
+            for cand in existing_pool:
+                cand_slug = cand.get("slug", "")
+                if cand_slug == slug or not cand_slug:
+                    continue
+                score = 0
+                if cand.get("category", "").lower() == curr_cat:
+                    score += 5
+                c_tags = set(t.lower() for t in cand.get("tags", []))
+                score += len(curr_tags.intersection(c_tags)) * 4
+                c_words = set(re.findall(r'\b[a-z]{4,}\b', cand.get("title", "").lower()))
+                score += len(curr_words.intersection(c_words)) * 2
+                if score > 0:
+                    scored_candidates.append((score, cand))
+
+            scored_candidates.sort(key=lambda x: x[0], reverse=True)
+            chosen_internal_links = [c[1] for c in scored_candidates[:2]]
+
+            # Link positions: approx 30% through content and 65% through content
+            link_indices = []
+            if len(paras) >= 6 and len(chosen_internal_links) >= 2:
+                link_indices = [(len(paras) // 3, chosen_internal_links[0]), ((len(paras) * 2) // 3, chosen_internal_links[1])]
+            elif len(paras) >= 4 and len(chosen_internal_links) >= 1:
+                link_indices = [(len(paras) // 2, chosen_internal_links[0])]
+
+            for p_idx, target_post in link_indices:
+                p_match = paras[p_idx]
+                p_text = p_match.group(1).rstrip()
+                clean_target_title = re.sub(r'[\'"]', '', target_post['title']).strip()
+                link_note = f' <em>For further architectural context, see our analysis on <a href="/{target_post["slug"]}" class="text-blue-600 font-semibold hover:underline">{clean_target_title}</a>.</em>'
+                # Append to paragraph end
+                text = text.replace(p_match.group(0), f'<p>{p_text}{link_note}</p>', 1)
+
         return text
 
     post_record = {
