@@ -152,7 +152,7 @@ export function getPostsByCategory(categorySlug: string): Post[] {
   });
 }
 
-export function getRelatedPosts(currentSlug: string, limit: number = 3): Post[] {
+export function getRelatedPosts(currentSlug: string, limit: number = 4): Post[] {
   const allPosts = getAllPosts();
   const currentPost = allPosts.find((p) => p.slug === currentSlug);
   if (!currentPost) return [];

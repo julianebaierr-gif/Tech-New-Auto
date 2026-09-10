@@ -2,6 +2,7 @@ import os
 import re
 import json
 import glob
+import random
 
 POSTS_DIR = os.path.join(os.getcwd(), "content", "posts")
 
@@ -32,7 +33,7 @@ def backfill_internal_links():
         cleaned_content = re.sub(r'\s*<em>For further architectural context, see our analysis on <a href="[^"]+"[^>]*>.*?</a>\.</em>', '', content)
 
         paras = list(re.finditer(r'<p>([\s\S]*?)</p>', cleaned_content))
-        if len(paras) < 4:
+        if len(paras) < 5:
             continue
 
         curr_cat = (d.get("category") or "").lower()
@@ -59,16 +60,38 @@ def backfill_internal_links():
                 scored_candidates.append((score, other["slug"], o_data.get("title", "")))
 
         scored_candidates.sort(key=lambda x: x[0], reverse=True)
-        chosen = scored_candidates[:2]
 
-        link_indices = []
-        if len(paras) >= 6 and len(chosen) >= 2:
-            link_indices = [(len(paras) // 3, chosen[0]), ((len(paras) * 2) // 3, chosen[1])]
-        elif len(paras) >= 4 and len(chosen) >= 1:
-            link_indices = [(len(paras) // 2, chosen[0])]
+        desired_count = random.choice([4, 5, 6])
+        available_count = min(len(scored_candidates), desired_count)
+        if available_count < 3:
+            continue
+
+        chosen = scored_candidates[:available_count]
+
+        num_paras = len(paras)
+        k = len(chosen)
+
+        # Distribute links evenly across middle paragraphs
+        step = (num_paras - 2) / (k + 1)
+        link_indices = [int(1 + round(step * (i + 1))) for i in range(k)]
+
+        unique_indices = []
+        for idx in link_indices:
+            clamped = min(max(1, idx), num_paras - 2)
+            if clamped not in unique_indices:
+                unique_indices.append(clamped)
+            else:
+                for offset in [1, -1, 2, -2]:
+                    cand_idx = clamped + offset
+                    if 1 <= cand_idx <= num_paras - 2 and cand_idx not in unique_indices:
+                        unique_indices.append(cand_idx)
+                        break
+
+        sorted_indices = sorted(unique_indices)[:len(chosen)]
 
         new_content = cleaned_content
-        for p_idx, target in link_indices:
+        for i, p_idx in enumerate(sorted_indices):
+            target = chosen[i]
             target_slug = target[1]
             target_title = target[2]
             p_match = paras[p_idx]

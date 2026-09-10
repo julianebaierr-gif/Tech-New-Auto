@@ -528,6 +528,12 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
 
 6. NO DASHES: Do NOT use any em-dashes (— or –). Use clean commas, colons, or parentheses.
 
+7. STRICTLY ONE AUTHORITATIVE EXTERNAL REFERENCE (SEO & GOOGLE E-E-A-T):
+   - You MUST include EXACTLY ONE highly credible, authoritative external reference citation directly relevant to "{kw}".
+   - Acceptable domains: official documentation, research papers, or industry-standard bodies (e.g. w3.org, wikipedia.org, arxiv.org, nist.gov, ietf.org, github.com, apache.org, cisa.gov, acm.org, ieee.org, aws.amazon.com, cloud.google.com, openai.com, developer.mozilla.org).
+   - The link MUST be woven naturally into the body text (e.g. inside a relevant paragraph using `<a href="https://..." target="_blank" rel="noopener noreferrer" class="text-blue-600 font-semibold hover:underline">Anchor Text</a>`).
+   - DO NOT add more than 1 external link. Strictly 1 link.
+
 Respond ONLY with valid JSON:
 {{
   "title": "Title with keyword strictly between 50 and 55 chars",
@@ -537,13 +543,17 @@ Respond ONLY with valid JSON:
   "readTime": "{read_time_calc}",
   "tags": ["Tag1", "Tag2", "Tag3", "Tag4"],
   "visual_subject": "{visual_subject}",
+  "external_source": {{
+    "title": "Name of the authoritative source or study",
+    "url": "https://trusted-domain.org/relevant-resource"
+  }},
   "faqs": [
     {{
       "question": "Specific question about {kw}?",
       "answer": "Detailed technical answer."
     }}
   ],
-  "content": "Rich HTML content (around {target_words} words) including the Final Thoughts / Field Perspective H2 section before conclusion."
+  "content": "Rich HTML content (around {target_words} words) including the Final Thoughts / Field Perspective H2 section before conclusion, containing exactly 1 natural external authoritative link."
 }}
 """
     article_data = None
@@ -705,9 +715,32 @@ def main():
             # For standard articles, strip all numerical prefixes like "1. ", "1.1 ", "2.1 " from headings
             text = re.sub(r'(<h[234][^>]*>)\s*(\d+\.\d+\.?|\d+\.)\s*', r'\1', text, flags=re.IGNORECASE)
 
-        # Automated Contextual Internal Linking to Existing Relevant Posts
+        # Strictly Ensure EXACTLY ONE High-Authority External Reference Link
+        ext_links = list(re.finditer(r'<a\s+[^>]*href=["\'](https?://[^"\']+)["\'][^>]*>([\s\S]*?)</a>', text, flags=re.IGNORECASE))
+        # Keep only true external links (not tech-new-auto domain)
+        true_ext = [m for m in ext_links if "tech-new-auto" not in m.group(1).lower() and "techpulse-journal" not in m.group(1).lower()]
+
+        if len(true_ext) > 1:
+            # Keep only the first external link, replace subsequent ones with just their inner anchor text to prevent spam
+            first_ext = true_ext[0]
+            for extra_ext in true_ext[1:]:
+                text = text.replace(extra_ext.group(0), extra_ext.group(2))
+        elif len(true_ext) == 0:
+            # If Gemini forgot to weave the external link in HTML content, check article_data["external_source"]
+            ext_source = article_data.get("external_source") or {}
+            ext_url = ext_source.get("url")
+            ext_name = ext_source.get("title") or "official technical documentation"
+            if ext_url and ext_url.startswith("http"):
+                # Append reference to the last paragraph before conclusion or second-to-last paragraph
+                all_p = list(re.finditer(r'<p>([\s\S]*?)</p>', text))
+                if len(all_p) >= 2:
+                    target_p = all_p[-2]
+                    ref_snippet = f' <em>Reference and architectural guidelines sourced from <a href="{ext_url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 font-semibold hover:underline">{ext_name}</a>.</em>'
+                    text = text.replace(target_p.group(0), f'<p>{target_p.group(1).rstrip()}{ref_snippet}</p>', 1)
+
+        # Automated Contextual Internal Linking to Existing Relevant Posts (4 to 6 links)
         existing_pool = existing_meta.get("posts", [])
-        if existing_pool and len(paras := list(re.finditer(r'<p>([\s\S]*?)</p>', text))) >= 4:
+        if existing_pool and len(paras := list(re.finditer(r'<p>([\s\S]*?)</p>', text))) >= 6:
             curr_cat = (article_data.get("category") or "").lower()
             curr_tags = set(t.lower() for t in (article_data.get("tags") or []))
             curr_words = set(re.findall(r'\b[a-z]{4,}\b', (article_data.get("title") or "").lower()))
@@ -728,22 +761,41 @@ def main():
                     scored_candidates.append((score, cand))
 
             scored_candidates.sort(key=lambda x: x[0], reverse=True)
-            chosen_internal_links = [c[1] for c in scored_candidates[:2]]
 
-            # Link positions: approx 30% through content and 65% through content
-            link_indices = []
-            if len(paras) >= 6 and len(chosen_internal_links) >= 2:
-                link_indices = [(len(paras) // 3, chosen_internal_links[0]), ((len(paras) * 2) // 3, chosen_internal_links[1])]
-            elif len(paras) >= 4 and len(chosen_internal_links) >= 1:
-                link_indices = [(len(paras) // 2, chosen_internal_links[0])]
+            # Determine target internal link count (4 to 6 links) based on paragraph length
+            import random
+            desired_links_count = random.choice([4, 5, 6])
+            available_cand_count = min(len(scored_candidates), desired_links_count)
+            # Ensure at least 4 if available
+            chosen_internal_links = [c[1] for c in scored_candidates[:available_cand_count]]
 
-            for p_idx, target_post in link_indices:
-                p_match = paras[p_idx]
-                p_text = p_match.group(1).rstrip()
-                clean_target_title = re.sub(r'[\'"]', '', target_post['title']).strip()
-                link_note = f' <em>For further architectural context, see our analysis on <a href="/{target_post["slug"]}" class="text-blue-600 font-semibold hover:underline">{clean_target_title}</a>.</em>'
-                # Append to paragraph end
-                text = text.replace(p_match.group(0), f'<p>{p_text}{link_note}</p>', 1)
+            num_paras = len(paras)
+            k = len(chosen_internal_links)
+            if k >= 3 and num_paras >= (k + 2):
+                # Distribute evenly across paragraphs (excluding first intro and last concluding paragraphs)
+                step = (num_paras - 2) / (k + 1)
+                link_indices = [int(1 + round(step * (i + 1))) for i in range(k)]
+                # Prevent duplicate paragraph indices
+                unique_indices = []
+                for idx in link_indices:
+                    clamped = min(max(1, idx), num_paras - 2)
+                    if clamped not in unique_indices:
+                        unique_indices.append(clamped)
+                    else:
+                        # Find adjacent free paragraph
+                        for offset in [1, -1, 2, -2]:
+                            cand_idx = clamped + offset
+                            if 1 <= cand_idx <= num_paras - 2 and cand_idx not in unique_indices:
+                                unique_indices.append(cand_idx)
+                                break
+
+                for i, p_idx in enumerate(sorted(unique_indices)[:len(chosen_internal_links)]):
+                    target_post = chosen_internal_links[i]
+                    p_match = paras[p_idx]
+                    p_text = p_match.group(1).rstrip()
+                    clean_target_title = re.sub(r'[\'"]', '', target_post['title']).strip()
+                    link_note = f' <em>For further architectural context, see our analysis on <a href="/{target_post["slug"]}" class="text-blue-600 font-semibold hover:underline">{clean_target_title}</a>.</em>'
+                    text = text.replace(p_match.group(0), f'<p>{p_text}{link_note}</p>', 1)
 
         return text
 
