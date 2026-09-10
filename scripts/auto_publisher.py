@@ -223,14 +223,47 @@ def fetch_unsplash_image(query, used_image_ids=None, visual_subject=None):
         candidate_queries.append(f"{words[0]} {words[1]} futuristic")
     candidate_queries.append(f"{clean_kw} digital interface")
 
+    # Extensive pool of distinct, high-res curated tech photos to prevent any hardcoded duplicate fallback
+    diverse_unique_tech_pool = [
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1581093806997-124204d9fa9d?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1581094376136-12efc464efc8?auto=format&fit=crop&w=1200&q=80"
+    ]
+
     if not UNSPLASH_ACCESS_KEY:
-        print("[INFO] No UNSPLASH_ACCESS_KEY provided, using dynamic Unsplash source.")
-        return f"https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
+        print("[INFO] No UNSPLASH_ACCESS_KEY provided, selecting unassigned photo from diverse pool.")
+        for pool_url in diverse_unique_tech_pool:
+            pid = extract_unsplash_id(pool_url)
+            if pid not in used_ids:
+                return pool_url
+        return diverse_unique_tech_pool[0]
 
     for search_term in candidate_queries:
         try:
-            # Query pages 1 and 2 to get a wider selection of 60 unique photos
-            for page_num in [1, 2]:
+            # Query pages 1 to 4 for wide selection of up to 120 unique photos
+            for page_num in range(1, 5):
                 url = f"https://api.unsplash.com/search/photos?page={page_num}&per_page=30&query={requests.utils.quote(search_term)}&client_id={UNSPLASH_ACCESS_KEY}&orientation=landscape"
                 res = requests.get(url, timeout=12)
                 if res.status_code == 200:
@@ -249,11 +282,16 @@ def fetch_unsplash_image(query, used_image_ids=None, visual_subject=None):
 
     # Fallback to broader tech topics with random page offset
     import random
-    fallback_queries = ["cyberpunk laboratory", "quantum server hardware", "cloud computing motherboard", "deep learning algorithm", "modern semiconductor microprocessor", "future data center server"]
+    fallback_queries = [
+        "cyberpunk laboratory", "quantum server hardware", "cloud computing motherboard",
+        "deep learning algorithm", "modern semiconductor microprocessor", "future data center server",
+        "optical computing chip", "ai neural network visualization", "advanced robotics engineering",
+        "high performance computing cluster"
+    ]
     random.shuffle(fallback_queries)
     for fallback_term in fallback_queries:
         try:
-            url = f"https://api.unsplash.com/search/photos?page={random.randint(1, 3)}&per_page=30&query={requests.utils.quote(fallback_term)}&client_id={UNSPLASH_ACCESS_KEY}&orientation=landscape"
+            url = f"https://api.unsplash.com/search/photos?page={random.randint(1, 5)}&per_page=30&query={requests.utils.quote(fallback_term)}&client_id={UNSPLASH_ACCESS_KEY}&orientation=landscape"
             res = requests.get(url, timeout=10)
             if res.status_code == 200:
                 for item in res.json().get("results", []):
@@ -266,7 +304,13 @@ def fetch_unsplash_image(query, used_image_ids=None, visual_subject=None):
         except:
             pass
 
-    return "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
+    # Final guarantee: pick an unused photo from diverse pool
+    for pool_url in diverse_unique_tech_pool:
+        pid = extract_unsplash_id(pool_url)
+        if pid not in used_ids:
+            return pool_url
+
+    return diverse_unique_tech_pool[0]
 
 def generate_article_with_gemini(keyword_info, existing_titles=None):
     """
