@@ -29,11 +29,16 @@ def backfill_internal_links():
         filepath = item["filepath"]
         content = d.get("content", "")
 
-        # Strip existing injected link notes if rerun
+        # Strip any previous full-title link injections
         cleaned_content = re.sub(r'\s*<em>For further architectural context, see our analysis on <a href="[^"]+"[^>]*>.*?</a>\.</em>', '', content)
+        # Strip any previous (explore our technical breakdown on ...) notes if re-run
+        cleaned_content = re.sub(r'\s*\((?:explore our technical breakdown on|see also detailed insights on)\s+<a href="[^"]+"[^>]*>.*?</a>\)\.?', '.', cleaned_content)
 
         paras = list(re.finditer(r'<p>([\s\S]*?)</p>', cleaned_content))
         if len(paras) < 5:
+            d["content"] = cleaned_content
+            with open(filepath, "w", encoding="utf-8") as out_fp:
+                json.dump(d, out_fp, indent=2)
             continue
 
         curr_cat = (d.get("category") or "").lower()
@@ -57,13 +62,16 @@ def backfill_internal_links():
             score += len(curr_words.intersection(o_words)) * 2
 
             if score > 0:
-                scored_candidates.append((score, other["slug"], o_data.get("title", "")))
+                scored_candidates.append((score, other["slug"], o_data))
 
         scored_candidates.sort(key=lambda x: x[0], reverse=True)
 
         desired_count = random.choice([4, 5, 6])
         available_count = min(len(scored_candidates), desired_count)
         if available_count < 3:
+            d["content"] = cleaned_content
+            with open(filepath, "w", encoding="utf-8") as out_fp:
+                json.dump(d, out_fp, indent=2)
             continue
 
         chosen = scored_candidates[:available_count]
@@ -91,14 +99,49 @@ def backfill_internal_links():
 
         new_content = cleaned_content
         for i, p_idx in enumerate(sorted_indices):
-            target = chosen[i]
-            target_slug = target[1]
-            target_title = target[2]
+            target_slug = chosen[i][1]
+            target_data = chosen[i][2]
+
             p_match = paras[p_idx]
-            p_text = p_match.group(1).rstrip()
-            clean_title = re.sub(r'[\'"]', '', target_title).strip()
-            link_note = f' <em>For further architectural context, see our analysis on <a href="/{target_slug}" class="text-blue-600 font-semibold hover:underline">{clean_title}</a>.</em>'
-            new_content = new_content.replace(p_match.group(0), f'<p>{p_text}{link_note}</p>', 1)
+            p_text = p_match.group(1)
+
+            # Determine concise keyword phrase (target_keyword, primary tag, or top 2-3 words of title)
+            cand_kw = target_data.get("target_keyword", "").strip()
+            if not cand_kw and target_data.get("tags"):
+                cand_kw = target_data["tags"][0]
+            if not cand_kw:
+                words = [w for w in target_data.get("title", "").split() if w.lower() not in ["the", "a", "an", "and", "or", "for", "to", "in", "of", "with", "how", "what", "top", "best"]]
+                cand_kw = " ".join(words[:3]) if words else target_data.get("title", "")
+
+            clean_kw_anchor = re.sub(r'[\'"]', '', cand_kw).strip()
+
+            # Attempt natural replacement on exact technical keyword match
+            replaced = False
+            pattern = re.compile(rf'\b({re.escape(clean_kw_anchor)})\b(?![^<]*>|[^<>]*<\/a>)', re.IGNORECASE)
+            if pattern.search(p_text):
+                new_p_text = pattern.sub(rf'<a href="/{target_slug}" class="text-blue-600 font-semibold hover:underline">\1</a>', p_text, count=1)
+                new_content = new_content.replace(p_match.group(0), f'<p>{new_p_text}</p>', 1)
+                replaced = True
+            else:
+                first_tag = (target_data.get("tags") or [""])[0]
+                if first_tag and len(first_tag) > 3:
+                    tag_pat = re.compile(rf'\b({re.escape(first_tag)})\b(?![^<]*>|[^<>]*<\/a>)', re.IGNORECASE)
+                    if tag_pat.search(p_text):
+                        new_p_text = tag_pat.sub(rf'<a href="/{target_slug}" class="text-blue-600 font-semibold hover:underline">\1</a>', p_text, count=1)
+                        new_content = new_content.replace(p_match.group(0), f'<p>{new_p_text}</p>', 1)
+                        replaced = True
+
+            # If no direct keyword match in paragraph, weave smoothly on concise keyword anchor
+            if not replaced:
+                natural_phrasing = random.choice([
+                    f' (explore our technical breakdown on <a href="/{target_slug}" class="text-blue-600 font-semibold hover:underline">{clean_kw_anchor}</a>).',
+                    f' (see also detailed insights on <a href="/{target_slug}" class="text-blue-600 font-semibold hover:underline">{clean_kw_anchor}</a>).'
+                ])
+                if p_text.rstrip().endswith('.'):
+                    new_p_text = p_text.rstrip()[:-1] + natural_phrasing
+                else:
+                    new_p_text = p_text.rstrip() + natural_phrasing
+                new_content = new_content.replace(p_match.group(0), f'<p>{new_p_text}</p>', 1)
 
         d["content"] = new_content
 
@@ -107,7 +150,7 @@ def backfill_internal_links():
 
         updated_count += 1
 
-    print(f"Successfully backfilled internal links for {updated_count} articles.")
+    print(f"Successfully processed and updated internal links for {updated_count} articles.")
 
 if __name__ == "__main__":
     backfill_internal_links()

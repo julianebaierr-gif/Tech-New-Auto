@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getPostBySlug, getAllPosts, getRelatedPosts } from "@/lib/posts";
-import { ArrowLeft, ArrowRight, Calendar, Clock, Share2, Tag, BookOpen } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, Clock, Share2, Tag, BookOpen, ChevronRight, Bookmark } from "lucide-react";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -71,7 +71,7 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
-  const relatedPosts = getRelatedPosts(post.slug, 3);
+  const relatedPosts = getRelatedPosts(post.slug, 6);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tech-new-auto.vercel.app";
   const postUrl = `${siteUrl}/${post.slug}`;
   const authorSlug = post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -221,6 +221,41 @@ export default async function BlogPostPage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: post.content }}
           className="article-content space-y-6 [&>h2]:text-2xl sm:[&>h2]:text-3xl [&>h2]:font-black [&>h2]:text-slate-900 [&>h2]:mt-10 [&>h2]:mb-4 [&>h2]:tracking-tight [&>h3]:text-xl sm:[&>h3]:text-2xl [&>h3]:font-bold [&>h3]:text-blue-800 [&>h3]:mt-8 [&>h3]:mb-3 [&>h4]:text-lg sm:[&>h4]:text-xl [&>h4]:font-semibold [&>h4]:text-slate-800 [&>h4]:mt-6 [&>h4]:mb-2 [&>p]:leading-relaxed [&>p]:text-slate-700 [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:space-y-2 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:space-y-2 [&>blockquote]:border-l-4 [&>blockquote]:border-blue-500 [&>blockquote]:pl-4 [&>blockquote]:italic [&>blockquote]:text-slate-600 [&>blockquote]:bg-blue-50/50 [&>blockquote]:py-2 [&>blockquote]:rounded-r"
         />
+
+        {/* Dedicated "Read Also This / Related Technical Reports" Box matching sample UI */}
+        {relatedPosts.length > 0 && (
+          <aside className="my-10 rounded-2xl border-l-4 border-l-red-600 border border-slate-200 bg-slate-50/80 p-6 sm:p-7 shadow-xs not-prose">
+            <div className="mb-3">
+              <h3 className="text-sm sm:text-base font-black tracking-wider uppercase text-red-700 flex items-center gap-2">
+                <Bookmark className="h-4 w-4 text-red-600" />
+                READ ALSO THIS &bull; RELATED INVESTIGATIVE REPORTS
+              </h3>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Continue reading in-depth engineering coverage from TechPulse:
+              </p>
+            </div>
+            <ul className="divide-y divide-slate-200/80 mt-4 text-sm sm:text-base">
+              {relatedPosts.slice(0, 5).map((rel) => (
+                <li key={rel.slug} className="py-2.5 flex items-start gap-2.5 group">
+                  <span className="text-red-600 font-bold text-base leading-none mt-1 shrink-0">
+                    &bull;
+                  </span>
+                  <div className="leading-snug">
+                    <span className="text-xs font-black uppercase tracking-wider text-slate-800 mr-2 inline-block">
+                      {rel.category}:
+                    </span>
+                    <Link
+                      href={`/${rel.slug}`}
+                      className="font-semibold text-red-700 hover:text-red-800 hover:underline transition group-hover:text-red-900"
+                    >
+                      {rel.title}
+                    </Link>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        )}
 
         {/* Interactive FAQ Section */}
         {post.faqs && post.faqs.length > 0 && (
