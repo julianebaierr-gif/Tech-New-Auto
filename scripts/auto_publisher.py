@@ -442,10 +442,13 @@ Respond ONLY with valid JSON:
         write_structure_rule = f"""
 SPECIAL LISTICLE NUMBERING AND STRUCTURE RULES (EXACTLY {list_count} POINTS):
 - The article is a curated listicle of {list_count} items for: "{kw}".
-- You MUST write EXACTLY {list_count} individual points numbered 1 to {list_count} (e.g. <h3>1. Name of Tool or Tip</h3>, <h3>2. Name of Tool or Tip</h3>, ..., <h3>{list_count}. Name of Tool or Tip</h3>).
-- Each numbered item MUST be an <h3> tag followed by a thorough, in-depth evaluation and breakdown (<p>...</p> paragraphs, features, pros, use cases).
+- DO NOT create individual <h2> tags for each point!
+- Instead, create ONE overarching <h2> heading introducing the list (e.g. <h2>Top {list_count} Technologies and Breakthroughs</h2>), followed by an introductory paragraph.
+- Then, write EACH of the {list_count} points ONLY as an <h3> tag (e.g. <h3>1. Name of Tool or Tip</h3>, <h3>2. Name of Tool or Tip</h3>, ..., <h3>{list_count}. Name of Tool or Tip</h3>).
+- NEVER duplicate or repeat the same heading twice (e.g. NEVER write <h2>1. Superconductors</h2><h3>1. Superconductors</h3>). That is a critical syntax error!
+- Each numbered <h3> must be followed by a thorough, in-depth evaluation and breakdown (<p>...</p> paragraphs, features, pros, use cases).
 - DO NOT create any <h4> headings under these {list_count} points. Keep the structure clean and readable just like top tech publication reviews.
-- Include a brief introductory section before the list and a concise summary/verdict at the end.
+- Close the article with an <h2> "Field Notes and Implementation Realities" section before FAQs.
 """
     else:
         write_structure_rule = """
@@ -670,6 +673,20 @@ def main():
         if not isinstance(html_text, str):
             return html_text
         text = clean_dashes(remove_years(html_text))
+
+        # Automated Safety Guardrail: Remove immediately adjacent duplicate headings (e.g. <h2>1. X</h2><h3>1. X</h3>)
+        def deduplicate_stacked_headings(html):
+            def repl(m):
+                tag1, h1_text, tag2, h2_text = m.group(1), m.group(2).strip(), m.group(3), m.group(4).strip()
+                c1 = re.sub(r'^\d+\.\s*', '', h1_text).lower()
+                c2 = re.sub(r'^\d+\.\s*', '', h2_text).lower()
+                if c1 == c2 or c2 in c1 or c1 in c2:
+                    return f'<{tag2}>{h2_text}</{tag2}>'
+                return m.group(0)
+            return re.sub(r'<(h[234])[^>]*>(.*?)</\1>\s*<(h[234])[^>]*>(.*?)</\3>', repl, html, flags=re.IGNORECASE)
+
+        text = deduplicate_stacked_headings(text)
+
         num_match = re.search(r'\b(\d+)\b', kw)
         kw_list_count = int(num_match.group(1)) if num_match else 0
         if kw_list_count >= 2:
