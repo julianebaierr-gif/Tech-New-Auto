@@ -413,9 +413,14 @@ STANDARD TECHNICAL ARCHITECTURE RULES:
    - All headings must be clean, natural, and editorial (e.g. "Foundations of Modern Architecture", "The Psychology of Visual Perception").
 """
 
+    # Dynamic word count variation (800 - 1200 words) so articles don't have identical lengths
+    import random
+    target_words = random.choice([850, 920, 980, 1050, 1120, 1180])
+    read_time_calc = f"{max(5, round(target_words / 150))} min read"
+
     write_prompt = f"""
 You are a Principal Software Engineer and elite tech journalist writing for TechPulse Magazine.
-Write a comprehensive, professional, 1000+ WORD deeply technical, and SEO-optimized article on: "{kw}".
+Write a comprehensive, professional, authoritative, and SEO-optimized article on: "{kw}".
 {avoid_titles_block}
 
 OUTLINE TO EXPAND:
@@ -427,11 +432,18 @@ SEMANTIC ENTITIES & LSI TOPICS TO NATURALLY INTEGRATE (for Google 2026 E-E-A-T &
 CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
 {write_structure_rule}
 
-3. CONTENT LENGTH & QUALITY:
-   - Minimum 1000 words. Deep technical, architectural, and production-ready analysis. Never write shallow summaries.
+3. CONTENT LENGTH & NATURAL VARIATION:
+   - Target word count: approximately {target_words} words (strictly within 800 to 1200 words).
+   - Never write repetitive fluff. Every paragraph must provide distinct, practical, production-grade insights.
    - Use rich semantic HTML: <p>, <ul><li>, <ol><li>, <blockquote>, and <strong>.
 
-4. TITLE REQUIREMENT:
+4. MANDATORY PRE-FAQ CLOSING H2 ("Final Thoughts & Practitioner Perspective"):
+   - Directly before the article ends (before FAQs), you MUST include an overarching <h2> section titled with a natural, varied name such as:
+     "Final Thoughts and Engineering Takeaways", "Key Takeaways and Architectural Verdict", "Field Notes and Implementation Realities", or "Architectural Verdict: Practical Considerations".
+   - Under this <h2>, write 1-2 rich paragraphs sharing REAL PRACTITIONER/HUMAN EXPERIENCE (e.g. real-world trade-offs observed in production, common pitfalls teams hit when migrating, latency vs cost realities, or hands-on benchmarks).
+   - This directly builds Google E-E-A-T trust and dramatically boosts user engagement and CTR.
+
+5. TITLE REQUIREMENT:
    - Must naturally feature or strictly relate to "{kw}".
    - Complete the title into a concise, professional, and SEO-friendly headline.
    - Understand the article's topic, audience, and main focus, then craft the most natural, engaging, and relevant ending.
@@ -439,16 +451,16 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
    - Strictly between 50 and 55 characters in length. Natural, human-written, and engaging.
    - NEVER include any years (such as 2025, 2026, etc.). Evergreen content only.
 
-5. META DESCRIPTION (EXCERPT):
+6. META DESCRIPTION (EXCERPT):
    - Must directly mention "{kw}".
    - Strictly between 150 and 155 characters in length. Complete sentence, never truncated.
 
-6. FREQUENTLY ASKED QUESTIONS (FAQPAGE SCHEMA):
+7. FREQUENTLY ASKED QUESTIONS (FAQPAGE SCHEMA):
    - Provide 3-4 short, punchy, and direct FAQs specifically about "{kw}".
    - Each question must be clear and commonly searched.
    - Each answer must be SHORT, direct, and concise (strictly 25-40 words or 1-2 direct sentences). Do not write long paragraphs.
 
-7. NO DASHES: Do NOT use any em-dashes (— or –). Use clean commas, colons, or parentheses.
+8. NO DASHES: Do NOT use any em-dashes (— or –). Use clean commas, colons, or parentheses.
 
 Respond ONLY with valid JSON:
 {{
@@ -456,7 +468,7 @@ Respond ONLY with valid JSON:
   "slug": "url-friendly-lowercase-slug-without-years",
   "excerpt": "Meta description highlighting keyword strictly between 150 and 155 chars.",
   "category": "{chosen_category}",
-  "readTime": "8 min read",
+  "readTime": "{read_time_calc}",
   "tags": ["Tag1", "Tag2", "Tag3", "Tag4"],
   "visual_subject": "{visual_subject}",
   "faqs": [
@@ -465,7 +477,7 @@ Respond ONLY with valid JSON:
       "answer": "Detailed technical answer."
     }}
   ],
-  "content": "Rich HTML content exceeding 1000 words adhering strictly to the H2 -> P -> H3 -> P -> H4 -> P structure."
+  "content": "Rich HTML content (around {target_words} words) including the Final Thoughts / Field Perspective H2 section before conclusion."
 }}
 """
     article_data = None
