@@ -195,39 +195,302 @@ export default function PortalDeskClient({ initialPosts }: Props) {
   };
 
   // Helper: Parse Google Doc exported text & extracted images into Post object
-  const parseDocTextToPost = (
-    rawText: string,
+  // Helper: Clean Google redirect link (https://www.google.com/url?q=...)
+  const cleanGoogleRedirectUrl = (url: string): string => {
+    if (!url) return '';
+    const match = url.match(/google\.com\/url\?q=([^&]+)/);
+    if (match) {
+      try {
+        return decodeURIComponent(match[1]);
+      } catch {
+        return match[1];
+      }
+    }
+    return url.replace(/&amp;/g, '&');
+  };
+
+  // Helper: Parse Google Doc exported HTML or plain text into Post object
+  const parseGoogleDocToPost = (
+    rawHtml: string,
+    rawTxt: string,
     extractedImages: string[] = [],
     customCoverImage?: string
   ): Post => {
-    const cleanText = rawText.replace(/^\uFEFF/, '').trim();
-    const lines = cleanText.split('\n').map((l) => l.trim()).filter(Boolean);
-
-    if (lines.length === 0) {
-      throw new Error('Document appears to be empty.');
-    }
-
-    let title = lines[0] || 'Imported Article';
+    let title = '';
+    let seoTitle = '';
     let metaDes = '';
     let targetKeyword = '';
-    const bodyLines: string[] = [];
+    let htmlContent = '';
+    const contentImages = extractedImages.slice(1);
+    let contentImageIdx = 0;
 
-    // Extract title, meta description, and target keywords
-    for (let i = 1; i < lines.length; i++) {
-      const line = lines[i];
-      const lower = line.toLowerCase();
-      if (lower.startsWith('meta des:') || lower.startsWith('meta description:')) {
-        metaDes = line.split(':')[1]?.trim() || '';
-      } else if (i === 1 && line.length < 80 && !metaDes && !line.includes('.')) {
-        // Second line might be target keyword or secondary tag
-        targetKeyword = line;
-      } else {
-        bodyLines.push(line);
+    // PATH 1: Rich HTML Parser (Preserves exact <a> hyperlinks, formatting, headings, bullet points)
+    if (rawHtml && (rawHtml.includes('<body') || rawHtml.includes('<p') || rawHtml.includes('<h1'))) {
+      // Clean all Google redirect URLs and style hyperlinks
+      const processedHtml = rawHtml.replace(
+        /<a\s+[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi,
+        (_match, href, text) => {
+          const realUrl = cleanGoogleRedirectUrl(href);
+          return `<a href="${realUrl}" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline font-medium hover:text-blue-800">${text}</a>`;
+        }
+      );
+
+      // 1. Detect SEO Title: e.g. "SEO Title" followed by paragraph, or "SEO Title: ..."
+      const seoMatch =
+        processedHtml.match(/<p[^>]*>\s*SEO\s*Title\s*:?\s*<\/p>\s*<p[^>]*>([\s\S]*?)<\/p>/i) ||
+        processedHtml.match(/SEO\s*Title\s*:\s*([^\n<]+)/i);
+      if (seoMatch) {
+        seoTitle = seoMatch[1].replace(/<[^>]+>/g, '').trim();
       }
+
+      // 2. Detect Meta Description: e.g. "Meta Description:" or "Meta Des:"
+      const metaMatch =
+        processedHtml.match(/<p[^>]*>\s*Meta\s*Des(?:cription)?\s*:?\s*<\/p>\s*<p[^>]*>([\s\S]*?)<\/p>/i) ||
+        processedHtml.match(/Meta\s*Des(?:cription)?\s*:\s*([^\n<]+)/i);
+      if (metaMatch) {
+        metaDes = metaMatch[1].replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim();
+      }
+
+      // 3. Detect Title (H1 tag or Title label or Title tag)
+      const h1Match = processedHtml.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+      if (h1Match) {
+        title = h1Match[1].replace(/<[^>]+>/g, '').trim();
+      }
+
+      if (!title) {
+        const titleLabelMatch =
+          processedHtml.match(/<p[^>]*>\s*Title\s*:?\s*<\/p>\s*<p[^>]*>([\s\S]*?)<\/p>/i) ||
+          processedHtml.match(/(?:^|>)\s*Title\s*:\s*([^\n<]+)/i);
+        if (titleLabelMatch) {
+          title = titleLabelMatch[1].replace(/<[^>]+>/g, '').trim();
+        }
+      }
+
+      // 4. Parse content elements (<p>, <h2>, <h3>, <h4>, <ul>, <ol>)
+      const contentParts: string[] = [];
+      const blockRegex = /<(h[2-6]|p|ul|ol)[^>]*>([\s\S]*?)<\/\1>/gi;
+      let b;
+      let paragraphCount = 0;
+
+      while ((b = blockRegex.exec(processedHtml)) !== null) {
+        const tag = b[1].toLowerCase();
+        const inner = b[2].trim();
+        const textOnly = inner.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim();
+
+        if (!textOnly && !inner.includes('<img') && !inner.includes('<a')) {
+          continue; // Skip empty blocks
+        }
+
+        // Filter out metadata paragraphs so they don't leak into body text
+        const lowerText = textOnly.toLowerCase();
+        if (
+          lowerText === 'seo title' ||
+          lowerText.startsWith('seo title:') ||
+          lowerText === 'meta des' ||
+          lowerText.startsWith('meta des:') ||
+          lowerText === 'meta description' ||
+          lowerText.startsWith('meta description:') ||
+          (seoTitle && textOnly === seoTitle) ||
+          (metaDes && textOnly === metaDes) ||
+          (title && textOnly === title && tag.startsWith('h'))
+        ) {
+          continue;
+        }
+
+        if (tag.startsWith('h')) {
+          contentParts.push(`<${tag}>${inner}</${tag}>`);
+        } else if (tag === 'ul' || tag === 'ol') {
+          contentParts.push(`<${tag} class="list-disc pl-6 space-y-1.5 my-4">${inner}</${tag}>`);
+        } else {
+          contentParts.push(`<p>${inner}</p>`);
+          paragraphCount++;
+
+          // Insert in-content document images between major paragraphs
+          if (contentImageIdx < contentImages.length && paragraphCount % 4 === 0) {
+            const nextImg = contentImages[contentImageIdx++];
+            contentParts.push(
+              `<div class="my-6 rounded-2xl overflow-hidden border border-slate-200"><img src="${nextImg}" alt="${title || 'Article'} Content Illustration" class="w-full h-auto object-cover rounded-xl" /></div>`
+            );
+          }
+        }
+      }
+
+      // Append any remaining content images
+      while (contentImageIdx < contentImages.length) {
+        const remainingImg = contentImages[contentImageIdx++];
+        contentParts.push(
+          `<div class="my-6 rounded-2xl overflow-hidden border border-slate-200"><img src="${remainingImg}" alt="${title || 'Article'} Figure" class="w-full h-auto object-cover rounded-xl" /></div>`
+        );
+      }
+
+      htmlContent = contentParts.join('\n');
     }
 
-    if (!metaDes && bodyLines.length > 0) {
-      metaDes = bodyLines[0].slice(0, 155) + '...';
+    // PATH 2: Fallback Plain Text Parser (if HTML is not available or Direct Paste used)
+    if (!htmlContent && rawTxt) {
+      const cleanText = rawTxt.replace(/^\uFEFF/, '').trim();
+      const lines = cleanText.split('\n').map((l) => l.trim()).filter(Boolean);
+
+      let skipNextLineForTitle = false;
+      let skipNextLineForSeoTitle = false;
+      let skipNextLineForMeta = false;
+      const bodyLines: string[] = [];
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const lower = line.toLowerCase();
+
+        if (skipNextLineForTitle) {
+          if (!title) title = line;
+          skipNextLineForTitle = false;
+          continue;
+        }
+        if (skipNextLineForSeoTitle) {
+          if (!seoTitle) seoTitle = line;
+          skipNextLineForSeoTitle = false;
+          continue;
+        }
+        if (skipNextLineForMeta) {
+          if (!metaDes) metaDes = line;
+          skipNextLineForMeta = false;
+          continue;
+        }
+
+        // SEO Title pattern
+        if (lower === 'seo title' || lower === 'seo title:' || lower === 'seo-title' || lower === 'seo-title:') {
+          if (i + 1 < lines.length) {
+            seoTitle = lines[i + 1];
+            skipNextLineForSeoTitle = true;
+          }
+          continue;
+        }
+        if (lower.startsWith('seo title:') || lower.startsWith('seo-title:')) {
+          seoTitle = line.split(':')[1]?.trim() || '';
+          continue;
+        }
+
+        // H1 / Title label pattern
+        if (
+          lower === 'title' ||
+          lower === 'title:' ||
+          lower === 'h1' ||
+          lower === 'h1:' ||
+          lower === 'heading 1' ||
+          lower === 'heading 1:'
+        ) {
+          if (i + 1 < lines.length) {
+            title = lines[i + 1];
+            skipNextLineForTitle = true;
+          }
+          continue;
+        }
+        if (lower.startsWith('title:') || lower.startsWith('h1:') || lower.startsWith('heading 1:')) {
+          title = line.split(':')[1]?.trim() || '';
+          continue;
+        }
+
+        // Meta Description pattern
+        if (
+          lower === 'meta des' ||
+          lower === 'meta des:' ||
+          lower === 'meta description' ||
+          lower === 'meta description:'
+        ) {
+          if (i + 1 < lines.length) {
+            metaDes = lines[i + 1];
+            skipNextLineForMeta = true;
+          }
+          continue;
+        }
+        if (lower.startsWith('meta des:') || lower.startsWith('meta description:') || lower.startsWith('meta:')) {
+          metaDes = line.split(':')[1]?.trim() || '';
+          continue;
+        }
+
+        bodyLines.push(line);
+      }
+
+      // If no explicit H1 was found, first line of body is the H1 article title
+      if (!title && bodyLines.length > 0) {
+        title = bodyLines.shift() || 'Imported Article';
+      }
+
+      // Build HTML from plain text
+      const htmlParts: string[] = [];
+      let inList = false;
+
+      for (let i = 0; i < bodyLines.length; i++) {
+        const line = bodyLines[i];
+
+        if (line.startsWith('*') || line.startsWith('-') || line.startsWith('•')) {
+          if (!inList) {
+            htmlParts.push('<ul class="list-disc pl-6 space-y-1.5 my-4">');
+            inList = true;
+          }
+          const itemText = line.replace(/^[*•-]\s*/, '').trim();
+          htmlParts.push(`<li>${itemText}</li>`);
+          continue;
+        }
+
+        if (inList) {
+          htmlParts.push('</ul>');
+          inList = false;
+        }
+
+        const isHeading =
+          line.length < 90 &&
+          !line.endsWith('.') &&
+          !line.endsWith('!') &&
+          !line.endsWith(',') &&
+          !line.startsWith('http') &&
+          (i < bodyLines.length - 1 && bodyLines[i + 1].length > 40);
+
+        if (isHeading) {
+          if (
+            line.toLowerCase().includes('faqs') ||
+            line.toLowerCase().includes('frequently asked questions') ||
+            line.toLowerCase().includes('final thoughts') ||
+            line.toLowerCase().includes('conclusion')
+          ) {
+            htmlParts.push(`<h2>${line}</h2>`);
+          } else {
+            htmlParts.push(`<h3>${line}</h3>`);
+          }
+          continue;
+        }
+
+        // Detect hyperlinks or standard paragraph
+        const linkRegex = /(https?:\/\/[^\s]+)/g;
+        if (linkRegex.test(line)) {
+          const linkedLine = line.replace(
+            linkRegex,
+            (url) => `<a href="${cleanGoogleRedirectUrl(url)}" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline font-medium hover:text-blue-800">${url}</a>`
+          );
+          htmlParts.push(`<p>${linkedLine}</p>`);
+        } else {
+          htmlParts.push(`<p>${line}</p>`);
+        }
+
+        if (contentImageIdx < contentImages.length && i > 0 && i % 4 === 0) {
+          const nextImg = contentImages[contentImageIdx++];
+          htmlParts.push(
+            `<div class="my-6 rounded-2xl overflow-hidden border border-slate-200"><img src="${nextImg}" alt="${title} Content Illustration" class="w-full h-auto object-cover rounded-xl" /></div>`
+          );
+        }
+      }
+
+      if (inList) {
+        htmlParts.push('</ul>');
+      }
+
+      while (contentImageIdx < contentImages.length) {
+        const remainingImg = contentImages[contentImageIdx++];
+        htmlParts.push(
+          `<div class="my-6 rounded-2xl overflow-hidden border border-slate-200"><img src="${remainingImg}" alt="${title} Figure" class="w-full h-auto object-cover rounded-xl" /></div>`
+        );
+      }
+
+      htmlContent = htmlParts.join('\n');
     }
 
     // 1st image from Google Docs is the Featured / Cover Image
@@ -237,102 +500,33 @@ export default function PortalDeskClient({ initialPosts }: Props) {
         ? extractedImages[0]
         : 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80');
 
-    // Subsequent images (2nd, 3rd, etc.) belong inside the content body
-    const contentImages = extractedImages.slice(1);
-    let contentImageIndex = 0;
-
-    // Convert raw document text into clean semantic HTML with headings, lists, and paragraphs
-    const htmlParts: string[] = [];
-    let inList = false;
-
-    for (let i = 0; i < bodyLines.length; i++) {
-      const line = bodyLines[i];
-
-      // Bullet points (* or - or •)
-      if (line.startsWith('*') || line.startsWith('-') || line.startsWith('•')) {
-        if (!inList) {
-          htmlParts.push('<ul className="list-disc pl-6 space-y-1.5 my-4">');
-          inList = true;
-        }
-        const itemText = line.replace(/^[*•-]\s*/, '').trim();
-        htmlParts.push(`<li>${itemText}</li>`);
-        continue;
-      }
-
-      // Close list if currently open
-      if (inList) {
-        htmlParts.push('</ul>');
-        inList = false;
-      }
-
-      // Check for headings
-      const isHeading =
-        line.length < 85 &&
-        !line.endsWith('.') &&
-        !line.endsWith('!') &&
-        !line.endsWith(',') &&
-        !line.startsWith('http') &&
-        (i < bodyLines.length - 1 && bodyLines[i + 1].length > 40);
-
-      if (isHeading) {
-        if (
-          line.toLowerCase().includes('faqs') ||
-          line.toLowerCase().includes('frequently asked questions') ||
-          line.toLowerCase().includes('final thoughts') ||
-          line.toLowerCase().includes('conclusion')
-        ) {
-          htmlParts.push(`<h2>${line}</h2>`);
-        } else {
-          htmlParts.push(`<h3>${line}</h3>`);
-        }
-        continue;
-      }
-
-      // Links or standard paragraph
-      if (line.startsWith('http://') || line.startsWith('https://')) {
-        htmlParts.push(`<p><a href="${line}" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">${line}</a></p>`);
-      } else {
-        htmlParts.push(`<p>${line}</p>`);
-      }
-
-      // Insert in-content document images between major paragraphs
-      if (contentImageIndex < contentImages.length && i > 0 && i % 4 === 0) {
-        const nextImg = contentImages[contentImageIndex++];
-        htmlParts.push(
-          `<div className="my-6 rounded-2xl overflow-hidden border border-slate-200"><img src="${nextImg}" alt="${title} Content Illustration" className="w-full h-auto object-cover rounded-xl" /></div>`
-        );
-      }
+    // Default title fallback
+    if (!title) {
+      title = seoTitle || 'Imported Article';
     }
 
-    if (inList) {
-      htmlParts.push('</ul>');
+    // Default meta description fallback
+    if (!metaDes) {
+      metaDes = title;
     }
 
-    // If any content images remain, append them near the end
-    while (contentImageIndex < contentImages.length) {
-      const remainingImg = contentImages[contentImageIndex++];
-      htmlParts.push(
-        `<div className="my-6 rounded-2xl overflow-hidden border border-slate-200"><img src="${remainingImg}" alt="${title} Figure" className="w-full h-auto object-cover rounded-xl" /></div>`
-      );
-    }
-
-    const htmlContent = htmlParts.join('\n');
-
-    // Generate unique slug from title
-    const slug = title
+    // Slug: USER REQUIREMENT -> "or seo title jo likha hai wo slug me, smjy?"
+    // If SEO Title exists, slug is formed from SEO Title; otherwise falls back to H1 title
+    const slugSource = (seoTitle || title)
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '')
       .slice(0, 70);
 
     // Auto calculate read time (~200 words per min)
-    const wordCount = cleanText.split(/\s+/).length;
+    const plainTextAll = (rawTxt || htmlContent.replace(/<[^>]+>/g, ' ')).trim();
+    const wordCount = plainTextAll.split(/\s+/).length;
     const minutes = Math.max(3, Math.ceil(wordCount / 200));
 
     return {
-      slug: slug || `post-${Date.now()}`,
+      slug: slugSource || `post-${Date.now()}`,
       title,
-      excerpt: metaDes || title,
+      excerpt: metaDes,
       coverImage,
       coverImageAlt: `${title} - Tech Analysis`,
       date: new Date().toISOString().split('T')[0],
@@ -345,8 +539,10 @@ export default function PortalDeskClient({ initialPosts }: Props) {
         bio: 'Distributed systems researcher writing on microarchitectures, cloud infrastructure, and intelligent automation.',
       },
       readTime: `${minutes} min read`,
-      tags: targetKeyword ? [targetKeyword, 'Software Engineering', 'Technology'] : ['Software Engineering', 'Technology', 'Architecture'],
-      content: htmlContent,
+      tags: targetKeyword
+        ? [targetKeyword, 'Software Engineering', 'Technology']
+        : ['Software Engineering', 'Technology', 'Architecture'],
+      content: htmlContent || '<p>Article content could not be rendered.</p>',
     };
   };
 
@@ -357,6 +553,7 @@ export default function PortalDeskClient({ initialPosts }: Props) {
 
     try {
       let rawContent = '';
+      let rawHtml = '';
       const extractedImages: string[] = [];
 
       if (docsImportMode === 'paste') {
@@ -374,7 +571,40 @@ export default function PortalDeskClient({ initialPosts }: Props) {
           throw new Error('Invalid Google Docs URL. Please make sure it looks like docs.google.com/document/d/...');
         }
 
-        // 1. Fetch TXT content
+        // 1. Fetch HTML content (Contains full hyperlinks, headings structure, and embedded images)
+        const exportHtmlUrl = `https://docs.google.com/document/d/${docId}/export?format=html`;
+        const proxyHtmlUrls = [
+          exportHtmlUrl,
+          `https://corsproxy.io/?${encodeURIComponent(exportHtmlUrl)}`,
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(exportHtmlUrl)}`,
+        ];
+
+        for (const url of proxyHtmlUrls) {
+          try {
+            const res = await fetch(url);
+            if (res.ok) {
+              const html = await res.text();
+              if (html && html.length > 50) {
+                rawHtml = html;
+
+                // Extract all img src attributes
+                const imgRegex = /<img[^>]+src=["']([^"']+)["']/gi;
+                let match;
+                while ((match = imgRegex.exec(html)) !== null) {
+                  const src = match[1];
+                  if (src && !extractedImages.includes(src)) {
+                    extractedImages.push(src);
+                  }
+                }
+                break;
+              }
+            }
+          } catch {
+            // try next proxy
+          }
+        }
+
+        // 2. Fetch TXT content as auxiliary fallback
         const exportTxtUrl = `https://docs.google.com/document/d/${docId}/export?format=txt`;
         const proxyTxtUrls = [
           exportTxtUrl,
@@ -397,45 +627,15 @@ export default function PortalDeskClient({ initialPosts }: Props) {
           }
         }
 
-        // 2. Fetch HTML content to extract embedded images (base64 or URLs)
-        const exportHtmlUrl = `https://docs.google.com/document/d/${docId}/export?format=html`;
-        const proxyHtmlUrls = [
-          exportHtmlUrl,
-          `https://corsproxy.io/?${encodeURIComponent(exportHtmlUrl)}`,
-          `https://api.allorigins.win/raw?url=${encodeURIComponent(exportHtmlUrl)}`,
-        ];
-
-        for (const url of proxyHtmlUrls) {
-          try {
-            const res = await fetch(url);
-            if (res.ok) {
-              const html = await res.text();
-              if (html && html.includes('<img')) {
-                // Extract all img src attributes
-                const imgRegex = /<img[^>]+src=["']([^"']+)["']/gi;
-                let match;
-                while ((match = imgRegex.exec(html)) !== null) {
-                  const src = match[1];
-                  if (src && !extractedImages.includes(src)) {
-                    extractedImages.push(src);
-                  }
-                }
-                break;
-              }
-            }
-          } catch {
-            // try next proxy
-          }
-        }
-
-        if (!rawContent) {
+        if (!rawHtml && !rawContent) {
           throw new Error(
             'Could not auto-fetch from Google Docs export URL (Google requires the document to be "Anyone with the link can view"). You can switch to "Direct Paste Content" tab or verify the link is public.'
           );
         }
       }
 
-      const importedPost = parseDocTextToPost(
+      const importedPost = parseGoogleDocToPost(
+        rawHtml,
         rawContent,
         extractedImages,
         docsCustomImageInput
@@ -447,7 +647,10 @@ export default function PortalDeskClient({ initialPosts }: Props) {
       setDocsUrlInput('');
       setDocsRawTextInput('');
       setDocsCustomImageInput('');
-      showNotice(`Successfully imported "${importedPost.title}" with document images! Review & click "Save & Publish" to post it live.`, 'success');
+      showNotice(
+        `Successfully imported "${importedPost.title}"! Title set from H1, Slug generated from SEO Title, hyperlinks & images preserved. Review & click "Save & Publish".`,
+        'success'
+      );
     } catch (err: any) {
       showNotice(err.message || 'Failed to import document.', 'error');
     } finally {
