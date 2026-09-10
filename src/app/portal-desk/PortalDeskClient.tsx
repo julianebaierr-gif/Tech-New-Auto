@@ -77,6 +77,7 @@ export default function PortalDeskClient({ initialPosts }: Props) {
   const [activeTab, setActiveTab] = useState<'posts' | 'settings'>('posts');
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [isNewPost, setIsNewPost] = useState<boolean>(false);
+  const [showPreviewModal, setShowPreviewModal] = useState<boolean>(false);
 
   // Google Docs Import state
   const [showDocsModal, setShowDocsModal] = useState(false);
@@ -1095,6 +1096,16 @@ export default function PortalDeskClient({ initialPosts }: Props) {
                 </div>
 
                 <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowPreviewModal(true)}
+                    className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition flex items-center gap-2 shadow-sm"
+                    title="Live preview dekhein k article publish hone k bad kaisa lagega"
+                  >
+                    <Eye className="w-4 h-4 text-blue-400" />
+                    <span>Preview Article</span>
+                  </button>
+
                   {!isNewPost && (
                     <button
                       type="button"
@@ -1680,6 +1691,152 @@ export default function PortalDeskClient({ initialPosts }: Props) {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Article Live Preview Modal */}
+      {showPreviewModal && editingPost && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
+          <div className="relative w-full max-w-4xl bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
+            {/* Modal Header */}
+            <div className="p-4 sm:px-6 sm:py-4 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
+                  Live Article Preview (Overview Before Publishing)
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowPreviewModal(false);
+                    // trigger form submission
+                    const form = document.getElementById('post-editor-form') as HTMLFormElement;
+                    if (form) form.requestSubmit();
+                  }}
+                  disabled={isProcessing}
+                  className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-blue-600/30"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  <span>Publish Directly</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowPreviewModal(false)}
+                  className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition"
+                  title="Close Preview"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Body: Article Public Page Simulation */}
+            <div className="flex-1 overflow-y-auto p-6 sm:p-10 space-y-8 bg-slate-950">
+              {/* Category & Date */}
+              <div className="flex flex-wrap items-center gap-3 text-xs">
+                <span className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 font-semibold uppercase tracking-wider">
+                  {editingPost.category}
+                </span>
+                <span className="text-slate-400 flex items-center gap-1">
+                  <Calendar className="w-3.5 h-3.5" />
+                  {editingPost.date}
+                </span>
+                <span className="text-slate-400">&bull;</span>
+                <span className="text-slate-400">{editingPost.readTime || '5 min read'}</span>
+              </div>
+
+              {/* Title */}
+              <h1 className="text-2xl sm:text-4xl font-extrabold text-white leading-tight tracking-tight">
+                {editingPost.title || 'Untitled Article'}
+              </h1>
+
+              {/* Meta Description / Excerpt Box */}
+              {editingPost.excerpt && (
+                <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-slate-300 text-sm italic leading-relaxed">
+                  <span className="font-bold not-italic text-slate-400 mr-2 text-xs uppercase tracking-wider">
+                    Meta Description / Excerpt:
+                  </span>
+                  {editingPost.excerpt}
+                </div>
+              )}
+
+              {/* Author Info */}
+              <div className="flex items-center gap-3.5 py-4 border-y border-slate-800/80">
+                <img
+                  src={editingPost.author?.avatar || 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=80'}
+                  alt={editingPost.author?.name || 'Author'}
+                  className="w-11 h-11 rounded-full object-cover ring-2 ring-blue-500/30"
+                />
+                <div>
+                  <h4 className="text-sm font-bold text-white">
+                    {editingPost.author?.name || 'Editorial Team'}
+                  </h4>
+                  <p className="text-xs text-slate-400">
+                    {editingPost.author?.role || 'Contributing Tech Editor'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Featured Cover Image */}
+              {editingPost.coverImage && (
+                <div className="rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
+                  <img
+                    src={editingPost.coverImage}
+                    alt={editingPost.coverImageAlt || editingPost.title}
+                    className="w-full h-auto max-h-[460px] object-cover"
+                  />
+                  <div className="p-2.5 bg-slate-900 text-center text-[11px] text-slate-500 font-mono">
+                    Featured Image URL: {editingPost.coverImage.slice(0, 80)}...
+                  </div>
+                </div>
+              )}
+
+              {/* Rendered HTML Content */}
+              <div className="prose prose-invert max-w-none prose-headings:text-white prose-p:text-slate-300 prose-p:leading-relaxed prose-li:text-slate-300 prose-a:text-blue-400 prose-a:underline hover:prose-a:text-blue-300 prose-img:rounded-2xl prose-img:border prose-img:border-slate-800">
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: editingPost.content || '<p className="text-slate-500 italic">No content written yet.</p>',
+                  }}
+                />
+              </div>
+
+              {/* Tags & Slug Footer */}
+              <div className="pt-6 border-t border-slate-800/80 space-y-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs text-slate-400 font-bold uppercase tracking-wider mr-1">
+                    Tags:
+                  </span>
+                  {(editingPost.tags || []).map((t, idx) => (
+                    <span
+                      key={idx}
+                      className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 font-medium"
+                    >
+                      #{t}
+                    </span>
+                  ))}
+                </div>
+                <div className="text-xs text-slate-500 font-mono">
+                  Slug (URL path): <span className="text-blue-400">/{editingPost.slug}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 bg-slate-950 border-t border-slate-800 flex items-center justify-between shrink-0">
+              <span className="text-xs text-slate-400">
+                Agar sab theek lage to &quot;Close &amp; Save&quot; ya &quot;Publish Directly&quot; par click karein.
+              </span>
+              <button
+                type="button"
+                onClick={() => setShowPreviewModal(false)}
+                className="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition"
+              >
+                Close Preview
+              </button>
+            </div>
           </div>
         </div>
       )}
