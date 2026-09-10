@@ -108,20 +108,20 @@ export default function HomePage() {
         <div className="section-line">
           <span className="section-tag-box">Artificial Intelligence & Computing</span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {(aiPosts.length > 0 ? aiPosts : generalPosts.slice(0, 3)).map((post) => (
             <article
               key={post.slug}
               className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-blue-500 hover:shadow-lg transition flex flex-col group"
             >
-              <div className="h-48 relative overflow-hidden bg-slate-100">
+              <div className="h-44 sm:h-48 relative overflow-hidden bg-slate-100">
                 <img
                   src={post.coverImage}
                   alt={post.coverImageAlt || post.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />
               </div>
-              <div className="p-5 flex flex-col flex-1">
+              <div className="p-4 sm:p-5 flex flex-col flex-1">
                 <span className="text-[11px] font-bold uppercase text-blue-600 mb-2">
                   {post.category}
                 </span>
@@ -146,20 +146,20 @@ export default function HomePage() {
         <div className="section-line">
           <span className="section-tag-box">Software Engineering & Web</span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {(webPosts.length > 0 ? webPosts : generalPosts.slice(3, 6)).map((post) => (
             <article
               key={post.slug}
               className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-blue-500 hover:shadow-lg transition flex flex-col group"
             >
-              <div className="h-48 relative overflow-hidden bg-slate-100">
+              <div className="h-44 sm:h-48 relative overflow-hidden bg-slate-100">
                 <img
                   src={post.coverImage}
                   alt={post.coverImageAlt || post.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />
               </div>
-              <div className="p-5 flex flex-col flex-1">
+              <div className="p-4 sm:p-5 flex flex-col flex-1">
                 <span className="text-[11px] font-bold uppercase text-blue-600 mb-2">
                   {post.category}
                 </span>
@@ -184,20 +184,20 @@ export default function HomePage() {
         <div className="section-line">
           <span className="section-tag-box">Hardware, Semiconductors & Quantum</span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {(hardwarePosts.length > 0 ? hardwarePosts : generalPosts.slice(0, 3)).map((post) => (
             <article
               key={post.slug}
               className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-blue-500 hover:shadow-lg transition flex flex-col group"
             >
-              <div className="h-48 relative overflow-hidden bg-slate-100">
+              <div className="h-44 sm:h-48 relative overflow-hidden bg-slate-100">
                 <img
                   src={post.coverImage}
                   alt={post.coverImageAlt || post.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />
               </div>
-              <div className="p-5 flex flex-col flex-1">
+              <div className="p-4 sm:p-5 flex flex-col flex-1">
                 <span className="text-[11px] font-bold uppercase text-blue-600 mb-2">
                   {post.category}
                 </span>

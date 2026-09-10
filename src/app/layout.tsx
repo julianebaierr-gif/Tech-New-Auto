@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import TopUtilityBar from "@/components/TopUtilityBar";
@@ -10,6 +10,14 @@ import Footer from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tech-new-auto.vercel.app";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: "#0f172a",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

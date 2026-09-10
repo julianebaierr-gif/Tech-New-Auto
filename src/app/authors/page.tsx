@@ -35,11 +35,11 @@ export default function AuthorsIndexPage() {
               className="bg-white rounded-3xl border border-slate-200 p-8 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
             >
               <div className="space-y-5">
-                <div className="flex items-start gap-5">
+                <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-5">
                   <img
                     src={author.avatar}
                     alt={author.name}
-                    className="h-24 w-24 rounded-2xl object-cover shrink-0 border-2 border-slate-100 group-hover:scale-105 transition duration-300 shadow-xs"
+                    className="h-20 w-20 sm:h-24 sm:w-24 rounded-2xl object-cover shrink-0 border-2 border-slate-100 group-hover:scale-105 transition duration-300 shadow-xs"
                   />
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 flex-wrap">
