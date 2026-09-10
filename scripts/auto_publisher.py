@@ -156,7 +156,9 @@ def fetch_keyword_from_sheet():
                         return {
                             "keyword": kw,
                             "category": str(row.get("Category", "Technology")).strip() or "Technology",
-                            "tags": [t.strip() for t in str(row.get("Tags", "")).split(",") if t.strip()]
+                            "tags": [t.strip() for t in str(row.get("Tags", "")).split(",") if t.strip()],
+                            "_sheet_row_idx": idx,
+                            "_gspread_sheet": sheet
                         }
         except Exception as e:
             print(f"[WARN] Error with gspread: {e}")
@@ -760,7 +762,51 @@ def main():
     with open(target_file, "w", encoding="utf-8") as f:
         json.dump(post_record, f, indent=2)
 
-    # Update Google Sheet if Webhook URL provided
+    site_base_url = os.environ.get("SITE_URL") or "https://tech-new-auto.vercel.app"
+    post_url = f"{site_base_url.rstrip('/')}/{slug}"
+    post_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # 1. Update directly via Google Sheets Service Account (gspread) if active
+    if keyword_data.get("_gspread_sheet") and keyword_data.get("_sheet_row_idx"):
+        try:
+            sheet = keyword_data["_gspread_sheet"]
+            row_idx = keyword_data["_sheet_row_idx"]
+            headers = [h.strip().lower() for h in sheet.row_values(1)]
+            
+            # Find and update Category column if empty
+            if "category" in headers:
+                cat_col = headers.index("category") + 1
+                sheet.update_cell(row_idx, cat_col, post_record["category"])
+            
+            # Find and update Tags column
+            if "tags" in headers:
+                tags_col = headers.index("tags") + 1
+                sheet.update_cell(row_idx, tags_col, ", ".join(post_record["tags"]))
+                
+            # Find and update Status column
+            if "status" in headers:
+                status_col = headers.index("status") + 1
+                sheet.update_cell(row_idx, status_col, "Published")
+
+            # Find and update 'Post Url' column
+            for url_name in ["post url", "post_url", "url", "post link"]:
+                if url_name in headers:
+                    url_col = headers.index(url_name) + 1
+                    sheet.update_cell(row_idx, url_col, post_url)
+                    print(f"[SUCCESS] Google Sheet row {row_idx} Post Url updated: {post_url}")
+                    break
+
+            # Find and update 'Post Date / Tmie' column
+            for date_name in ["post date / tmie", "post date/time", "post date", "post date / time", "date"]:
+                if date_name in headers:
+                    date_col = headers.index(date_name) + 1
+                    sheet.update_cell(row_idx, date_col, post_date_time)
+                    print(f"[SUCCESS] Google Sheet row {row_idx} Post Date / Tmie updated: {post_date_time}")
+                    break
+        except Exception as gs_err:
+            print(f"[WARN] Error updating Google Sheet via gspread: {gs_err}")
+
+    # 2. Update Google Sheet via Webhook URL if provided
     webhook_url = os.environ.get("GOOGLE_SHEET_WEBHOOK_URL")
     if webhook_url:
         try:
@@ -769,13 +815,20 @@ def main():
                 "keyword": keyword_data["keyword"],
                 "category": post_record["category"],
                 "tags": post_record["tags"],
-                "status": "Published"
+                "status": "Published",
+                "postUrl": post_url,
+                "post_url": post_url,
+                "url": post_url,
+                "postDate": post_date_time,
+                "postDateTime": post_date_time,
+                "post_date_time": post_date_time,
+                "date": post_date_time
             }
             # Google Apps Script requires allow_redirects=True (handles 302 redirect)
             webhook_res = requests.post(webhook_url, json=payload, timeout=20, allow_redirects=True)
             print(f"[SUCCESS] Google Sheet Webhook response code: {webhook_res.status_code}, content: {webhook_res.text.strip()[:100]}")
         except Exception as wh_err:
-            print(f"[WARN] Failed to sync to Google Sheet: {wh_err}")
+            print(f"[WARN] Failed to sync to Google Sheet Webhook: {wh_err}")
     else:
         print("[INFO] No GOOGLE_SHEET_WEBHOOK_URL provided in environment.")
 
