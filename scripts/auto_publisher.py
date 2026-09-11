@@ -464,10 +464,10 @@ Respond ONLY with valid JSON:
 SPECIAL LISTICLE NUMBERING AND STRUCTURE RULES (EXACTLY {list_count} POINTS):
 - The article is a curated listicle of {list_count} items for: "{kw}".
 - DO NOT create individual <h2> tags for each point!
-- Instead, create ONE overarching <h2> heading introducing the list (e.g. <h2>Top {list_count} Technologies and Breakthroughs</h2>), followed by an introductory paragraph.
+- Instead, create ONE overarching <h2> heading introducing the list (e.g. <h2>Top {list_count} Technologies and Breakthroughs</h2>), followed by a comprehensive introductory paragraph.
 - Then, write EACH of the {list_count} points ONLY as an <h3> tag (e.g. <h3>1. Name of Tool or Tip</h3>, <h3>2. Name of Tool or Tip</h3>, ..., <h3>{list_count}. Name of Tool or Tip</h3>).
 - NEVER duplicate or repeat the same heading twice (e.g. NEVER write <h2>1. Superconductors</h2><h3>1. Superconductors</h3>). That is a critical syntax error!
-- Each numbered <h3> must be followed by a thorough, in-depth evaluation and breakdown (<p>...</p> paragraphs, features, pros, use cases).
+- Each numbered <h3> MUST be followed by an expansive, deep technical evaluation (at least 2 to 3 substantive <p>...</p> paragraphs covering operational mechanics, real-world utility, concrete pros/cons, and specific production use cases). DO NOT write brief or shallow 1-paragraph summaries.
 - DO NOT create any <h4> headings under these {list_count} points. Keep the structure clean and readable just like top tech publication reviews.
 - Close the article with an <h2> "Field Notes and Implementation Realities" section before FAQs.
 """
@@ -475,9 +475,9 @@ SPECIAL LISTICLE NUMBERING AND STRUCTURE RULES (EXACTLY {list_count} POINTS):
         write_structure_rule = """
 FLEXIBLE EDITORIAL STRUCTURE & NATURAL FLOW:
 1. CONTENT PARAGRAPH UNDER EVERY HEADING:
-   - When an H2 is followed by an H3, always write a brief framing paragraph (<p>...</p>) under the H2 before the first H3.
-   - If an H2 has NO H3 subsections, simply write 2 to 3 substantive, well-structured paragraphs directly under that H2.
-   - H3 subsections should only have H4s if deep technical breakdown or parameter specs are required. If an H3 is already self-contained, do NOT force an H4.
+   - When an H2 is followed by an H3, always write a comprehensive framing paragraph (<p>...</p>) under the H2 before the first H3.
+   - If an H2 has NO H3 subsections, write 3 to 4 substantive, deeply informative paragraphs directly under that H2.
+   - H3 subsections should only have H4s if deep technical breakdown or parameter specs are required. If an H3 is already self-contained, write 2 to 3 rich paragraphs without forcing an H4.
    - NEVER leave empty stacked headings (e.g. an H2 immediately followed by an H3 with no content between them).
 
 2. NO HIERARCHICAL PREFIX NUMBERING:
@@ -490,10 +490,11 @@ FLEXIBLE EDITORIAL STRUCTURE & NATURAL FLOW:
    - A human reader should feel they are learning directly from a battle-tested Senior Staff Engineer.
 """
 
-    # Dynamic word count variation (800 - 1200 words) so articles don't have identical lengths
+    # Dynamic word count variation targeting comprehensive, long-form depth (1350 - 1850 words)
+    # This keeps users actively reading and engaged on the website for significantly longer dwell time
     import random
-    target_words = random.choice([850, 920, 980, 1050, 1120, 1180])
-    read_time_calc = f"{max(5, round(target_words / 150))} min read"
+    target_words = random.choice([1350, 1450, 1550, 1650, 1750, 1850])
+    read_time_calc = f"{max(7, round(target_words / 150))} min read"
 
     paa_prompt_block = ""
     if paa_questions_list:
@@ -513,8 +514,9 @@ SEMANTIC ENTITIES & LSI TOPICS TO NATURALLY INTEGRATE (for Google 2026 E-E-A-T &
 CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
 {write_structure_rule}
 
-1. CONTENT LENGTH & NATURAL VARIATION:
-   - Target word count: approximately {target_words} words (strictly within 800 to 1200 words).
+1. COMPREHENSIVE LONG-FORM CONTENT & MAXIMIZING USER DWELL TIME:
+   - Target word count: approximately {target_words} words (strictly within 1300 to 1900 words).
+   - Write thoroughly and deeply: unpack architectural trade-offs, practical configurations, real-world failure modes, and engineering workflows so the reader stays engaged and spends serious time reading on the site.
    - Ensure complete conceptual closure: the article must feel thoroughly researched, practical, and fully resolved.
    - Use rich semantic HTML: <p>, <ul><li>, <ol><li>, <blockquote>, and <strong>.
 
