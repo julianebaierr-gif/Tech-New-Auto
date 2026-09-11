@@ -483,14 +483,15 @@ FLEXIBLE EDITORIAL STRUCTURE & NATURAL FLOW:
 2. NO HIERARCHICAL PREFIX NUMBERING:
    - DO NOT write "1.", "1.1", "2.1", "3.2" anywhere in headings. Keep all headings clean, natural, and journalistic.
 
-3. HUMAN-GRADE WRITING (BAN ARTIFICIAL INTELLIGENCE CLICHES & BUZZWORDS):
-   - Do NOT write like a generic AI or textbook. Never sound repetitive or synthetic.
+3. HUMAN-GRADE WRITING (PREVENT GOOGLE PENALTIES & DE-INDEXING):
+   - Do NOT write like a generic AI or textbook. Never sound robotic, repetitive, or synthetic.
    - BANNED CLICHES & ROBOTIC TITLE WORDS (NEVER USE ANY OF THESE):
      * "Comprehensive", "Guide", "Ultimate Guide", "Navigating", "Demystifying", "Unpacking", "Delving", "A Deep Dive"
      * "In today's fast-paced digital world", "Tapestry", "Testament", "Crucial component", "Beacon", "Pivotal"
      * "It is important to remember", "In conclusion", "As we look ahead"
-   - Use crisp, authentic, engaging active voice with real-world tech examples, concrete tradeoffs, and engineering insights.
-   - A human reader should feel they are reading an article written by a battle-tested human Principal Engineer, NOT an automated bot.
+   - Use crisp, authentic, engaging active voice with vivid real-world tech examples, concrete tradeoffs, and direct insights.
+   - Avoid generic buzzword stuffing and repetitive sentence structures.
+   - A human reader must feel they are learning directly from a battle-tested Senior Staff Engineer, strictly protecting the site from Google Helpful Content penalties and de-indexing.
 """
 
     # Dynamic word count variation targeting comprehensive, long-form depth (1350 - 1850 words)
