@@ -544,9 +544,13 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
    - NEVER cut words in half. The headline must read like a complete, natural sentence or title.
    - NEVER include any years (such as 2025, 2026, etc.). Evergreen content only.
 
-5. META DESCRIPTION (EXCERPT):
+5. META DESCRIPTION (EXCERPT - STRICTLY NO REPETITIVE AI WORDS):
    - Must directly mention "{kw}".
    - Strictly between 150 and 155 characters in length. Complete sentence, never truncated.
+   - BANNED META DESCRIPTION STARTERS & CLICHES (NEVER USE):
+     * NEVER start with "Discover", "Explore", "Uncover", "Dive into", "Unlock", "Delve into", "Learn how"
+     * NEVER use words like "pipelines", "tapestry", "crucial", "testament"
+   - Write a direct, engaging human hook summarizing what the reader actually gains (e.g. "An in-depth look at how {kw} operates in real production setups, detailing concrete trade-offs, architecture choices, and benchmarks.")
 
 6. FREQUENTLY ASKED QUESTIONS (REAL GOOGLE 'PEOPLE ALSO ASK' / FAQPAGE SCHEMA):
    - You MUST provide between 5 to 8 FAQs (minimum 5, maximum 8).
@@ -695,6 +699,16 @@ def main():
 
     def clean_excerpt(text):
         cleaned = clean_dashes(remove_years(text)).strip()
+        # Clean repetitive robotic AI starter verbs
+        cleaned = re.sub(r'^(Discover\s+how|Discover\s+the|Discover|Explore\s+how|Explore\s+the|Explore|Uncover\s+how|Uncover\s+the|Uncover|Unlock\s+how|Unlock\s+the|Unlock|Delve\s+into\s+how|Delve\s+into)\s+', '', cleaned, flags=re.IGNORECASE).strip()
+        # Ensure first character is capitalized after stripping
+        if cleaned:
+            cleaned = cleaned[0].upper() + cleaned[1:]
+        # Replace repetitive jargon like "pipelines" with more natural terms if present
+        cleaned = re.sub(r'\bneural hardware pipelines\b', 'neural hardware architectures', cleaned, flags=re.IGNORECASE)
+        cleaned = re.sub(r'\bhardware pipelines\b', 'hardware architectures', cleaned, flags=re.IGNORECASE)
+        cleaned = re.sub(r'\bpipelines\b', 'systems', cleaned, flags=re.IGNORECASE)
+        cleaned = re.sub(r'\bpipeline\b', 'system', cleaned, flags=re.IGNORECASE)
         # Ensure it ends with proper terminal punctuation
         if not cleaned.endswith(('.', '!', '?')):
             cleaned = cleaned.rstrip('.,;:- ') + '.'
