@@ -518,13 +518,17 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
    - Ensure complete conceptual closure: the article must feel thoroughly researched, practical, and fully resolved.
    - Use rich semantic HTML: <p>, <ul><li>, <ol><li>, <blockquote>, and <strong>.
 
-2. MANDATORY PRE-FAQ CLOSING H2 ("Final Thoughts & Practitioner Perspective"):
+2. FIRST PARAGRAPH KEYWORD INTEGRATION (CRITICAL SEO):
+   - You MUST seamlessly and naturally integrate the exact target keyword "{kw}" (or its natural primary phrase) within the VERY FIRST PARAGRAPH (<p>...</p>) of the article.
+   - It MUST read 100% naturally, engagingly, and contextually — NEVER forced, stuffed, or awkward. It should immediately signal topic authority to both Google algorithms and human readers.
+
+3. MANDATORY PRE-FAQ CLOSING H2 ("Final Thoughts & Practitioner Perspective"):
    - Directly before the article ends (before FAQs), you MUST include an overarching <h2> section titled with a natural, varied name such as:
      "Final Thoughts and Engineering Takeaways", "Key Takeaways and Architectural Verdict", "Field Notes and Implementation Realities", or "Architectural Verdict: Practical Considerations".
    - Under this <h2>, write 1-2 rich paragraphs sharing REAL PRACTITIONER/HUMAN EXPERIENCE (e.g. real-world trade-offs observed in production, common pitfalls teams hit when migrating, latency vs cost realities, or hands-on benchmarks).
    - This directly builds Google E-E-A-T trust, stops boring generic text, and prevents Google helpful content penalties.
 
-3. TITLE REQUIREMENT:
+4. TITLE REQUIREMENT:
    - Must naturally feature or strictly relate to "{kw}".
    - Complete the title into a concise, professional, and SEO-friendly headline.
    - Understand the article's topic, audience, and main focus, then craft the most natural, engaging, and relevant ending.
@@ -533,20 +537,20 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
    - NEVER cut words in half. The headline must read like a complete, natural sentence or title.
    - NEVER include any years (such as 2025, 2026, etc.). Evergreen content only.
 
-4. META DESCRIPTION (EXCERPT):
+5. META DESCRIPTION (EXCERPT):
    - Must directly mention "{kw}".
    - Strictly between 150 and 155 characters in length. Complete sentence, never truncated.
 
-5. FREQUENTLY ASKED QUESTIONS (REAL GOOGLE 'PEOPLE ALSO ASK' / FAQPAGE SCHEMA):
+6. FREQUENTLY ASKED QUESTIONS (REAL GOOGLE 'PEOPLE ALSO ASK' / FAQPAGE SCHEMA):
    - You MUST provide between 5 to 8 FAQs (minimum 5, maximum 8).
    - Questions MUST be the exact high-intent questions that 99% of real people actually search on Google for "{kw}" (real Google 'People Also Ask' style).
    - Ensure questions cover common practical doubts, beginner confusions, implementation concerns, cost/safety/troubleshooting, and comparative decisions.
    - Each answer must be directly HELPFUL, clear, concise, and structured for Google Featured Snippets (strictly 25 to 45 words or 1 to 2 direct sentences).
    - NEVER write generic fluff, filler, or duplicate questions. Every single FAQ must solve a real user query directly.
 
-6. NO DASHES: Do NOT use any em-dashes (— or –). Use clean commas, colons, or parentheses.
+7. NO DASHES: Do NOT use any em-dashes (— or –). Use clean commas, colons, or parentheses.
 
-7. STRICTLY ONE AUTHORITATIVE EXTERNAL REFERENCE (SEO & GOOGLE E-E-A-T):
+8. STRICTLY ONE AUTHORITATIVE EXTERNAL REFERENCE (SEO & GOOGLE E-E-A-T):
    - You MUST include EXACTLY ONE highly credible, authoritative external reference citation directly relevant to "{kw}".
    - Acceptable domains: official documentation, research papers, or industry-standard bodies (e.g. w3.org, wikipedia.org, arxiv.org, nist.gov, ietf.org, github.com, apache.org, cisa.gov, acm.org, ieee.org, aws.amazon.com, cloud.google.com, openai.com, developer.mozilla.org).
    - The link MUST be woven naturally into the body text (e.g. inside a relevant paragraph using `<a href="https://..." target="_blank" rel="noopener noreferrer" class="text-blue-600 font-semibold hover:underline">Anchor Text</a>`).
