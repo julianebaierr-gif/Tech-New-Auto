@@ -483,11 +483,14 @@ FLEXIBLE EDITORIAL STRUCTURE & NATURAL FLOW:
 2. NO HIERARCHICAL PREFIX NUMBERING:
    - DO NOT write "1.", "1.1", "2.1", "3.2" anywhere in headings. Keep all headings clean, natural, and journalistic.
 
-3. HUMAN-GRADE WRITING (PREVENT GOOGLE PENALTIES & DE-INDEXING):
-   - Do NOT write like a boring textbook or robotic AI summary.
-   - Use crisp, engaging, active voice with vivid real-world tech examples, concrete tradeoffs, and direct insights.
-   - Avoid generic buzzword stuffing ("In today's fast-paced digital world", "Delve into", "Tapestry", "Crucial component").
-   - A human reader should feel they are learning directly from a battle-tested Senior Staff Engineer.
+3. HUMAN-GRADE WRITING (BAN ARTIFICIAL INTELLIGENCE CLICHES & BUZZWORDS):
+   - Do NOT write like a generic AI or textbook. Never sound repetitive or synthetic.
+   - BANNED CLICHES & ROBOTIC TITLE WORDS (NEVER USE ANY OF THESE):
+     * "Comprehensive", "Guide", "Ultimate Guide", "Navigating", "Demystifying", "Unpacking", "Delving", "A Deep Dive"
+     * "In today's fast-paced digital world", "Tapestry", "Testament", "Crucial component", "Beacon", "Pivotal"
+     * "It is important to remember", "In conclusion", "As we look ahead"
+   - Use crisp, authentic, engaging active voice with real-world tech examples, concrete tradeoffs, and engineering insights.
+   - A human reader should feel they are reading an article written by a battle-tested human Principal Engineer, NOT an automated bot.
 """
 
     # Dynamic word count variation targeting comprehensive, long-form depth (1350 - 1850 words)
@@ -502,7 +505,7 @@ FLEXIBLE EDITORIAL STRUCTURE & NATURAL FLOW:
 
     write_prompt = f"""
 You are a Principal Software Engineer and elite tech journalist writing for TechPulse Magazine.
-Write a comprehensive, compelling, deeply engaging, and SEO-optimized technical article on: "{kw}".
+Write an authentic, highly detailed, deeply engaging, and SEO-optimized technical article on: "{kw}".
 {avoid_titles_block}
 
 OUTLINE TO EXPAND:
@@ -514,7 +517,7 @@ SEMANTIC ENTITIES & LSI TOPICS TO NATURALLY INTEGRATE (for Google 2026 E-E-A-T &
 CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
 {write_structure_rule}
 
-1. COMPREHENSIVE LONG-FORM CONTENT & MAXIMIZING USER DWELL TIME:
+1. IN-DEPTH LONG-FORM CONTENT & MAXIMIZING USER DWELL TIME:
    - Target word count: approximately {target_words} words (strictly within 1300 to 1900 words).
    - Write thoroughly and deeply: unpack architectural trade-offs, practical configurations, real-world failure modes, and engineering workflows so the reader stays engaged and spends serious time reading on the site.
    - Ensure complete conceptual closure: the article must feel thoroughly researched, practical, and fully resolved.
@@ -530,10 +533,11 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
    - Under this <h2>, write 1-2 rich paragraphs sharing REAL PRACTITIONER/HUMAN EXPERIENCE (e.g. real-world trade-offs observed in production, common pitfalls teams hit when migrating, latency vs cost realities, or hands-on benchmarks).
    - This directly builds Google E-E-A-T trust, stops boring generic text, and prevents Google helpful content penalties.
 
-4. TITLE REQUIREMENT:
+4. TITLE REQUIREMENT (STRICTLY NO AI WORDS):
    - Must naturally feature or strictly relate to "{kw}".
-   - Complete the title into a concise, professional, and SEO-friendly headline.
-   - Understand the article's topic, audience, and main focus, then craft the most natural, engaging, and relevant ending.
+   - Complete the title into a punchy, professional, and editorial headline.
+   - STRICTLY FORBIDDEN WORDS IN TITLE: NEVER use "Comprehensive", "Guide", "A Guide to", "Navigating", "Demystifying", "Unpacking", "Deep Dive", or "Ultimate".
+   - Craft natural, human editorial headlines (e.g. "Cybersecurity Tools: Architectural Realities in Production", "Evaluating Modern Machine Learning Frameworks", "Production Lessons from Distributed Caching").
    - DO NOT force fixed phrases (like "for Modern Systems" or "Guide and Analysis").
    - Strictly between 50 and 65 characters in length (optimal SEO headline range, never truncating mid-thought).
    - NEVER cut words in half. The headline must read like a complete, natural sentence or title.
@@ -672,6 +676,12 @@ def main():
 
     def clean_title(title):
         cleaned = clean_dashes(remove_years(title)).strip()
+        # Clean common robotic AI buzzword prefixes/words if accidentally produced
+        ai_words_pattern = r'\b(Comprehensive\s+Guide\s+to|The\s+Ultimate\s+Guide\s+to|A\s+Comprehensive\s+Guide\s+to|Ultimate\s+Guide\s+to|Comprehensive|Ultimate\s+Guide|Navigating\s+the|Navigating|Demystifying|Unpacking)\b\s*'
+        cleaned = re.sub(ai_words_pattern, '', cleaned, flags=re.IGNORECASE).strip()
+        # Ensure first character is capitalized
+        if cleaned:
+            cleaned = cleaned[0].upper() + cleaned[1:]
         # Google search title optimal limit is ~65 chars.
         # If Gemini generated over 68 characters, cleanly trim at the last word boundary before 65
         if len(cleaned) > 68:
