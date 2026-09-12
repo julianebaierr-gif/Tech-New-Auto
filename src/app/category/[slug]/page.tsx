@@ -114,8 +114,8 @@ export default async function CategoryPage({ params }: Props) {
                 <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4 flex-1">
                   {post.excerpt}
                 </p>
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-                  <span className="font-semibold text-slate-700">{post.author.name}</span>
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
+                  <span className="font-semibold text-slate-800">{post.author.name}</span>
                   <span>{post.date}</span>
                 </div>
               </div>

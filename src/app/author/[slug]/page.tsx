@@ -167,7 +167,7 @@ export default async function AuthorProfilePage({ params }: Props) {
                   <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4 flex-1">
                     {post.excerpt}
                   </p>
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-medium text-slate-600">
                     <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {post.date}</span>
                     <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {post.readTime}</span>
                   </div>

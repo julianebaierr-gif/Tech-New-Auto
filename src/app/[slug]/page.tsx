@@ -357,7 +357,7 @@ export default async function BlogPostPage({ params }: Props) {
                   </span>
                 </div>
                 <div className="p-4 flex flex-col flex-1">
-                  <div className="flex items-center gap-2 text-[11px] text-slate-400 mb-2">
+                  <div className="flex items-center gap-2 text-[11px] text-slate-600 font-medium mb-2">
                     <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {rel.date}</span>
                     <span>&bull;</span>
                     <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {rel.readTime}</span>

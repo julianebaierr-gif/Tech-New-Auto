@@ -66,9 +66,9 @@ export default function HomePage() {
                     </div>
                   );
                 })()}
-                <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-100 text-xs text-slate-500">
-                  <span>By <strong className="text-slate-800">{leadPost.author.name}</strong></span>
-                  <span>{leadPost.date}</span>
+                <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-100 text-xs text-slate-600">
+                  <span>By <strong className="text-slate-900 font-semibold">{leadPost.author.name}</strong></span>
+                  <span className="font-medium text-slate-600">{leadPost.date}</span>
                 </div>
               </div>
             </article>
@@ -95,7 +95,7 @@ export default function HomePage() {
                   <h3 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-blue-600 transition line-clamp-2 leading-snug mb-1">
                     <Link href={`/${post.slug}`}>{post.title}</Link>
                   </h3>
-                  <span className="text-[11px] text-slate-400">{post.date}</span>
+                  <span className="text-[11px] font-medium text-slate-600">{post.date}</span>
                 </div>
               </article>
             ))}
@@ -131,8 +131,8 @@ export default function HomePage() {
                 <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4 flex-1">
                   {post.excerpt}
                 </p>
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-                  <span className="font-semibold text-slate-700">{post.author.name}</span>
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
+                  <span className="font-semibold text-slate-800">{post.author.name}</span>
                   <span>{post.date}</span>
                 </div>
               </div>
@@ -169,8 +169,8 @@ export default function HomePage() {
                 <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4 flex-1">
                   {post.excerpt}
                 </p>
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-                  <span className="font-semibold text-slate-700">{post.author.name}</span>
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
+                  <span className="font-semibold text-slate-800">{post.author.name}</span>
                   <span>{post.date}</span>
                 </div>
               </div>
@@ -207,8 +207,8 @@ export default function HomePage() {
                 <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4 flex-1">
                   {post.excerpt}
                 </p>
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-                  <span className="font-semibold text-slate-700">{post.author.name}</span>
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
+                  <span className="font-semibold text-slate-800">{post.author.name}</span>
                   <span>{post.date}</span>
                 </div>
               </div>
