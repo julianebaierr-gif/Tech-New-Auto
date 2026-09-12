@@ -162,7 +162,7 @@ export default function MainNavbar() {
 
             <div className="pt-3 border-t border-slate-100">
               <span className="text-[11px] font-black uppercase tracking-widest text-slate-400 block px-2 mb-2">
-                TechPulse Magazine
+                Com Pors
               </span>
               <div className="grid grid-cols-2 gap-2 text-xs font-semibold">
                 <Link

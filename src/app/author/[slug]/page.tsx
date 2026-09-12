@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const author = getAuthorBySlug(slug);
   if (!author) return { title: "Author Not Found" };
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tech-new-auto.vercel.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://compors.com";
   const authorUrl = `${siteUrl}/author/${author.slug}`;
 
   return {
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props) {
     openGraph: {
       type: "profile",
       url: authorUrl,
-      title: `${author.name} | Staff Journalist & Analyst | TechPulse`,
+      title: `${author.name} | Staff Journalist & Analyst | Com Pors`,
       description: author.bio,
       images: [
         {
@@ -59,7 +59,7 @@ export default async function AuthorProfilePage({ params }: Props) {
   }
 
   const posts = getPostsByAuthor(author.name);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tech-new-auto.vercel.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://compors.com";
   const authorUrl = `${siteUrl}/author/${author.slug}`;
 
   const personSchema = {
@@ -72,7 +72,7 @@ export default async function AuthorProfilePage({ params }: Props) {
     url: authorUrl,
     worksFor: {
       "@type": "NewsMediaOrganization",
-      name: "TechPulse Magazine",
+      name: "Com Pors",
       url: siteUrl,
     },
     sameAs: [author.twitter, author.github].filter(Boolean),
@@ -121,7 +121,7 @@ export default async function AuthorProfilePage({ params }: Props) {
               <BookOpen className="h-3.5 w-3.5 text-blue-600" /> {posts.length} Articles Published
             </span>
             <span>&bull;</span>
-            <span>TechPulse Editorial Contributor</span>
+            <span>Com Pors Editorial Contributor</span>
           </div>
         </div>
       </div>

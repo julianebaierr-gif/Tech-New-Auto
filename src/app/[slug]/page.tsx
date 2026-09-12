@@ -72,7 +72,7 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   const relatedPosts = getRelatedPosts(post.slug, 6);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tech-new-auto.vercel.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://compors.com";
   const postUrl = `${siteUrl}/${post.slug}`;
   const authorSlug = post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   const authorUrl = `${siteUrl}/author/${authorSlug}`;
@@ -99,7 +99,7 @@ export default async function BlogPostPage({ params }: Props) {
     ],
     publisher: {
       "@type": "NewsMediaOrganization",
-      name: "TechPulse Magazine",
+      name: "Com Pors",
       url: siteUrl,
       logo: {
         "@type": "ImageObject",
@@ -231,7 +231,7 @@ export default async function BlogPostPage({ params }: Props) {
                 READ ALSO THIS &bull; RELATED INVESTIGATIVE REPORTS
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
-                Continue reading in-depth engineering coverage from TechPulse:
+                Continue reading in-depth engineering coverage from Com Pors:
               </p>
             </div>
             <ul className="divide-y divide-slate-200/80 mt-4 text-sm sm:text-base">

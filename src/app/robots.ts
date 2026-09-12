@@ -4,7 +4,7 @@ export const dynamic = 'force-static';
 export const revalidate = false;
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tech-new-auto.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://compors.com';
   return {
     rules: [
       {

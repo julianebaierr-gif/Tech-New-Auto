@@ -73,7 +73,7 @@ export function getAllPosts(): Post[] {
           createdAt: timestamp,
           category: data.category || 'Tech & AI',
           author: data.author || {
-            name: 'TechPulse AI',
+            name: 'Com Pors AI',
             avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
             role: 'Automated Tech Analyst',
           },

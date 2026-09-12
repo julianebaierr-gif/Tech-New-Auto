@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tech-new-auto.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://compors.com";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -22,8 +22,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "TechPulse | Leading Tech Intelligence, AI & Software Architecture",
-    template: "%s | TechPulse",
+    default: "Com Pors | Leading Tech Intelligence, AI & Systems Architecture",
+    template: "%s | Com Pors",
   },
   description: "Independent tech journalism reporting on emerging AI models, software architecture, semiconductors, cybersecurity, and future computing.",
 
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
     { name: "Cora Lee", url: `${siteUrl}/author/cora-lee` },
     { name: "Kellie Anne", url: `${siteUrl}/author/kellie-anne` },
   ],
-  creator: "TechPulse Magazine",
-  publisher: "TechPulse Editorial Board",
+  creator: "Com Pors",
+  publisher: "Com Pors Editorial Board",
   formatDetection: {
     email: false,
     address: false,
@@ -45,23 +45,23 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "TechPulse Magazine",
-    title: "TechPulse | Leading Tech Intelligence, AI & Software Architecture",
+    siteName: "Com Pors",
+    title: "Com Pors | Leading Tech Intelligence, AI & Systems Architecture",
     description: "Independent tech journalism reporting on emerging AI models, software architecture, semiconductors, cybersecurity, and future computing.",
     images: [
       {
         url: `${siteUrl}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "TechPulse Magazine - Leading Tech Intelligence and Engineering Insights",
+        alt: "Com Pors - Leading Tech Intelligence and Engineering Insights",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "TechPulse | Leading Tech Intelligence, AI & Software Architecture",
+    title: "Com Pors | Leading Tech Intelligence, AI & Systems Architecture",
     description: "Independent tech journalism reporting on emerging AI models, software architecture, semiconductors, cybersecurity, and future computing.",
-    creator: "@techpulse",
+    creator: "@compors",
     images: [`${siteUrl}/og-image.jpg`],
   },
   robots: {
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "NewsMediaOrganization",
-  name: "TechPulse Magazine",
+  name: "Com Pors",
   url: siteUrl,
   logo: {
     "@type": "ImageObject",

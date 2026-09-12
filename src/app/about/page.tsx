@@ -2,8 +2,8 @@ import { Cpu, Zap, Database, RefreshCw, Shield, Layers, CheckCircle2, Award, Fil
 import Link from "next/link";
 
 export const metadata = {
-  title: "About Our Journal & Editorial Standards | TechPulse",
-  description: "Meet the TechPulse editorial team, our rigorous fact-checking policies, E-E-A-T technical journalism standards, and our mission investigating modern computing frontiers.",
+  title: "About Our Journal & Editorial Standards | Com Pors",
+  description: "Meet the Com Pors editorial team, our rigorous fact-checking policies, E-E-A-T technical journalism standards, and our mission investigating modern computing frontiers.",
 };
 
 export default function AboutPage() {
@@ -15,10 +15,10 @@ export default function AboutPage() {
           Independent Tech Journal &amp; Laboratory
         </div>
         <h1 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
-          About TechPulse Editorial
+          About Com Pors Editorial
         </h1>
         <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-          TechPulse is an independent technology publication dedicated to deep technical reports, distributed systems breakdowns, software architecture guides, and artificial intelligence evaluations.
+          Com Pors is an independent technology publication dedicated to deep technical reports, distributed systems breakdowns, software architecture guides, and artificial intelligence evaluations.
         </p>
       </div>
 
@@ -50,10 +50,10 @@ export default function AboutPage() {
       <div className="space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed border-t border-slate-200 pt-10">
         <h2 className="text-3xl font-black text-slate-900 tracking-tight">Our Mission &amp; Purpose</h2>
         <p>
-          In an era dominated by superficial headlines and ungrounded marketing hype, software engineers, DevOps leads, system architects, and technical decision-makers need clear, verified, and deeply practical analysis. TechPulse was established to bridge that divide.
+          In an era dominated by superficial headlines and ungrounded marketing hype, software engineers, DevOps leads, system architects, and technical decision-makers need clear, verified, and deeply practical analysis. Com Pors was established to bridge that divide.
         </p>
         <p>
-          Our technical journalists do not simply summarize press releases. We examine GitHub commits, benchmark hardware throughput, evaluate cloud latency numbers, and construct reproducible architectural topologies. Every guide published on TechPulse is engineered to be an evergreen reference for engineers building distributed systems.
+          Our technical journalists do not simply summarize press releases. We examine GitHub commits, benchmark hardware throughput, evaluate cloud latency numbers, and construct reproducible architectural topologies. Every guide published on Com Pors is engineered to be an evergreen reference for engineers building distributed systems.
         </p>
       </div>
 

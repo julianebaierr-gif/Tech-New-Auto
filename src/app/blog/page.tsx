@@ -3,8 +3,8 @@ import { getAllPosts } from "@/lib/posts";
 import { ArrowRight, Calendar, Clock, BookOpen } from "lucide-react";
 
 export const metadata = {
-  title: "All Articles & Research | TechPulse Newsroom",
-  description: "Browse the complete archive of technical analyses, computing benchmarks, and engineering breakdowns published by TechPulse.",
+  title: "All Articles & Research | Com Pors Newsroom",
+  description: "Browse the complete archive of technical analyses, computing benchmarks, and engineering breakdowns published by Com Pors.",
 };
 
 export default function BlogListPage() {
@@ -21,7 +21,7 @@ export default function BlogListPage() {
               Dispatch &bull; The Complete Archive
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
-              TechPulse Newsroom
+              Com Pors Newsroom
             </h1>
           </div>
           <p className="max-w-md text-sm text-slate-500 leading-relaxed">

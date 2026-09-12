@@ -31,19 +31,19 @@ export async function generateMetadata({ params }: Props) {
   // Custom bespoke meta description strictly under 155 characters
   const description = matched
     ? matched.description
-    : `Explore in-depth technical analysis, architecture blueprints, and engineering insights on ${titleName} published by TechPulse.`; // < 145 chars
+    : `Explore in-depth technical analysis, architecture blueprints, and engineering insights on ${titleName} published by Com Pors.`; // < 145 chars
 
   return {
-    title: `${titleName} | TechPulse Magazine`,
+    title: `${titleName} | Com Pors`,
     description,
     openGraph: {
-      title: `${titleName} | TechPulse Magazine`,
+      title: `${titleName} | Com Pors`,
       description,
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${titleName} | TechPulse Magazine`,
+      title: `${titleName} | Com Pors`,
       description,
     },
   };
@@ -70,7 +70,7 @@ export default async function CategoryPage({ params }: Props) {
   const categoryTitle = matched ? matched.name : slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
   const categoryDesc = matched
     ? matched.description
-    : `Explore in-depth technical analysis, architecture blueprints, and engineering insights on ${categoryTitle} published by TechPulse.`;
+    : `Explore in-depth technical analysis, architecture blueprints, and engineering insights on ${categoryTitle} published by Com Pors.`;
 
   return (
     <div className="space-y-8">

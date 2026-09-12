@@ -10,7 +10,7 @@ export const categories: Category[] = [
     name: 'Artificial Intelligence',
     slug: 'artificial-intelligence',
     emoji: '🤖',
-    description: 'In-depth engineering analysis on neural networks, LLMs, autonomous AI agents, and frontier machine learning research from TechPulse.' // 132 chars
+    description: 'In-depth engineering analysis on neural networks, LLMs, autonomous AI agents, and frontier machine learning research from Com Pors.' // 131 chars
   },
   {
     name: 'Cloud Computing',

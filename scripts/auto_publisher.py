@@ -505,7 +505,7 @@ FLEXIBLE EDITORIAL STRUCTURE & NATURAL FLOW:
         paa_prompt_block = "\nREAL GOOGLE SEARCH QUESTIONS (PEOPLE ALSO ASK) IDENTIFIED FOR THIS TOPIC:\n" + "\n".join([f"- {q}" for q in paa_questions_list]) + "\n"
 
     write_prompt = f"""
-You are a Principal Software Engineer and elite tech journalist writing for TechPulse Magazine.
+You are a Principal Software Engineer and elite tech journalist writing for Com Pors (compors.com).
 Write an authentic, highly detailed, deeply engaging, and SEO-optimized technical article on: "{kw}".
 {avoid_titles_block}
 
@@ -787,8 +787,8 @@ def main():
 
         # Strictly Ensure EXACTLY ONE High-Authority External Reference Link
         ext_links = list(re.finditer(r'<a\s+[^>]*href=["\'](https?://[^"\']+)["\'][^>]*>([\s\S]*?)</a>', text, flags=re.IGNORECASE))
-        # Keep only true external links (not tech-new-auto domain)
-        true_ext = [m for m in ext_links if "tech-new-auto" not in m.group(1).lower() and "techpulse-journal" not in m.group(1).lower()]
+        # Keep only true external links (not internal domains)
+        true_ext = [m for m in ext_links if "compors" not in m.group(1).lower() and "tech-new-auto" not in m.group(1).lower() and "techpulse" not in m.group(1).lower()]
 
         if len(true_ext) > 1:
             # Keep only the first external link, replace subsequent ones with just their inner anchor text to prevent spam

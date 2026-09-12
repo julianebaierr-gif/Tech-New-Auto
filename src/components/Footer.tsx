@@ -7,15 +7,15 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="space-y-4 md:col-span-1">
           <Link href="/" className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-base shadow-md">
-              TP
+            <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-black text-base shadow-md shadow-blue-500/20">
+              CP
             </div>
             <div className="font-black text-xl text-white tracking-tight">
-              TECH<span className="text-blue-400">PULSE</span>
+              COM <span className="text-blue-400">PORS</span>
             </div>
           </Link>
           <p className="text-xs text-slate-400 leading-relaxed">
-            TechPulse is an independent digital magazine delivering daily investigative reporting, architectural breakdowns, hardware analysis, and global technology insights.
+            Com Pors is an independent digital magazine delivering daily investigative reporting, architectural breakdowns, hardware analysis, and global technology insights.
           </p>
         </div>
 
@@ -40,7 +40,7 @@ export default function Footer() {
           </h4>
           <ul className="space-y-2.5 text-xs">
             <li><Link href="/authors" className="text-slate-300 hover:text-white hover:underline transition">Our Authors & Masthead</Link></li>
-            <li><Link href="/about" className="text-slate-300 hover:text-white hover:underline transition">About TechPulse</Link></li>
+            <li><Link href="/about" className="text-slate-300 hover:text-white hover:underline transition">About Com Pors</Link></li>
             <li><Link href="/contact" className="text-slate-300 hover:text-white hover:underline transition">Contact Us</Link></li>
           </ul>
         </div>
@@ -58,7 +58,7 @@ export default function Footer() {
 
       <div className="border-t border-slate-800/80 py-6 text-center text-xs text-slate-400 bg-[#070d1d]">
         <div className="max-w-7xl mx-auto px-4">
-          <p>&copy; {new Date().getFullYear()} TechPulse Magazine. Published under independent digital editorial guidelines.</p>
+          <p>&copy; {new Date().getFullYear()} Com Pors. Published under independent digital editorial guidelines.</p>
         </div>
       </div>
     </footer>

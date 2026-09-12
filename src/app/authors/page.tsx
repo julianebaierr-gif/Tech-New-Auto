@@ -3,8 +3,8 @@ import { getAuthors, getPostsByAuthor } from "@/lib/posts";
 import { ArrowRight, BookOpen, ShieldCheck, Award, GraduationCap, CheckCircle2 } from "lucide-react";
 
 export const metadata = {
-  title: "Editorial Masthead & Contributing Authors | TechPulse",
-  description: "Meet the verified system architects, distributed systems researchers, and artificial intelligence analysts authoring technical evaluations for TechPulse.",
+  title: "Editorial Masthead & Contributing Authors | Com Pors",
+  description: "Meet the verified system architects, distributed systems researchers, and artificial intelligence analysts authoring technical evaluations for Com Pors.",
 };
 
 export default function AuthorsIndexPage() {
@@ -21,7 +21,7 @@ export default function AuthorsIndexPage() {
           Editorial Masthead &amp; Authors
         </h1>
         <p className="max-w-3xl text-sm sm:text-base text-slate-600 leading-relaxed">
-          At TechPulse, every technical guide, software benchmark, and architectural review is authored by seasoned practitioners with demonstrable engineering and research experience.
+          At Com Pors, every technical guide, software benchmark, and architectural review is authored by seasoned practitioners with demonstrable engineering and research experience.
         </p>
       </div>
 
