@@ -1,9 +1,9 @@
-name: Auto Publish Tech Article (Paused)
+name: Auto Publish Tech Article (Active)
 
 on:
-  # schedule:
-  #   # Runs automatically every 4 hours (Temporarily Paused)
-  #   - cron: '0 */4 * * *'
+  schedule:
+    # Runs automatically every 8 hours
+    - cron: '0 */8 * * *'
   workflow_dispatch: # Allows manual run anytime from GitHub Actions tab
 
 permissions:
