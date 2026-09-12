@@ -966,8 +966,12 @@ export default function PortalDeskClient({ initialPosts }: Props) {
       {/* Top Navbar */}
       <header className="h-16 bg-slate-900 border-b border-slate-800 px-4 sm:px-8 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-lg shadow-md shadow-blue-600/30">
-            P
+          <div className="w-9 h-9 rounded-xl overflow-hidden bg-[#060b18] border border-blue-500/30 flex items-center justify-center p-1 shadow-md shadow-blue-600/30 shrink-0">
+            <img
+              src="/logo-icon.png"
+              alt="Com Pors Official Logo"
+              className="w-full h-full object-contain"
+            />
           </div>
           <div>
             <div className="flex items-center gap-2">
