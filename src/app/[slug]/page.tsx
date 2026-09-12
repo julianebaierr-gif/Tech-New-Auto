@@ -292,7 +292,7 @@ export default async function BlogPostPage({ params }: Props) {
           <img
             src={post.author.avatar}
             alt={post.author.name}
-            className="h-16 w-16 rounded-xl object-cover border border-slate-300 group-hover:ring-2 group-hover:ring-blue-500 transition"
+            className="h-16 w-16 min-w-[4rem] aspect-square rounded-xl object-cover border border-slate-300 group-hover:ring-2 group-hover:ring-blue-500 transition"
           />
         </Link>
         <div className="space-y-1.5 flex-1">

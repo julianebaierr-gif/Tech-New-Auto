@@ -110,12 +110,12 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-xs flex items-start gap-5">
             <img
-              src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=80"
+              src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&h=400&q=80"
               alt="Cora Lee"
-              className="h-20 w-20 rounded-2xl object-cover shrink-0 border border-slate-200"
+              className="h-20 w-20 min-w-[5rem] aspect-square rounded-2xl object-cover shrink-0 border border-slate-200 shadow-xs"
             />
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2">
+            <div className="space-y-1.5 flex-1 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="font-bold text-slate-900 text-lg">Cora Lee</h3>
                 <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
                   Lead Editor
@@ -130,12 +130,12 @@ export default function AboutPage() {
 
           <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-xs flex items-start gap-5">
             <img
-              src="https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=400&q=80"
+              src="https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=400&h=400&q=80"
               alt="Kellie Anne"
-              className="h-20 w-20 rounded-2xl object-cover shrink-0 border border-slate-200"
+              className="h-20 w-20 min-w-[5rem] aspect-square rounded-2xl object-cover shrink-0 border border-slate-200 shadow-xs"
             />
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2">
+            <div className="space-y-1.5 flex-1 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="font-bold text-slate-900 text-lg">Kellie Anne</h3>
                 <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
                   Principal Analyst

@@ -39,7 +39,7 @@ export default function AuthorsIndexPage() {
                   <img
                     src={author.avatar}
                     alt={author.name}
-                    className="h-20 w-20 sm:h-24 sm:w-24 rounded-2xl object-cover shrink-0 border-2 border-slate-100 group-hover:scale-105 transition duration-300 shadow-xs"
+                    className="h-20 w-20 sm:h-24 sm:w-24 min-w-[5rem] sm:min-w-[6rem] aspect-square rounded-2xl object-cover shrink-0 border-2 border-slate-100 group-hover:scale-105 transition duration-300 shadow-xs"
                   />
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 flex-wrap">

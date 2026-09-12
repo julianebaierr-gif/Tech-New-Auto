@@ -96,7 +96,7 @@ export default async function AuthorProfilePage({ params }: Props) {
         <img
           src={author.avatar}
           alt={author.name}
-          className="h-28 w-28 sm:h-32 sm:w-32 rounded-2xl object-cover shrink-0 border-2 border-slate-200 shadow-md"
+          className="h-28 w-28 sm:h-32 sm:w-32 min-w-[7rem] sm:min-w-[8rem] aspect-square rounded-2xl object-cover shrink-0 border-2 border-slate-200 shadow-md"
         />
         <div className="space-y-3 flex-1">
           <div className="flex flex-wrap items-center gap-3">
