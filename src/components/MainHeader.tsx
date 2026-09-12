@@ -1,7 +1,10 @@
 import Link from "next/link";
-import { Send, Search } from "lucide-react";
+import { getSearchIndex } from "@/lib/posts";
+import SearchNewsBar from "./SearchNewsBar";
 
 export default function MainHeader() {
+  const searchIndex = getSearchIndex();
+
   return (
     <header className="bg-white border-b border-slate-200 py-4 sm:py-6 px-4 sm:px-6 lg:px-8 shadow-xs">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center sm:items-center justify-between gap-4 sm:gap-6">
@@ -40,14 +43,9 @@ export default function MainHeader() {
           </div>
         </Link>
 
-        {/* Right Action Callouts */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          <Link
-            href="/contact"
-            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 text-[11px] sm:text-xs font-bold transition shadow-xs active:scale-95"
-          >
-            <Send className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Submit Story / News Tip
-          </Link>
+        {/* Right Action: Search News input */}
+        <div className="w-full sm:w-auto flex items-center justify-center sm:justify-end">
+          <SearchNewsBar posts={searchIndex} />
         </div>
       </div>
     </header>

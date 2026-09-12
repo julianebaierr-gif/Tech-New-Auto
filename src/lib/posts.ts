@@ -132,6 +132,24 @@ export function getAuthors(): Author[] {
   return AUTHORS;
 }
 
+export interface SearchItem {
+  slug: string;
+  title: string;
+  category: string;
+  date: string;
+  tags?: string[];
+}
+
+export function getSearchIndex(): SearchItem[] {
+  return getAllPosts().map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    category: p.category,
+    date: p.date,
+    tags: p.tags,
+  }));
+}
+
 export function getAuthorBySlug(slug: string): Author | null {
   return AUTHORS.find((a) => a.slug === slug || a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === slug) || null;
 }
