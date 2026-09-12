@@ -5,6 +5,9 @@ import { ArrowRight, Calendar, Clock, BookOpen } from "lucide-react";
 export const metadata = {
   title: "All Articles & Research | Com Pors Newsroom",
   description: "Browse the complete archive of technical analyses, computing benchmarks, and engineering breakdowns published by Com Pors.",
+  alternates: {
+    canonical: "https://www.compors.com/blog/",
+  },
 };
 
 export default function BlogListPage() {
@@ -40,6 +43,8 @@ export default function BlogListPage() {
               <img
                 src={post.coverImage}
                 alt={post.coverImageAlt || post.title}
+                width={600}
+                height={350}
                 className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
               />
               <span className="absolute top-3 left-3 text-xs font-bold uppercase px-2.5 py-1 rounded bg-white/90 text-blue-700 backdrop-blur-md shadow-xs">

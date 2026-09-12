@@ -18,8 +18,8 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const author = getAuthorBySlug(slug);
   if (!author) return { title: "Author Not Found" };
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://compors.com";
-  const authorUrl = `${siteUrl}/author/${author.slug}`;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.compors.com";
+  const authorUrl = `${siteUrl}/author/${author.slug}/`;
 
   return {
     title: `${author.name} | Staff Journalist & Analyst`,
@@ -96,6 +96,8 @@ export default async function AuthorProfilePage({ params }: Props) {
         <img
           src={author.avatar}
           alt={author.name}
+          width={128}
+          height={128}
           className="h-28 w-28 sm:h-32 sm:w-32 min-w-[7rem] sm:min-w-[8rem] aspect-square rounded-2xl object-cover shrink-0 border-2 border-slate-200 shadow-md"
         />
         <div className="space-y-3 flex-1">
@@ -117,30 +119,30 @@ export default async function AuthorProfilePage({ params }: Props) {
           </p>
 
           <div className="pt-2 flex items-center gap-4 text-xs text-slate-500">
-            <span className="flex items-center gap-1 font-semibold text-slate-700">
-              <BookOpen className="h-3.5 w-3.5 text-blue-600" /> {posts.length} Articles Published
+            <span className="flex items-center gap-1.5 font-medium">
+              <BookOpen className="h-4 w-4 text-blue-600" /> {posts.length} Verified Articles Published
             </span>
-            <span>&bull;</span>
-            <span>Com Pors Editorial Contributor</span>
           </div>
         </div>
       </div>
 
-      {/* Published Articles Grid */}
+      {/* Author Articles Grid */}
       <section className="space-y-6">
-        <div className="section-line flex items-center justify-between">
-          <span className="section-tag-box">Articles By {author.name}</span>
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+          <h2 className="text-lg font-black uppercase tracking-wider text-slate-900 flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-blue-600"></span>
+            Articles by {author.name}
+          </h2>
           <span className="text-xs font-semibold text-slate-500">
-            Showing {posts.length} Stories
+            Showing {posts.length} stories
           </span>
         </div>
 
         {posts.length === 0 ? (
-          <div className="p-12 text-center bg-white rounded-2xl border border-slate-200 shadow-sm">
-            <h2 className="text-xl font-bold text-slate-900 mb-2">No articles published by this author yet.</h2>
+          <div className="text-center py-12 bg-white rounded-2xl border border-slate-200">
             <p className="text-sm text-slate-500 mb-6">Upcoming technical coverage will appear here.</p>
-            <Link href="/blog" className="px-5 py-2.5 rounded-lg bg-blue-600 text-white font-bold text-xs shadow-sm hover:bg-blue-700">
-              Browse All Articles
+            <Link href="/" className="px-5 py-2.5 rounded-lg bg-blue-600 text-white font-bold text-xs shadow-sm hover:bg-blue-700">
+              Return to Homepage
             </Link>
           </div>
         ) : (
@@ -154,6 +156,8 @@ export default async function AuthorProfilePage({ params }: Props) {
                   <img
                     src={post.coverImage}
                     alt={post.coverImageAlt || post.title}
+                    width={400}
+                    height={200}
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   />
                   <span className="absolute top-3 left-3 bg-white/95 backdrop-blur-md text-blue-700 text-[11px] font-bold px-2.5 py-1 rounded shadow-xs">

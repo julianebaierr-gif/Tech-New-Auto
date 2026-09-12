@@ -1,6 +1,9 @@
 export const metadata = {
   title: "Privacy Policy | Com Pors Independent Tech Journal",
   description: "Read the comprehensive Com Pors Privacy Policy covering user data protection, cookie disclosures, CCPA & GDPR compliance, and our strict reader privacy standards.",
+  alternates: {
+    canonical: "https://www.compors.com/privacy-policy/",
+  },
 };
 
 export default function PrivacyPolicyPage() {

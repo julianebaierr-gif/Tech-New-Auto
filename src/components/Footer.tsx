@@ -11,6 +11,8 @@ export default function Footer() {
               <img
                 src="/logo-icon.png"
                 alt="Com Pors Official Logo"
+                width={36}
+                height={36}
                 className="w-full h-full object-contain"
               />
             </div>

@@ -22,8 +22,8 @@ export async function generateMetadata({ params }: Props) {
   const post = getPostBySlug(slug);
   if (!post) return { title: "Article Not Found" };
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tech-new-auto.vercel.app";
-  const postUrl = `${siteUrl}/${post.slug}`;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.compors.com";
+  const postUrl = `${siteUrl}/${post.slug}/`;
   let desc = post.excerpt.trim();
   if (desc.length > 155) {
     const lastSpace = desc.slice(0, 155).lastIndexOf(" ");
@@ -75,10 +75,10 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   const relatedPosts = getRelatedPosts(post.slug, 6);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://compors.com";
-  const postUrl = `${siteUrl}/${post.slug}`;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.compors.com";
+  const postUrl = `${siteUrl}/${post.slug}/`;
   const authorSlug = post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-  const authorUrl = `${siteUrl}/author/${authorSlug}`;
+  const authorUrl = `${siteUrl}/author/${authorSlug}/`;
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -199,6 +199,8 @@ export default async function BlogPostPage({ params }: Props) {
             <img
               src={post.author.avatar}
               alt={post.author.name}
+              width={40}
+              height={40}
               className="h-10 w-10 rounded-full border border-slate-300 object-cover group-hover:ring-2 group-hover:ring-blue-500 transition"
             />
             <div>
@@ -206,6 +208,15 @@ export default async function BlogPostPage({ params }: Props) {
               <p className="text-slate-500 text-[11px]">{post.author.role}</p>
             </div>
           </Link>
+          <div className="flex items-center gap-2">
+            <span className="text-slate-400 font-medium">Published in</span>
+            <Link
+              href={`/category/${post.category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+              className="font-bold uppercase text-blue-700 bg-blue-50 px-2.5 py-1 rounded border border-blue-200 hover:bg-blue-100 transition"
+            >
+              {post.category}
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -214,6 +225,8 @@ export default async function BlogPostPage({ params }: Props) {
         <img
           src={post.coverImage}
           alt={post.coverImageAlt || post.title}
+          width={1200}
+          height={630}
           className="w-full max-h-[500px] object-cover"
         />
       </div>
@@ -350,6 +363,8 @@ export default async function BlogPostPage({ params }: Props) {
                   <img
                     src={rel.coverImage}
                     alt={rel.coverImageAlt || rel.title}
+                    width={400}
+                    height={200}
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   />
                   <span className="absolute top-2.5 left-2.5 text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-white/95 text-blue-700 backdrop-blur-md shadow-xs">

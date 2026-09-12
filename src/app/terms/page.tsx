@@ -1,6 +1,9 @@
 export const metadata = {
   title: "Terms of Service & Editorial Usage | Com Pors",
   description: "Review the Com Pors terms of service, intellectual property guidelines, code snippet licensing, and editorial liability disclaimers.",
+  alternates: {
+    canonical: "https://www.compors.com/terms/",
+  },
 };
 
 export default function TermsPage() {

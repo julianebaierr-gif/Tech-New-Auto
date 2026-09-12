@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://compors.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.compors.com";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -37,9 +37,6 @@ export const metadata: Metadata = {
     email: false,
     address: false,
     telephone: false,
-  },
-  alternates: {
-    canonical: "/",
   },
   openGraph: {
     type: "website",

@@ -4,6 +4,9 @@ import Link from "next/link";
 export const metadata = {
   title: "About Our Journal & Editorial Standards | Com Pors",
   description: "Meet the Com Pors editorial team, our rigorous fact-checking policies, E-E-A-T technical journalism standards, and our mission investigating modern computing frontiers.",
+  alternates: {
+    canonical: "https://www.compors.com/about/",
+  },
 };
 
 export default function AboutPage() {

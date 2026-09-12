@@ -33,9 +33,15 @@ export async function generateMetadata({ params }: Props) {
     ? matched.description
     : `Explore in-depth technical analysis, architecture blueprints, and engineering insights on ${titleName} published by Com Pors.`; // < 145 chars
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.compors.com";
+  const catUrl = `${siteUrl}/category/${slug}/`;
+
   return {
     title: `${titleName} | Com Pors`,
     description,
+    alternates: {
+      canonical: catUrl,
+    },
     openGraph: {
       title: `${titleName} | Com Pors`,
       description,
@@ -101,6 +107,8 @@ export default async function CategoryPage({ params }: Props) {
                 <img
                   src={post.coverImage}
                   alt={post.coverImageAlt || post.title}
+                  width={400}
+                  height={200}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />
               </div>

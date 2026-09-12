@@ -1,5 +1,12 @@
 import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://www.compors.com/",
+  },
+};
 
 export default function HomePage() {
   const posts = getAllPosts();
@@ -29,6 +36,8 @@ export default function HomePage() {
                 <img
                   src={leadPost.coverImage}
                   alt={leadPost.coverImageAlt || leadPost.title}
+                  width={800}
+                  height={450}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                 />
               </div>
@@ -85,6 +94,8 @@ export default function HomePage() {
                   <img
                     src={post.coverImage}
                     alt={post.coverImageAlt || post.title}
+                    width={96}
+                    height={80}
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   />
                 </div>
@@ -118,6 +129,8 @@ export default function HomePage() {
                 <img
                   src={post.coverImage}
                   alt={post.coverImageAlt || post.title}
+                  width={400}
+                  height={200}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />
               </div>
@@ -156,6 +169,8 @@ export default function HomePage() {
                 <img
                   src={post.coverImage}
                   alt={post.coverImageAlt || post.title}
+                  width={400}
+                  height={200}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />
               </div>
@@ -194,6 +209,8 @@ export default function HomePage() {
                 <img
                   src={post.coverImage}
                   alt={post.coverImageAlt || post.title}
+                  width={400}
+                  height={200}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />
               </div>

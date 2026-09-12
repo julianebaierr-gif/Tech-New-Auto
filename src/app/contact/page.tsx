@@ -3,6 +3,9 @@ import { Mail, MessageSquare, MapPin, Send, Globe, ShieldAlert, Newspaper, Clock
 export const metadata = {
   title: "Contact Newsroom & Editorial Desk | Com Pors",
   description: "Get in touch with the Com Pors editorial desk, submit press announcements, send technical corrections, or connect with our investigative tech journalists.",
+  alternates: {
+    canonical: "https://www.compors.com/contact/",
+  },
 };
 
 export default function ContactPage() {

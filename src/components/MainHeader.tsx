@@ -14,6 +14,8 @@ export default function MainHeader() {
             <img
               src="/logo-icon.png"
               alt="Com Pors Official Logo"
+              width={56}
+              height={56}
               className="w-full h-full object-contain"
             />
           </div>

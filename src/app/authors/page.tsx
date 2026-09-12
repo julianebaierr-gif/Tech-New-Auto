@@ -5,6 +5,9 @@ import { ArrowRight, BookOpen, ShieldCheck, Award, GraduationCap, CheckCircle2 }
 export const metadata = {
   title: "Editorial Masthead & Contributing Authors | Com Pors",
   description: "Meet the verified system architects, distributed systems researchers, and artificial intelligence analysts authoring technical evaluations for Com Pors.",
+  alternates: {
+    canonical: "https://www.compors.com/authors/",
+  },
 };
 
 export default function AuthorsIndexPage() {
@@ -39,6 +42,8 @@ export default function AuthorsIndexPage() {
                   <img
                     src={author.avatar}
                     alt={author.name}
+                    width={96}
+                    height={96}
                     className="h-20 w-20 sm:h-24 sm:w-24 min-w-[5rem] sm:min-w-[6rem] aspect-square rounded-2xl object-cover shrink-0 border-2 border-slate-100 group-hover:scale-105 transition duration-300 shadow-xs"
                   />
                   <div className="space-y-1">
