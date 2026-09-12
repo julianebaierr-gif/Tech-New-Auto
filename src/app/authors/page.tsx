@@ -3,8 +3,8 @@ import { getAuthors, getPostsByAuthor } from "@/lib/posts";
 import { ArrowRight, BookOpen, ShieldCheck, Award, GraduationCap, CheckCircle2 } from "lucide-react";
 
 export const metadata = {
-  title: "Editorial Masthead & Contributing Authors | Com Pors",
-  description: "Meet the verified system architects, distributed systems researchers, and artificial intelligence analysts authoring technical evaluations for Com Pors.",
+  title: "Editorial Masthead & Authors | Com Pors", // 39 chars
+  description: "Meet the verified system architects and artificial intelligence analysts authoring technical evaluations for Com Pors.", // 119 chars
   alternates: {
     canonical: "https://www.compors.com/authors/",
   },

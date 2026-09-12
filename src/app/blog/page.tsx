@@ -3,8 +3,8 @@ import { getAllPosts } from "@/lib/posts";
 import { ArrowRight, Calendar, Clock, BookOpen } from "lucide-react";
 
 export const metadata = {
-  title: "All Articles & Research | Com Pors Newsroom",
-  description: "Browse the complete archive of technical analyses, computing benchmarks, and engineering breakdowns published by Com Pors.",
+  title: "All Articles & Research | Com Pors", // 34 chars
+  description: "Browse the complete archive of technical analyses, computing benchmarks, and engineering breakdowns published by Com Pors.", // 122 chars
   alternates: {
     canonical: "https://www.compors.com/blog/",
   },

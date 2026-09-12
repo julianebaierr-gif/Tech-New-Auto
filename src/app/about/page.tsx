@@ -2,8 +2,8 @@ import { Cpu, Zap, Database, RefreshCw, Shield, Layers, CheckCircle2, Award, Fil
 import Link from "next/link";
 
 export const metadata = {
-  title: "About Our Journal & Editorial Standards | Com Pors",
-  description: "Meet the Com Pors editorial team, our rigorous fact-checking policies, E-E-A-T technical journalism standards, and our mission investigating modern computing frontiers.",
+  title: "About Our Journal & Editorial Standards | Com Pors", // 50 chars
+  description: "Meet the Com Pors editorial team, our rigorous fact-checking policies, and our mission investigating modern computing and artificial intelligence.", // 146 chars
   alternates: {
     canonical: "https://www.compors.com/about/",
   },

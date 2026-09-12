@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Terms of Service & Editorial Usage | Com Pors",
-  description: "Review the Com Pors terms of service, intellectual property guidelines, code snippet licensing, and editorial liability disclaimers.",
+  title: "Terms of Service | Com Pors", // 27 chars
+  description: "Review the Com Pors terms of service, intellectual property guidelines, code snippet licensing, and editorial liability disclaimers.", // 132 chars
   alternates: {
     canonical: "https://www.compors.com/terms/",
   },

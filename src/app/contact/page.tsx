@@ -1,8 +1,8 @@
 import { Mail, MessageSquare, MapPin, Send, Globe, ShieldAlert, Newspaper, Clock } from "lucide-react";
 
 export const metadata = {
-  title: "Contact Newsroom & Editorial Desk | Com Pors",
-  description: "Get in touch with the Com Pors editorial desk, submit press announcements, send technical corrections, or connect with our investigative tech journalists.",
+  title: "Contact Editorial Desk | Com Pors", // 33 chars
+  description: "Get in touch with the Com Pors newsroom, submit press announcements, send technical corrections, or connect with our investigative tech journalists.", // 149 chars
   alternates: {
     canonical: "https://www.compors.com/contact/",
   },
@@ -58,6 +58,7 @@ export default function ContactPage() {
 
         {/* Right Column: Contact Form */}
         <div className="p-8 rounded-3xl border border-slate-200 bg-white shadow-xs lg:col-span-2">
+          <h2 className="text-xl font-bold text-slate-900 mb-6">Send Direct Editorial Message</h2>
           <form className="space-y-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>

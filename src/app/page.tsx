@@ -24,8 +24,8 @@ export default function HomePage() {
 
       {/* 1. LATEST STORIES (Pattern A: Big Lead Feature + Side Stories) */}
       <section>
-        <div className="section-line">
-          <span className="section-tag-box">Latest Stories</span>
+        <div className="section-line flex items-center justify-between">
+          <h1 className="section-tag-box">Latest Stories &amp; Tech Intelligence</h1>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">

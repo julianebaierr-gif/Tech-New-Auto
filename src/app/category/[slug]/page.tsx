@@ -97,7 +97,11 @@ export default async function CategoryPage({ params }: Props) {
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-6">
+          <div className="section-line flex items-center justify-between">
+            <h2 className="section-tag-box">Featured {categoryTitle} Dispatches</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post) => (
             <article
               key={post.slug}
@@ -129,6 +133,7 @@ export default async function CategoryPage({ params }: Props) {
               </div>
             </article>
           ))}
+          </div>
         </div>
       )}
     </div>

@@ -22,8 +22,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Com Pors | Leading Tech Intelligence, AI & Systems Architecture",
-    template: "%s | Com Pors",
+    default: "Com Pors | Tech Intelligence & Systems",
+    template: "%s",
   },
   description: "Independent tech journalism reporting on emerging AI models, software architecture, semiconductors, cybersecurity, and future computing.",
 
