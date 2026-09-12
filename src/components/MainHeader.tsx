@@ -9,23 +9,13 @@ export default function MainHeader() {
     <header className="bg-white border-b border-slate-200 py-4 sm:py-6 px-4 sm:px-6 lg:px-8 shadow-xs">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center sm:items-center justify-between gap-4 sm:gap-6">
         <Link href="/" className="flex items-center gap-3 sm:gap-3.5 group text-center sm:text-left">
-          {/* Custom Com Pors Modern Tech Hex/C-P Geometric Logo Badge */}
-          <div className="relative h-11 w-11 sm:h-14 sm:w-14 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-blue-700 via-indigo-600 to-cyan-400 p-[2px] shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform duration-300 shrink-0">
-            <div className="w-full h-full bg-slate-950 rounded-[10px] sm:rounded-[14px] flex items-center justify-center p-2 sm:p-2.5">
-              <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-                {/* Modern stylized C and P interlocking tech architecture mark */}
-                <path d="M22 6L36 14V30L22 38L8 30V14L22 6Z" stroke="url(#comporsGrad)" strokeWidth="2.5" strokeLinejoin="round" />
-                <path d="M15 16C15 16 23 13 27 17C31 21 27 26 21 26H15V32" stroke="#38bdf8" strokeWidth="2.75" strokeLinecap="round" strokeLinejoin="round" />
-                <circle cx="22" cy="21" r="2.5" fill="#60a5fa" />
-                <defs>
-                  <linearGradient id="comporsGrad" x1="8" y1="6" x2="36" y2="38" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#38bdf8" />
-                    <stop offset="0.5" stopColor="#6366f1" />
-                    <stop offset="1" stopColor="#3b82f6" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
+          {/* Custom Com Pors Official CP Logo Badge */}
+          <div className="relative h-11 w-11 sm:h-14 sm:w-14 rounded-xl sm:rounded-2xl overflow-hidden shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform duration-300 shrink-0 bg-[#060b18] border border-blue-500/30 flex items-center justify-center p-1 sm:p-1.5">
+            <img
+              src="/logo-icon.png"
+              alt="Com Pors Official Logo"
+              className="w-full h-full object-contain"
+            />
           </div>
           
           <div>
