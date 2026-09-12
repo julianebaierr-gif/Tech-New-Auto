@@ -9,6 +9,9 @@ interface Props {
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
+  if (!posts || posts.length === 0) {
+    return [{ slug: "_empty" }];
+  }
   return posts.map((post) => ({
     slug: post.slug,
   }));
