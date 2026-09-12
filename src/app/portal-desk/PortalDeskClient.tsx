@@ -30,7 +30,9 @@ import {
   Sparkles,
   Info,
   Download,
-  FileSpreadsheet
+  FileSpreadsheet,
+  CheckSquare,
+  Square
 } from 'lucide-react';
 import { Post } from '@/lib/posts';
 import { categories } from '@/lib/categories';
@@ -89,6 +91,7 @@ export default function PortalDeskClient({ initialPosts }: Props) {
 
   // Posts state
   const [postsList, setPostsList] = useState<Post[]>(initialPosts);
+  const [selectedSlugs, setSelectedSlugs] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
@@ -801,6 +804,7 @@ export default function PortalDeskClient({ initialPosts }: Props) {
       await commitToGitHub(filePath, '', commitMsg, true);
 
       setPostsList(postsList.filter((p) => p.slug !== post.slug));
+      setSelectedSlugs((prev) => prev.filter((s) => s !== post.slug));
       showNotice(
         `Article "${post.title}" has been deleted from GitHub. Live site will refresh shortly.`,
         'success'
@@ -810,6 +814,79 @@ export default function PortalDeskClient({ initialPosts }: Props) {
       }
     } catch (err: any) {
       showNotice(err.message || 'Failed to delete post.', 'error');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  // Selection handlers
+  const handleToggleSelectOne = (slug: string) => {
+    setSelectedSlugs((prev) =>
+      prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
+    );
+  };
+
+  const handleToggleSelectPage = () => {
+    const pageSlugs = paginatedPosts.map((p) => p.slug);
+    const allPageSelected = pageSlugs.every((s) => selectedSlugs.includes(s));
+    if (allPageSelected) {
+      setSelectedSlugs((prev) => prev.filter((s) => !pageSlugs.includes(s)));
+    } else {
+      setSelectedSlugs((prev) => Array.from(new Set([...prev, ...pageSlugs])));
+    }
+  };
+
+  const handleSelectAllFiltered = () => {
+    const allFilteredSlugs = filteredPosts.map((p) => p.slug);
+    setSelectedSlugs(allFilteredSlugs);
+  };
+
+  const handleClearSelection = () => {
+    setSelectedSlugs([]);
+  };
+
+  // Bulk delete handler
+  const handleBulkDelete = async () => {
+    if (selectedSlugs.length === 0) return;
+
+    const confirmDelete = window.confirm(
+      `⚠️ PERMANENT BULK DELETE WARNING:\n\nAre you sure you want to permanently delete all ${selectedSlugs.length} selected articles?\n\nThis will remove them from GitHub and the website.`
+    );
+    if (!confirmDelete) return;
+
+    setIsProcessing(true);
+    let successCount = 0;
+    let failCount = 0;
+
+    try {
+      for (const slug of selectedSlugs) {
+        try {
+          const filePath = `content/posts/${slug}.json`;
+          const commitMsg = `Desk Portal: Bulk delete post "${slug}"`;
+          await commitToGitHub(filePath, '', commitMsg, true);
+          successCount++;
+        } catch (e) {
+          console.error(`Failed to delete ${slug}:`, e);
+          failCount++;
+        }
+      }
+
+      setPostsList((prev) => prev.filter((p) => !selectedSlugs.includes(p.slug)));
+      if (editingPost && selectedSlugs.includes(editingPost.slug)) {
+        setEditingPost(null);
+      }
+      setSelectedSlugs([]);
+
+      if (failCount === 0) {
+        showNotice(`Successfully deleted all ${successCount} articles!`, 'success');
+      } else {
+        showNotice(
+          `Deleted ${successCount} articles. (${failCount} failed to delete)`,
+          'error'
+        );
+      }
+    } catch (err: any) {
+      showNotice(err.message || 'Error during bulk deletion.', 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -1385,12 +1462,71 @@ export default function PortalDeskClient({ initialPosts }: Props) {
                 </div>
               </div>
 
+              {/* Bulk Actions Banner (when articles selected) */}
+              {selectedSlugs.length > 0 && (
+                <div className="p-3.5 px-5 bg-gradient-to-r from-red-950/80 via-slate-900 to-red-950/80 border border-red-800/60 rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-lg animate-fade-in">
+                  <div className="flex items-center gap-3">
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-red-600/30 text-red-300 font-bold text-xs border border-red-500/40">
+                      {selectedSlugs.length}
+                    </span>
+                    <span className="text-xs font-semibold text-slate-200">
+                      <strong className="text-white">{selectedSlugs.length}</strong> article{selectedSlugs.length > 1 ? 's' : ''} selected
+                    </span>
+                    {selectedSlugs.length < filteredPosts.length && (
+                      <button
+                        onClick={handleSelectAllFiltered}
+                        className="text-xs text-blue-400 hover:text-blue-300 underline font-medium ml-1"
+                      >
+                        Select all {filteredPosts.length} filtered articles
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={handleClearSelection}
+                      disabled={isProcessing}
+                      className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition"
+                    >
+                      Deselect All
+                    </button>
+                    <button
+                      onClick={handleBulkDelete}
+                      disabled={isProcessing}
+                      className="px-4 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-red-600/30 disabled:opacity-50"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>{isProcessing ? 'Deleting...' : `Delete Selected (${selectedSlugs.length})`}</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* Table */}
               <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="border-b border-slate-800 bg-slate-900/80 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                        <th className="py-3.5 px-4 w-10">
+                          <button
+                            type="button"
+                            onClick={handleToggleSelectPage}
+                            className="text-slate-400 hover:text-white transition flex items-center"
+                            title={
+                              paginatedPosts.length > 0 &&
+                              paginatedPosts.every((p) => selectedSlugs.includes(p.slug))
+                                ? 'Deselect Page'
+                                : 'Select Page'
+                            }
+                          >
+                            {paginatedPosts.length > 0 &&
+                            paginatedPosts.every((p) => selectedSlugs.includes(p.slug)) ? (
+                              <CheckSquare className="w-4 h-4 text-blue-400" />
+                            ) : (
+                              <Square className="w-4 h-4 text-slate-500" />
+                            )}
+                          </button>
+                        </th>
                         <th className="py-3.5 px-4">Article</th>
                         <th className="py-3.5 px-4 hidden md:table-cell">Category</th>
                         <th className="py-3.5 px-4 hidden sm:table-cell">Date</th>
@@ -1400,61 +1536,79 @@ export default function PortalDeskClient({ initialPosts }: Props) {
                     <tbody className="divide-y divide-slate-800/60 text-xs">
                       {paginatedPosts.length === 0 ? (
                         <tr>
-                          <td colSpan={4} className="text-center py-12 text-slate-500">
+                          <td colSpan={5} className="text-center py-12 text-slate-500">
                             No articles found matching your criteria.
                           </td>
                         </tr>
                       ) : (
-                        paginatedPosts.map((post) => (
-                          <tr
-                            key={post.slug}
-                            className="hover:bg-slate-800/40 transition group"
-                          >
-                            <td className="py-3.5 px-4">
-                              <div className="font-semibold text-slate-100 group-hover:text-blue-400 transition line-clamp-1">
-                                {post.title}
-                              </div>
-                              <div className="text-[11px] text-slate-500 font-mono line-clamp-1">
-                                /{post.slug}
-                              </div>
-                            </td>
-                            <td className="py-3.5 px-4 hidden md:table-cell">
-                              <span className="inline-block px-2.5 py-1 rounded-md bg-slate-800 text-blue-300 text-[11px] font-medium border border-slate-700">
-                                {post.category}
-                              </span>
-                            </td>
-                            <td className="py-3.5 px-4 hidden sm:table-cell text-slate-400 whitespace-nowrap">
-                              {post.date}
-                            </td>
-                            <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                              <div className="inline-flex items-center gap-1.5">
-                                <Link
-                                  href={`/${post.slug}`}
-                                  target="_blank"
-                                  className="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition"
-                                  title="View Live"
-                                >
-                                  <ExternalLink className="w-3.5 h-3.5" />
-                                </Link>
+                        paginatedPosts.map((post) => {
+                          const isSelected = selectedSlugs.includes(post.slug);
+                          return (
+                            <tr
+                              key={post.slug}
+                              className={`hover:bg-slate-800/40 transition group ${
+                                isSelected ? 'bg-blue-950/20' : ''
+                              }`}
+                            >
+                              <td className="py-3.5 px-4 w-10">
                                 <button
-                                  onClick={() => handleOpenEdit(post)}
-                                  className="p-2 rounded-lg bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-500/30 transition"
-                                  title="Edit Article"
+                                  type="button"
+                                  onClick={() => handleToggleSelectOne(post.slug)}
+                                  className="text-slate-400 hover:text-white transition flex items-center"
                                 >
-                                  <Edit3 className="w-3.5 h-3.5" />
+                                  {isSelected ? (
+                                    <CheckSquare className="w-4 h-4 text-blue-400" />
+                                  ) : (
+                                    <Square className="w-4 h-4 text-slate-600 group-hover:text-slate-400" />
+                                  )}
                                 </button>
-                                <button
-                                  onClick={() => handleDeletePost(post)}
-                                  disabled={isProcessing}
-                                  className="p-2 rounded-lg bg-red-950/40 hover:bg-red-900/60 text-red-400 hover:text-red-200 border border-red-800/50 transition"
-                                  title="Delete Article"
-                                >
-                                  <Trash2 className="w-3.5 h-3.5" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
+                              </td>
+                              <td className="py-3.5 px-4">
+                                <div className="font-semibold text-slate-100 group-hover:text-blue-400 transition line-clamp-1">
+                                  {post.title}
+                                </div>
+                                <div className="text-[11px] text-slate-500 font-mono line-clamp-1">
+                                  /{post.slug}
+                                </div>
+                              </td>
+                              <td className="py-3.5 px-4 hidden md:table-cell">
+                                <span className="inline-block px-2.5 py-1 rounded-md bg-slate-800 text-blue-300 text-[11px] font-medium border border-slate-700">
+                                  {post.category}
+                                </span>
+                              </td>
+                              <td className="py-3.5 px-4 hidden sm:table-cell text-slate-400 whitespace-nowrap">
+                                {post.date}
+                              </td>
+                              <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                                <div className="inline-flex items-center gap-1.5">
+                                  <Link
+                                    href={`/${post.slug}`}
+                                    target="_blank"
+                                    className="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition"
+                                    title="View Live"
+                                  >
+                                    <ExternalLink className="w-3.5 h-3.5" />
+                                  </Link>
+                                  <button
+                                    onClick={() => handleOpenEdit(post)}
+                                    className="p-2 rounded-lg bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-500/30 transition"
+                                    title="Edit Article"
+                                  >
+                                    <Edit3 className="w-3.5 h-3.5" />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeletePost(post)}
+                                    disabled={isProcessing}
+                                    className="p-2 rounded-lg bg-red-950/40 hover:bg-red-900/60 text-red-400 hover:text-red-200 border border-red-800/50 transition"
+                                    title="Delete Article"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
                       )}
                     </tbody>
                   </table>
