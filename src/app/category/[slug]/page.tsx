@@ -21,10 +21,31 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const formatted = slug.replace(/-/g, " ").toUpperCase();
+  const cleanSlug = slug.toLowerCase();
+  const matched = configuredCategories.find(
+    c => c.slug === cleanSlug || cleanSlug.includes(c.slug) || c.slug.includes(cleanSlug)
+  );
+
+  const titleName = matched ? matched.name : slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
+  
+  // Custom bespoke meta description strictly under 155 characters
+  const description = matched
+    ? matched.description
+    : `Explore in-depth technical analysis, architecture blueprints, and engineering insights on ${titleName} published by TechPulse.`; // < 145 chars
+
   return {
-    title: `${formatted} Articles | TechPulse Magazine`,
-    description: `Latest news, analysis, and engineering reports on ${formatted}.`,
+    title: `${titleName} | TechPulse Magazine`,
+    description,
+    openGraph: {
+      title: `${titleName} | TechPulse Magazine`,
+      description,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${titleName} | TechPulse Magazine`,
+      description,
+    },
   };
 }
 
@@ -43,12 +64,22 @@ export default async function CategoryPage({ params }: Props) {
     return cleanCategory.includes(cleanSearch) || cleanSearch.includes(cleanCategory);
   });
 
-  const categoryTitle = slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
+  const matched = configuredCategories.find(
+    c => c.slug === slug.toLowerCase() || slug.toLowerCase().includes(c.slug) || c.slug.includes(slug.toLowerCase())
+  );
+  const categoryTitle = matched ? matched.name : slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
+  const categoryDesc = matched
+    ? matched.description
+    : `Explore in-depth technical analysis, architecture blueprints, and engineering insights on ${categoryTitle} published by TechPulse.`;
 
   return (
     <div className="space-y-8">
-      <div className="section-line">
-        <span className="section-tag-box">{categoryTitle}</span>
+      <div className="border-b border-slate-200 pb-5">
+        <div className="flex items-center gap-2 mb-2">
+          {matched?.emoji && <span className="text-xl">{matched.emoji}</span>}
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{categoryTitle}</h1>
+        </div>
+        <p className="text-sm text-slate-600 max-w-2xl leading-relaxed">{categoryDesc}</p>
       </div>
 
       {posts.length === 0 ? (
