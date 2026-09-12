@@ -544,13 +544,17 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
    - NEVER cut words in half. The headline must read like a complete, natural sentence or title.
    - NEVER include any years (such as 2025, 2026, etc.). Evergreen content only.
 
-5. META DESCRIPTION (EXCERPT - STRICTLY NO REPETITIVE AI WORDS):
+5. META DESCRIPTION (EXCERPT - STRICTLY NO REPETITIVE AI TEMPLATES):
    - Must directly mention "{kw}".
    - Strictly between 150 and 155 characters in length. Complete sentence, never truncated.
-   - BANNED META DESCRIPTION STARTERS & CLICHES (NEVER USE):
-     * NEVER start with "Discover", "Explore", "Uncover", "Dive into", "Unlock", "Delve into", "Learn how"
-     * NEVER use words like "pipelines", "tapestry", "crucial", "testament"
-   - Write a direct, engaging human hook summarizing what the reader actually gains (e.g. "An in-depth look at how {kw} operates in real production setups, detailing concrete trade-offs, architecture choices, and benchmarks.")
+   - BANNED META DESCRIPTION STARTERS & CLICHES (NEVER USE ANY OF THESE):
+     * NEVER start with: "An in-depth look at", "An in-depth look", "A deep dive into", "Discover", "Explore", "Uncover", "Dive into", "Unlock", "Delve into", "Learn how", "In this article"
+     * NEVER use words like "pipelines", "tapestry", "crucial", "testament", "beacon"
+   - WRITE LIKE A REAL HUMAN TECH JOURNALIST (vary the sentence structure organically across articles):
+     * Style A (Problem / Reality): "{kw} introduces serious engineering tradeoffs across latency, memory, and cost. Here is how teams evaluate performance in production."
+     * Style B (Practical Engineering): "Building reliable systems with {kw} requires careful benchmarking, solid configuration rules, and battle-tested operational patterns."
+     * Style C (Direct Insight): "Modern teams adopting {kw} face real architectural hurdles. We examine key implementation decisions, core bottlenecks, and real results."
+   - Every single article must have a unique, organic phrasing that reads like genuine editorial commentary written by a human editor.
 
 6. FREQUENTLY ASKED QUESTIONS (REAL GOOGLE 'PEOPLE ALSO ASK' / FAQPAGE SCHEMA):
    - You MUST provide between 5 to 8 FAQs (minimum 5, maximum 8).
@@ -699,8 +703,9 @@ def main():
 
     def clean_excerpt(text):
         cleaned = clean_dashes(remove_years(text)).strip()
-        # Clean repetitive robotic AI starter verbs
-        cleaned = re.sub(r'^(Discover\s+how|Discover\s+the|Discover|Explore\s+how|Explore\s+the|Explore|Uncover\s+how|Uncover\s+the|Uncover|Unlock\s+how|Unlock\s+the|Unlock|Delve\s+into\s+how|Delve\s+into)\s+', '', cleaned, flags=re.IGNORECASE).strip()
+        # Clean repetitive robotic AI starter phrases and verbs
+        starter_patterns = r'^(An\s+in-depth\s+look\s+at\s+how|An\s+in-depth\s+look\s+at|An\s+in-depth\s+look\s+into|A\s+deep\s+dive\s+into|In\s+this\s+article,\s*we\s+explore|In\s+this\s+article|Discover\s+how|Discover\s+the|Discover|Explore\s+how|Explore\s+the|Explore|Uncover\s+how|Uncover\s+the|Uncover|Unlock\s+how|Unlock\s+the|Unlock|Delve\s+into\s+how|Delve\s+into)\s+'
+        cleaned = re.sub(starter_patterns, '', cleaned, flags=re.IGNORECASE).strip()
         # Ensure first character is capitalized after stripping
         if cleaned:
             cleaned = cleaned[0].upper() + cleaned[1:]
