@@ -1,4 +1,11 @@
 {
+  "cleanUrls": false,
+  "rewrites": [
+    {
+      "source": "/google6e9bb79cbb03eec0.html",
+      "destination": "/google6e9bb79cbb03eec0/"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
