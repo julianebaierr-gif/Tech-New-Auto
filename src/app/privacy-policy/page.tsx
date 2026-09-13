@@ -108,7 +108,7 @@ export default function PrivacyPolicyPage() {
           <p><strong>Com Pors Editorial Newsroom</strong></p>
           <p>Attn: Privacy &amp; Data Governance Desk</p>
           <p>Email: <a href="mailto:williamcheeke4@gmail.com" className="text-blue-600 underline">williamcheeke4@gmail.com</a></p>
-          <p>Official Newsroom Inquiries: <a href="/contact" className="text-blue-600 underline">compors.com/contact</a></p>
+          <p>Official Newsroom Inquiries: <a href="/contact/" className="text-blue-600 underline">compors.com/contact</a></p>
         </div>
       </section>
     </div>

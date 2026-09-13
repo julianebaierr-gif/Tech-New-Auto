@@ -1,5 +1,17 @@
 {
   "cleanUrls": false,
+  "redirects": [
+    {
+      "source": "/category/software-architecture/",
+      "destination": "/category/software-engineering/",
+      "permanent": true
+    },
+    {
+      "source": "/category/software-architecture",
+      "destination": "/category/software-engineering/",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/google6e9bb79cbb03eec0.html",

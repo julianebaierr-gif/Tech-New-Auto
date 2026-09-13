@@ -1,0 +1,33 @@
+# Com Pors | Leading Tech Intelligence, AI & Systems Architecture
+
+> Com Pors is an independent technology journal delivering daily investigative journalism, software architecture blueprints, semiconductor analysis, and enterprise IT evaluations.
+
+## Editorial Newsroom & Organization
+- Website: https://www.compors.com
+- RSS / Sitemap: https://www.compors.com/sitemap.xml
+- Authors & Masthead: https://www.compors.com/authors/
+- Editorial Standards: https://www.compors.com/about/
+- Newsroom Inquiries: https://www.compors.com/contact/
+
+## Core Coverage Categories
+- Artificial Intelligence: https://www.compors.com/category/artificial-intelligence/
+  - Neural networks, frontier LLMs, autonomous agents, and generative machine learning.
+- Software Engineering & Architecture: https://www.compors.com/category/software-engineering/
+  - High-throughput distributed systems, API architecture, and software design patterns.
+- Cloud Computing: https://www.compors.com/category/cloud-computing/
+  - Kubernetes orchestration, serverless microservices, and enterprise cloud infrastructure.
+- Cybersecurity: https://www.compors.com/category/cybersecurity/
+  - Zero trust network architecture, threat intelligence, and defensive tooling.
+- Hardware & Semiconductors: https://www.compors.com/category/hardware-semiconductors/
+  - Microprocessor architectures, AI accelerators, and silicon fabrication nodes.
+
+## Key Publications & Analyses
+- Architecting the Silicon Era (Technology of the 1980s): https://www.compors.com/architecting-silicon-era-technology-1980s/
+- Scaling Systems with the People Process Technology Framework: https://www.compors.com/scaling-systems-with-people-process-technology/
+- Instructional Technology Services in Modern Enterprise IT: https://www.compors.com/instructional-technology-services-modern-enterprise-it/
+- Granular Recovery Technology in Enterprise Systems: https://www.compors.com/granular-recovery-technology-in-enterprise-systems/
+- Scaling Systems with a Technology Solutions Professional: https://www.compors.com/scaling-systems-with-a-technology-solutions-professional/
+- Modern Technology Information Management Systems: https://www.compors.com/modern-technology-information-management-systems/
+- Engineering Managed Technology Services Infrastructure: https://www.compors.com/engineering-managed-technology-services-infrastructure/
+- Architecting Business Technology Solutions: https://www.compors.com/architecting-business-technology-solutions/
+- The Role of an Information Technology Specialist: https://www.compors.com/the-role-of-an-information-technology-specialist/
