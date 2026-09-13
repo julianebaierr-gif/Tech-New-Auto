@@ -340,7 +340,7 @@ def generate_article_with_gemini(keyword_info, existing_titles=None):
     kw = keyword_info["keyword"]
     provided_category = keyword_info.get("category")
     cat = provided_category or "Artificial Intelligence"
-    tech_categories = "Artificial Intelligence, Machine Learning, Cloud Computing, Cybersecurity, Software Engineering, Hardware & Semiconductors, Quantum Computing, Web Development, Future Tech"
+    tech_categories = "Artificial Intelligence, Cloud Computing, Cybersecurity, Software Engineering, Hardware & Semiconductors, Future Tech, Web Development"
 
     existing_titles_sample = (existing_titles or [])[-12:]
     avoid_titles_block = ""
@@ -524,7 +524,30 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
    - Ensure complete conceptual closure: the article must feel thoroughly researched, practical, and fully resolved.
    - Use rich semantic HTML: <p>, <ul><li>, <ol><li>, <blockquote>, and <strong>.
 
-2. FIRST PARAGRAPH KEYWORD INTEGRATION (CRITICAL SEO):
+2. HIGH READABILITY & PUNCHY SENTENCES (MANDATORY SEO & AHREFS GUIDELINE):
+   - KEEP SENTENCES SHORT: Keep average sentence length under 18 words. Break complex compound thoughts into two clear, punchy sentences.
+   - SIMPLE, CLEAR VOCABULARY: NEVER use overly pretentious or academic words.
+     * Use "use" instead of "utilize" or "utilizing".
+     * Use "start" instead of "commence".
+     * Use "model" instead of "paradigm".
+     * Use "requires" instead of "necessitates".
+     * Use "mostly" instead of "predominantly".
+     * Use "help" instead of "facilitate".
+     * Use "also" instead of "furthermore" or "moreover".
+     * Use "so" instead of "consequently".
+     * Use "however" instead of "nevertheless".
+     * Use "proven" instead of "demonstrable".
+   - VISUAL BULLETED CALLOUT BOX: Under the very first <h2> section, you MUST include a styled visual callout box with 3 punchy, high-value bullet points summarizing actionable engineering takeaways or checklist items, formatted exactly like:
+     <div class="my-6 p-5 rounded-2xl bg-blue-50/70 border border-blue-200 not-prose">
+       <h4 class="text-sm font-bold uppercase tracking-wider text-blue-900 mb-2">Key Engineering Takeaways</h4>
+       <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-slate-700">
+         <li><strong>Actionable Point 1:</strong> Concise explanation under 15 words.</li>
+         <li><strong>Actionable Point 2:</strong> Concise explanation under 15 words.</li>
+         <li><strong>Actionable Point 3:</strong> Concise explanation under 15 words.</li>
+       </ul>
+     </div>
+
+3. FIRST PARAGRAPH KEYWORD INTEGRATION (CRITICAL SEO):
    - You MUST seamlessly and naturally integrate the exact target keyword "{kw}" (or its natural primary phrase) within the VERY FIRST PARAGRAPH (<p>...</p>) of the article.
    - It MUST read 100% naturally, engagingly, and contextually — NEVER forced, stuffed, or awkward. It should immediately signal topic authority to both Google algorithms and human readers.
 
@@ -567,7 +590,7 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
 
 8. STRICTLY ONE AUTHORITATIVE EXTERNAL REFERENCE (SEO & GOOGLE E-E-A-T):
    - You MUST include EXACTLY ONE highly credible, authoritative external reference citation directly relevant to "{kw}".
-   - Acceptable domains: official documentation, research papers, or industry-standard bodies (e.g. w3.org, wikipedia.org, arxiv.org, nist.gov, ietf.org, github.com, apache.org, cisa.gov, acm.org, ieee.org, aws.amazon.com, cloud.google.com, openai.com, developer.mozilla.org).
+   - Acceptable domains: official documentation, research papers, or industry-standard bodies (e.g. w3.org, wikipedia.org, arxiv.org, nist.gov, ietf.org, github.com, apache.org, acm.org, ieee.org, aws.amazon.com, cloud.google.com, openai.com, developer.mozilla.org). NEVER use cisa.gov or bot-blocking domains.
    - The link MUST be woven naturally into the body text (e.g. inside a relevant paragraph using `<a href="https://..." target="_blank" rel="noopener noreferrer" class="text-blue-600 font-semibold hover:underline">Anchor Text</a>`).
    - DO NOT add more than 1 external link. Strictly 1 link.
 
@@ -785,7 +808,83 @@ def main():
             # For standard articles, strip all numerical prefixes like "1. ", "1.1 ", "2.1 " from headings
             text = re.sub(r'(<h[234][^>]*>)\s*(\d+\.\d+\.?|\d+\.)\s*', r'\1', text, flags=re.IGNORECASE)
 
-        # Strictly Ensure EXACTLY ONE High-Authority External Reference Link
+        # 1. Automated Readability & Vocabulary Simplification (Flesch-Kincaid & Ahrefs Compliance)
+        replacements = [
+            (r'\butilizing\b', 'using'),
+            (r'\butilize\b', 'use'),
+            (r'\butilizes\b', 'uses'),
+            (r'\butilized\b', 'used'),
+            (r'\bcommence\b', 'start'),
+            (r'\bcommences\b', 'starts'),
+            (r'\bcommenced\b', 'started'),
+            (r'\bparadigm\b', 'model'),
+            (r'\bparadigms\b', 'models'),
+            (r'\bnecessitates\b', 'requires'),
+            (r'\bnecessitate\b', 'require'),
+            (r'\bpredominantly\b', 'mostly'),
+            (r'\bfacilitate\b', 'help'),
+            (r'\bfacilitates\b', 'helps'),
+            (r'\bfacilitating\b', 'helping'),
+            (r'\bconsequently\b', 'so'),
+            (r'\bnevertheless\b', 'however'),
+            (r'\bfurthermore\b', 'also'),
+            (r'\bmoreover\b', 'also'),
+            (r'\bsubsequently\b', 'then'),
+            (r'\bdemonstrable\b', 'proven'),
+            (r'\binteroperability\b', 'compatibility'),
+            (r'\bdisproportionately\b', 'heavily'),
+            (r'\boperationalized\b', 'implemented'),
+            (r'\bcomprehensive\b', 'complete'),
+            (r'\bsimultaneously\b', 'at the same time'),
+            (r'\bpredicated on\b', 'based on'),
+            (r'\bamorphous\b', 'unclear'),
+            (r'\bindispensable\b', 'essential'),
+        ]
+        for pat, rep in replacements:
+            text = re.sub(pat, rep, text, flags=re.IGNORECASE)
+
+        # 2. Break overly long paragraphs (5+ sentences) into smaller digestible paragraphs
+        paragraphs = re.findall(r'<p>(.*?)</p>', text, flags=re.DOTALL)
+        for p in paragraphs:
+            # Avoid breaking callout boxes or lists inside paragraphs
+            if '<ul' in p or '<ol' in p or '<div' in p:
+                continue
+            sentences = re.split(r'(?<=[.!?])\s+', p.strip())
+            if len(sentences) >= 5:
+                mid = len(sentences) // 2
+                p1 = ' '.join(sentences[:mid])
+                p2 = ' '.join(sentences[mid:])
+                text = text.replace(f'<p>{p}</p>', f'<p>{p1}</p><p>{p2}</p>', 1)
+
+        # 3. Ensure Visual Callout Box with Actionable Takeaways Exists Under First <h2>
+        has_callout_box = bool(re.search(r'bg-blue-50/70|not-prose', text, re.IGNORECASE))
+        if not has_callout_box:
+            h2_matches = list(re.finditer(r'<h2[^>]*>([\s\S]*?)</h2>', text, re.IGNORECASE))
+            if h2_matches:
+                first_h2 = h2_matches[0]
+                first_h2_title = re.sub(r'<[^>]+>', '', first_h2.group(1)).strip()
+                # Find the first paragraph following this H2
+                after_h2_pos = first_h2.end()
+                first_p_after_h2 = re.search(r'<p>([\s\S]*?)</p>', text[after_h2_pos:], re.IGNORECASE)
+                insert_pos = after_h2_pos + first_p_after_h2.end() if first_p_after_h2 else after_h2_pos
+                
+                # Build contextual takeaways
+                box_snippet = f'''
+<div class="my-6 p-5 rounded-2xl bg-blue-50/70 border border-blue-200 not-prose">
+  <h4 class="text-sm font-bold uppercase tracking-wider text-blue-900 mb-2">Key Engineering Takeaways</h4>
+  <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-slate-700">
+    <li><strong>Core Architecture:</strong> Evaluate foundational tradeoffs before deploying {kw} in production.</li>
+    <li><strong>System Reliability:</strong> Maintain strict testing pipelines and benchmark metrics across workloads.</li>
+    <li><strong>Operational Hygiene:</strong> Follow standard industry guidelines to prevent downtime and optimize costs.</li>
+  </ul>
+</div>
+'''
+                text = text[:insert_pos] + box_snippet + text[insert_pos:]
+
+        # 4. Strictly Ensure EXACTLY ONE High-Authority External Reference Link & Filter 403-Unfriendly Domains
+        # Replace blocked domains (like cisa.gov) with safe fallback authority URLs
+        text = re.sub(r'https?://(?:www\.)?cisa\.gov[^\s"\']*', 'https://csrc.nist.gov', text, flags=re.IGNORECASE)
+        
         ext_links = list(re.finditer(r'<a\s+[^>]*href=["\'](https?://[^"\']+)["\'][^>]*>([\s\S]*?)</a>', text, flags=re.IGNORECASE))
         # Keep only true external links (not internal domains)
         true_ext = [m for m in ext_links if "compors" not in m.group(1).lower() and "tech-new-auto" not in m.group(1).lower() and "techpulse" not in m.group(1).lower()]
@@ -801,6 +900,8 @@ def main():
             ext_url = ext_source.get("url")
             ext_name = ext_source.get("title") or "official technical documentation"
             if ext_url and ext_url.startswith("http"):
+                if "cisa.gov" in ext_url.lower():
+                    ext_url = "https://csrc.nist.gov"
                 # Append reference to the last paragraph before conclusion or second-to-last paragraph
                 all_p = list(re.finditer(r'<p>([\s\S]*?)</p>', text))
                 if len(all_p) >= 2:
@@ -808,7 +909,45 @@ def main():
                     ref_snippet = f' <em>Reference and architectural guidelines sourced from <a href="{ext_url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 font-semibold hover:underline">{ext_name}</a>.</em>'
                     text = text.replace(target_p.group(0), f'<p>{target_p.group(1).rstrip()}{ref_snippet}</p>', 1)
 
+        # 5. Trailing Slash Normalization for Internal Links
+        text = re.sub(r'href="(/category/[^"/]+)(?<!/)"', r'href="\1/"', text)
+        text = re.sub(r'href="(/(?:about|contact|terms|privacy-policy))(?<!/)"', r'href="\1/"', text)
+
         return text
+
+    # Strict Category Normalization against the 7 official site categories
+    VALID_CATEGORIES = [
+        "Artificial Intelligence",
+        "Cloud Computing",
+        "Cybersecurity",
+        "Software Engineering",
+        "Hardware & Semiconductors",
+        "Future Tech",
+        "Web Development"
+    ]
+    raw_cat = str(article_data.get("category", "")).strip()
+    norm_cat = "Software Engineering"  # Default fallback
+    for vc in VALID_CATEGORIES:
+        if raw_cat.lower() == vc.lower():
+            norm_cat = vc
+            break
+        elif vc.lower() in raw_cat.lower() or raw_cat.lower() in vc.lower():
+            norm_cat = vc
+            break
+    if "architecture" in raw_cat.lower() or "programming" in raw_cat.lower() or "devops" in raw_cat.lower():
+        norm_cat = "Software Engineering"
+    elif "security" in raw_cat.lower():
+        norm_cat = "Cybersecurity"
+    elif "ai" in raw_cat.lower() or "machine learning" in raw_cat.lower() or "neural" in raw_cat.lower():
+        norm_cat = "Artificial Intelligence"
+    elif "cloud" in raw_cat.lower():
+        norm_cat = "Cloud Computing"
+    elif "chip" in raw_cat.lower() or "silicon" in raw_cat.lower() or "hardware" in raw_cat.lower():
+        norm_cat = "Hardware & Semiconductors"
+    elif "quantum" in raw_cat.lower() or "robot" in raw_cat.lower():
+        norm_cat = "Future Tech"
+    elif "web" in raw_cat.lower() or "frontend" in raw_cat.lower() or "browser" in raw_cat.lower():
+        norm_cat = "Web Development"
 
     post_record = {
         "title": clean_title(article_data["title"]),
@@ -818,7 +957,7 @@ def main():
         "coverImageAlt": cover_alt,
         "date": datetime.now().strftime("%Y-%m-%d"),
         "createdAt": int(time.time() * 1000),
-        "category": article_data.get("category", "Technology"),
+        "category": norm_cat,
         "author": selected_author,
         "readTime": article_data.get("readTime", "8 min read"),
         "tags": article_data.get("tags", ["Tech", "Engineering"]),
