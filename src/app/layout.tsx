@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: "Com Pors | Tech Intelligence & Systems",
-    template: "%s",
+    template: "%s | Com Pors",
   },
   description: "Independent tech journalism reporting on emerging AI models, software architecture, semiconductors, cybersecurity, and future computing.",
 

@@ -89,12 +89,32 @@ export default async function CategoryPage({ params }: Props) {
       </div>
 
       {posts.length === 0 ? (
-        <div className="p-12 text-center bg-white rounded-2xl border border-slate-200 shadow-sm">
-          <h2 className="text-xl font-bold text-slate-900 mb-2">No articles in this department yet.</h2>
-          <p className="text-sm text-slate-500 mb-6">Our editors are preparing new investigative coverage and guides for this section.</p>
-          <Link href="/blog" className="px-5 py-2.5 rounded-lg bg-blue-600 text-white font-bold text-xs shadow-sm hover:bg-blue-700">
-            Browse All Articles
-          </Link>
+        <div className="space-y-8">
+          <div className="p-8 sm:p-12 text-center bg-white rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
+              {categoryTitle} Research &amp; Engineering Desk
+            </h2>
+            <p className="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              Our technical newsroom is actively conducting benchmarks, compiling architectural teardowns, and preparing investigative reporting for the {categoryTitle} track. All dispatches undergo strict peer-review and fact-checking before publication.
+            </p>
+            <div className="pt-2">
+              <Link href="/blog" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white font-bold text-xs shadow-sm hover:bg-blue-700 transition">
+                Browse All Published Research
+              </Link>
+            </div>
+          </div>
+
+          <div className="p-6 sm:p-8 bg-white rounded-2xl border border-slate-200 shadow-xs space-y-4 text-slate-700 text-sm leading-relaxed">
+            <h3 className="text-base sm:text-lg font-bold text-slate-900">
+              Editorial Scope &amp; Coverage Criteria
+            </h3>
+            <p>
+              At <strong>Com Pors</strong>, our {categoryTitle} beat focuses on core system fundamentals, open standards, scalable system design, and production engineering tradeoffs. Rather than regurgitating press releases, our analysts evaluate real-world infrastructure metrics, reliability trade-offs, and emerging paradigms shaping modern digital ecosystems.
+            </p>
+            <p>
+              Key inquiry tracks include high-throughput frameworks, continuous deployment pipelines, enterprise reliability engineering, and system governance standards. Readers and software practitioners can explore our broader technology archives, review our verified masthead, or submit research pitches to our editorial board.
+            </p>
+          </div>
         </div>
       ) : (
         <div className="space-y-6">
