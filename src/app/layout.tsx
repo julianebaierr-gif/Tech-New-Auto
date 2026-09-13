@@ -84,6 +84,9 @@ export const metadata: Metadata = {
     ],
     shortcut: ["/favicon.ico"],
   },
+  verification: {
+    google: "google6e9bb79cbb03eec0",
+  },
 };
 
 const organizationSchema = {
