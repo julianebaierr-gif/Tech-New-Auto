@@ -59,8 +59,8 @@ export default async function AuthorProfilePage({ params }: Props) {
   }
 
   const posts = getPostsByAuthor(author.name);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://compors.com";
-  const authorUrl = `${siteUrl}/author/${author.slug}`;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.compors.com";
+  const authorUrl = `${siteUrl}/author/${author.slug}/`;
 
   const personSchema = {
     "@context": "https://schema.org",
