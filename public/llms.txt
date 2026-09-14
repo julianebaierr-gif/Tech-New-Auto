@@ -1,33 +1,33 @@
-# Com Pors | Leading Tech Intelligence, AI & Systems Architecture
+﻿# Com Pors
 
 > Com Pors is an independent technology journal delivering daily investigative journalism, software architecture blueprints, semiconductor analysis, and enterprise IT evaluations.
 
-## Editorial Newsroom & Organization
-- Website: https://www.compors.com
-- RSS / Sitemap: https://www.compors.com/sitemap.xml
-- Authors & Masthead: https://www.compors.com/authors/
-- Editorial Standards: https://www.compors.com/about/
-- Newsroom Inquiries: https://www.compors.com/contact/
+## Docs
 
-## Core Coverage Categories
-- Artificial Intelligence: https://www.compors.com/category/artificial-intelligence/
-  - Neural networks, frontier LLMs, autonomous agents, and generative machine learning.
-- Software Engineering & Architecture: https://www.compors.com/category/software-engineering/
-  - High-throughput distributed systems, API architecture, and software design patterns.
-- Cloud Computing: https://www.compors.com/category/cloud-computing/
-  - Kubernetes orchestration, serverless microservices, and enterprise cloud infrastructure.
-- Cybersecurity: https://www.compors.com/category/cybersecurity/
-  - Zero trust network architecture, threat intelligence, and defensive tooling.
-- Hardware & Semiconductors: https://www.compors.com/category/hardware-semiconductors/
-  - Microprocessor architectures, AI accelerators, and silicon fabrication nodes.
+- [About Com Pors](https://www.compors.com/about/): Editorial standards, ethics policies, and newsroom mission.
+- [Editorial Masthead & Authors](https://www.compors.com/authors/): Information on contributing editors and systems researchers.
+- [Newsroom Contact](https://www.compors.com/contact/): Editorial desk inquiries, tips, and corrections.
+- [Sitemap](https://www.compors.com/sitemap.xml): Complete indexing of technical publications.
 
-## Key Publications & Analyses
-- Architecting the Silicon Era (Technology of the 1980s): https://www.compors.com/architecting-silicon-era-technology-1980s/
-- Scaling Systems with the People Process Technology Framework: https://www.compors.com/scaling-systems-with-people-process-technology/
-- Instructional Technology Services in Modern Enterprise IT: https://www.compors.com/instructional-technology-services-modern-enterprise-it/
-- Granular Recovery Technology in Enterprise Systems: https://www.compors.com/granular-recovery-technology-in-enterprise-systems/
-- Scaling Systems with a Technology Solutions Professional: https://www.compors.com/scaling-systems-with-a-technology-solutions-professional/
-- Modern Technology Information Management Systems: https://www.compors.com/modern-technology-information-management-systems/
-- Engineering Managed Technology Services Infrastructure: https://www.compors.com/engineering-managed-technology-services-infrastructure/
-- Architecting Business Technology Solutions: https://www.compors.com/architecting-business-technology-solutions/
-- The Role of an Information Technology Specialist: https://www.compors.com/the-role-of-an-information-technology-specialist/
+## Categories
+
+- [Artificial Intelligence](https://www.compors.com/category/artificial-intelligence/): Neural networks, frontier LLMs, autonomous agents, and generative machine learning.
+- [Software Engineering](https://www.compors.com/category/software-engineering/): High-throughput distributed systems, API architecture, and software design patterns.
+- [Cloud Computing](https://www.compors.com/category/cloud-computing/): Kubernetes orchestration, serverless microservices, and enterprise cloud infrastructure.
+- [Cybersecurity](https://www.compors.com/category/cybersecurity/): Zero trust network architecture, threat intelligence, and defensive tooling.
+- [Hardware & Semiconductors](https://www.compors.com/category/hardware-semiconductors/): Microprocessor architectures, AI accelerators, and silicon fabrication nodes.
+- [Future Tech](https://www.compors.com/category/future-tech/): Frontier computing, quantum processors, and neuromorphic silicon.
+- [Web Development](https://www.compors.com/category/web-development/): Full-stack engineering guides, web standards, and modern frameworks.
+
+## Optional
+
+- [Architecting the Silicon Era](https://www.compors.com/architecting-silicon-era-technology-1980s/): Analysis of 1980s computing architecture and microprocessor design.
+- [People Process Technology Framework](https://www.compors.com/scaling-systems-with-people-process-technology/): Organizational engineering and systems scaling principles.
+- [Instructional Technology Services](https://www.compors.com/instructional-technology-services-modern-enterprise-it/): Enterprise educational infrastructure and digital learning platforms.
+- [Granular Recovery Technology](https://www.compors.com/granular-recovery-technology-in-enterprise-systems/): Disaster recovery architectures and block-level backup design.
+- [Technology Solutions Professional Guide](https://www.compors.com/scaling-systems-with-a-technology-solutions-professional/): Cloud systems modernization and enterprise infrastructure consulting.
+- [Modern Technology Information Management Systems](https://www.compors.com/modern-technology-information-management-systems/): Enterprise data pipelines and governance frameworks.
+- [Engineering Managed Technology Services](https://www.compors.com/engineering-managed-technology-services-infrastructure/): Scalable managed infrastructure and operational reliability.
+- [Architecting Business Technology Solutions](https://www.compors.com/architecting-business-technology-solutions/): Enterprise solution blueprints and distributed workloads.
+- [Role of an Information Technology Specialist](https://www.compors.com/the-role-of-an-information-technology-specialist/): Systems administration, security, and infrastructure roles.
+
