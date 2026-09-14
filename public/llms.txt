@@ -1,4 +1,4 @@
-﻿# Com Pors
+# Com Pors
 
 > Com Pors is an independent technology journal delivering daily investigative journalism, software architecture blueprints, semiconductor analysis, and enterprise IT evaluations.
 
