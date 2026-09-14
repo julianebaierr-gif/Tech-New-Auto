@@ -10,7 +10,17 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/portal-desk', '/portal-desk/'],
+        disallow: ['/api/', '/portal-desk', '/portal-desk/', '/_next/'],
+      },
+      {
+        userAgent: 'AhrefsBot',
+        allow: '/',
+        disallow: ['/_next/', '/api/', '/portal-desk', '/portal-desk/'],
+      },
+      {
+        userAgent: 'AhrefsSiteAudit',
+        allow: '/',
+        disallow: ['/_next/', '/api/', '/portal-desk', '/portal-desk/'],
       },
       {
         userAgent: 'Googlebot',
