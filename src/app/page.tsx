@@ -32,12 +32,16 @@ export default function HomePage() {
           {/* Main Big Lead Article */}
           {leadPost && (
             <article className="lg:col-span-7 bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition duration-300 flex flex-col group">
-              <div className="h-72 sm:h-96 relative overflow-hidden bg-slate-100">
+              <div className="h-72 sm:h-96 relative overflow-hidden bg-slate-100 aspect-16/9">
                 <img
                   src={leadPost.coverImage}
                   alt={leadPost.coverImageAlt || leadPost.title}
                   width={800}
                   height={450}
+                  // @ts-ignore
+                  fetchPriority="high"
+                  loading="eager"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                 />
               </div>

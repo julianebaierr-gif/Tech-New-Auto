@@ -221,13 +221,17 @@ export default async function BlogPostPage({ params }: Props) {
       </header>
 
       {/* Featured Cover Image */}
-      <div className="relative rounded-2xl overflow-hidden border border-slate-200 mb-10 shadow-lg bg-slate-100">
+      <div className="relative rounded-2xl overflow-hidden border border-slate-200 mb-10 shadow-lg bg-slate-100 aspect-16/9">
         <img
           src={post.coverImage}
           alt={post.coverImageAlt || post.title}
           width={1200}
           height={630}
-          className="w-full max-h-[500px] object-cover"
+          // @ts-ignore
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
+          className="w-full h-auto max-h-[500px] object-cover"
         />
       </div>
 
