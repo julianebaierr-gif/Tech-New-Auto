@@ -33,11 +33,11 @@ export default function MainNavbar() {
               </Link>
             </li>
             {categories.map((cat) => {
-              const isActive = pathname === `/category/${cat.slug}`;
+              const isActive = pathname === `/category/${cat.slug}/` || pathname === `/category/${cat.slug}`;
               return (
                 <li key={cat.slug}>
                   <Link
-                    href={`/category/${cat.slug}`}
+                    href={`/category/${cat.slug}/`}
                     className={`px-3 py-1.5 rounded-md transition inline-block font-semibold ${
                       isActive
                         ? "bg-blue-50 text-blue-700"
@@ -88,9 +88,9 @@ export default function MainNavbar() {
               {categories.slice(0, 4).map((c) => (
                 <Link
                   key={c.slug}
-                  href={`/category/${c.slug}`}
+                  href={`/category/${c.slug}/`}
                   className={`px-2.5 py-1 rounded-full text-xs font-bold transition shrink-0 ${
-                    pathname === `/category/${c.slug}` ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                    pathname === `/category/${c.slug}/` || pathname === `/category/${c.slug}` ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                   }`}
                 >
                   {c.name}
@@ -125,11 +125,11 @@ export default function MainNavbar() {
                   </Link>
                 </li>
                 {categories.map((cat) => {
-                  const isActive = pathname === `/category/${cat.slug}`;
+                  const isActive = pathname === `/category/${cat.slug}/` || pathname === `/category/${cat.slug}`;
                   return (
                     <li key={cat.slug}>
                       <Link
-                        href={`/category/${cat.slug}`}
+                        href={`/category/${cat.slug}/`}
                         onClick={closeMenu}
                         className={`flex items-center justify-between px-3 py-2.5 rounded-xl font-bold text-sm ${
                           isActive ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"

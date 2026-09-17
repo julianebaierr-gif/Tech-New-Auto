@@ -127,7 +127,7 @@ export default async function BlogPostPage({ params }: Props) {
         "@type": "ListItem",
         position: 2,
         name: post.category,
-        item: `${siteUrl}/category/${post.category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+        item: `${siteUrl}/category/${post.category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}/`,
       },
       {
         "@type": "ListItem",
@@ -211,7 +211,7 @@ export default async function BlogPostPage({ params }: Props) {
           <div className="flex items-center gap-2">
             <span className="text-slate-400 font-medium">Published in</span>
             <Link
-              href={`/category/${post.category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+              href={`/category/${post.category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/`}
               className="font-bold uppercase text-blue-700 bg-blue-50 px-2.5 py-1 rounded border border-blue-200 hover:bg-blue-100 transition"
             >
               {post.category}

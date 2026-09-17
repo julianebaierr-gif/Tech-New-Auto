@@ -8,7 +8,7 @@ export default function CategoryQuickBar() {
       {categories.map((cat) => (
         <Link
           key={cat.slug}
-          href={`/category/${cat.slug}`}
+          href={`/category/${cat.slug}/`}
           className="text-xs px-3.5 py-1.5 rounded-full bg-white hover:bg-blue-600 hover:text-white text-slate-700 border border-slate-200 shadow-xs hover:shadow transition font-medium flex items-center gap-1.5"
         >
           <span>{cat.emoji}</span>
