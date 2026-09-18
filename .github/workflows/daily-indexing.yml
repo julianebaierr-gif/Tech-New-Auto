@@ -1,0 +1,32 @@
+﻿name: Daily Google Crawl & Indexing Enforcer
+
+on:
+  schedule:
+    # Runs everyday at 06:00 UTC (11:00 AM PKT)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allows manual trigger anytime
+
+jobs:
+  ping-indexing:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4.2.2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5.4.0
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests oauth2client httplib2
+
+      - name: Run Daily Indexing & Crawl Ping
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+          SITE_URL: "https://www.compors.com"
+        run: |
+          python scripts/daily_indexing_pinger.py
