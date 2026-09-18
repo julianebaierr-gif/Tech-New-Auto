@@ -560,8 +560,8 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
 4. TITLE REQUIREMENT (STRICTLY NO AI WORDS):
    - Must naturally feature or strictly relate to "{kw}".
    - Complete the title into a punchy, professional, and editorial headline.
-   - STRICTLY FORBIDDEN WORDS IN TITLE: NEVER use "Comprehensive", "Guide", "A Guide to", "Navigating", "Demystifying", "Unpacking", "Deep Dive", or "Ultimate".
-   - Craft natural, human editorial headlines (e.g. "Cybersecurity Tools: Architectural Realities in Production", "Evaluating Modern Machine Learning Frameworks", "Production Lessons from Distributed Caching").
+   - STRICTLY FORBIDDEN WORDS IN TITLE & HEADINGS: NEVER use "Comprehensive", "Guide", "A Guide to", "Navigating", "Navigating the", "Demystifying", "Unpacking", "Delving", "Deep Dive", or "Ultimate" / "Ultimate Guide".
+   - Craft natural, human editorial headlines (e.g. "Cybersecurity Tools: Architectural Realities in Production", "Evaluating Machine Learning Frameworks", "Production Lessons from Distributed Caching").
    - DO NOT force fixed phrases (like "for Modern Systems" or "Guide and Analysis").
    - Strictly between 50 and 65 characters in length (optimal SEO headline range, never truncating mid-thought).
    - NEVER cut words in half. The headline must read like a complete, natural sentence or title.
@@ -571,13 +571,30 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
    - Must directly mention "{kw}".
    - Strictly between 150 and 155 characters in length. Complete sentence, never truncated.
    - BANNED META DESCRIPTION STARTERS & CLICHES (NEVER USE ANY OF THESE):
-     * NEVER start with: "An in-depth look at", "An in-depth look", "A deep dive into", "Discover", "Explore", "Uncover", "Dive into", "Unlock", "Delve into", "Learn how", "In this article"
-     * NEVER use words like "pipelines", "tapestry", "crucial", "testament", "beacon"
+     * NEVER use or start with: "Discover", "Explore", "Uncover", "Dive into", "A deep dive into", "Unlock", "Delve into", "Learn how", "In this article", "In this article, we explore", "An in-depth look at", "An in-depth look into", "An in-depth look"
+     * NEVER use repetitive words like: "pipelines", "tapestry", "crucial", "crucial component", "testament", "beacon", "pivotal"
    - WRITE LIKE A REAL HUMAN TECH JOURNALIST (vary the sentence structure organically across articles):
      * Style A (Problem / Reality): "{kw} introduces serious engineering tradeoffs across latency, memory, and cost. Here is how teams evaluate performance in production."
      * Style B (Practical Engineering): "Building reliable systems with {kw} requires careful benchmarking, solid configuration rules, and battle-tested operational patterns."
      * Style C (Direct Insight): "Modern teams adopting {kw} face real architectural hurdles. We examine key implementation decisions, core bottlenecks, and real results."
    - Every single article must have a unique, organic phrasing that reads like genuine editorial commentary written by a human editor.
+
+6. CONTENT BODY & HEADINGS CLICHE BAN (STRICTLY FORBIDDEN):
+   - NEVER use generic AI cliches anywhere in the article:
+     * "In today's fast-paced digital world"
+     * "tapestry"
+     * "testament"
+     * "crucial" or "crucial component" (use "essential", "key", or "vital")
+     * "beacon"
+     * "pivotal"
+     * "It is important to remember"
+     * "In conclusion" (use natural section names like "Final Verdict")
+     * "As we look ahead"
+     * "pipelines" (use "systems", "architectures", "workflows", or "dataflows")
+     * "delving" or "delve into"
+     * "demystifying" or "unpacking"
+     * "comprehensive" or "guide"
+     * "navigating" or "navigating the"
 
 6. FREQUENTLY ASKED QUESTIONS (REAL GOOGLE 'PEOPLE ALSO ASK' / FAQPAGE SCHEMA):
    - You MUST provide between 5 to 8 FAQs (minimum 5, maximum 8).
@@ -709,8 +726,12 @@ def main():
     def clean_title(title):
         cleaned = clean_dashes(remove_years(title)).strip()
         # Clean common robotic AI buzzword prefixes/words if accidentally produced
-        ai_words_pattern = r'\b(Comprehensive\s+Guide\s+to|The\s+Ultimate\s+Guide\s+to|A\s+Comprehensive\s+Guide\s+to|Ultimate\s+Guide\s+to|Comprehensive|Ultimate\s+Guide|Navigating\s+the|Navigating|Demystifying|Unpacking)\b\s*'
+        ai_words_pattern = r'\b(Comprehensive\s+Guide\s+to|The\s+Ultimate\s+Guide\s+to|A\s+Comprehensive\s+Guide\s+to|Ultimate\s+Guide\s+to|A\s+Guide\s+to|Comprehensive|Ultimate\s+Guide|Ultimate|Navigating\s+the|Navigating|Demystifying|Unpacking|Delving\s+into|Delving|Deep\s+Dive\s+into|Deep\s+Dive|A\s+Deep\s+Dive)\b\s*'
         cleaned = re.sub(ai_words_pattern, '', cleaned, flags=re.IGNORECASE).strip()
+        # Clean isolated "Guide" if trailing or leading
+        cleaned = re.sub(r'^\s*Guide\s*:\s*', '', cleaned, flags=re.IGNORECASE).strip()
+        cleaned = re.sub(r'\s*:\s*A\s+Guide\s*$', '', cleaned, flags=re.IGNORECASE).strip()
+        cleaned = re.sub(r'\s+Guide\s*$', '', cleaned, flags=re.IGNORECASE).strip()
         # Ensure first character is capitalized
         if cleaned:
             cleaned = cleaned[0].upper() + cleaned[1:]
@@ -727,22 +748,50 @@ def main():
     def clean_excerpt(text):
         cleaned = clean_dashes(remove_years(text)).strip()
         # Clean repetitive robotic AI starter phrases and verbs
-        starter_patterns = r'^(An\s+in-depth\s+look\s+at\s+how|An\s+in-depth\s+look\s+at|An\s+in-depth\s+look\s+into|A\s+deep\s+dive\s+into|In\s+this\s+article,\s*we\s+explore|In\s+this\s+article|Discover\s+how|Discover\s+the|Discover|Explore\s+how|Explore\s+the|Explore|Uncover\s+how|Uncover\s+the|Uncover|Unlock\s+how|Unlock\s+the|Unlock|Delve\s+into\s+how|Delve\s+into)\s+'
+        starter_patterns = r'^(An\s+in-depth\s+look\s+at\s+how|An\s+in-depth\s+look\s+at|An\s+in-depth\s+look\s+into|An\s+in-depth\s+look|A\s+deep\s+dive\s+into|A\s+deep\s+dive|In\s+this\s+article,\s*we\s+explore|In\s+this\s+article,\s*we\s+examine|In\s+this\s+article|Discover\s+how|Discover\s+the|Discover|Explore\s+how|Explore\s+the|Explore|Uncover\s+how|Uncover\s+the|Uncover|Unlock\s+how|Unlock\s+the|Unlock|Delve\s+into\s+how|Delve\s+into|Delving\s+into|Learn\s+how|Learn\s+the)\s+'
         cleaned = re.sub(starter_patterns, '', cleaned, flags=re.IGNORECASE).strip()
+        
+        # Replace banned AI words inside excerpt
+        excerpt_replacements = [
+            (r'\bdiscover\b', 'review'),
+            (r'\bexplore\b', 'examine'),
+            (r'\buncover\b', 'analyze'),
+            (r'\bdive into\b', 'evaluate'),
+            (r'\ba deep dive into\b', 'an evaluation of'),
+            (r'\bunlock\b', 'enable'),
+            (r'\bdelve into\b', 'assess'),
+            (r'\bdelving into\b', 'assessing'),
+            (r'\blearn how\b', 'see how'),
+            (r'\bin this article\b', 'here'),
+            (r'\ban in-depth look\b', 'an analysis'),
+            (r'\bneural hardware pipelines\b', 'neural hardware architectures'),
+            (r'\bhardware pipelines\b', 'hardware architectures'),
+            (r'\bmetadata pipelines\b', 'metadata architectures'),
+            (r'\bdata pipelines\b', 'data architectures'),
+            (r'\bpipelines\b', 'systems'),
+            (r'\bpipeline\b', 'system'),
+            (r'\btapestry\b', 'network'),
+            (r'\btestament\b', 'reflection'),
+            (r'\bcrucial component\b', 'core element'),
+            (r'\bcrucial\b', 'vital'),
+            (r'\bbeacon\b', 'benchmark'),
+            (r'\bpivotal\b', 'central'),
+            (r'\bcomprehensive\b', 'thorough'),
+            (r'\bnavigating\b', 'handling'),
+            (r'\bdemystifying\b', 'clarifying'),
+            (r'\bunpacking\b', 'evaluating'),
+        ]
+        for pat, rep in excerpt_replacements:
+            cleaned = re.sub(pat, rep, cleaned, flags=re.IGNORECASE)
+
         # Ensure first character is capitalized after stripping
         if cleaned:
             cleaned = cleaned[0].upper() + cleaned[1:]
-        # Replace repetitive jargon like "pipelines" with more natural terms if present
-        cleaned = re.sub(r'\bneural hardware pipelines\b', 'neural hardware architectures', cleaned, flags=re.IGNORECASE)
-        cleaned = re.sub(r'\bhardware pipelines\b', 'hardware architectures', cleaned, flags=re.IGNORECASE)
-        cleaned = re.sub(r'\bpipelines\b', 'systems', cleaned, flags=re.IGNORECASE)
-        cleaned = re.sub(r'\bpipeline\b', 'system', cleaned, flags=re.IGNORECASE)
         # Ensure it ends with proper terminal punctuation
         if not cleaned.endswith(('.', '!', '?')):
             cleaned = cleaned.rstrip('.,;:- ') + '.'
         # If over 160 characters, truncate at the last complete sentence or clean word boundary with period
         if len(cleaned) > 160:
-            # Check if there is a sentence ending before 160
             m = re.search(r'^(.*?[.!?])\s+[A-Z]', cleaned[:160])
             if m and len(m.group(1)) >= 100:
                 cleaned = m.group(1)
@@ -839,6 +888,33 @@ def main():
             (r'\bpredicated on\b', 'based on'),
             (r'\bamorphous\b', 'unclear'),
             (r'\bindispensable\b', 'essential'),
+            # Banned AI cliches and buzzwords
+            (r'\bin today\'s fast-paced digital world\b', 'in modern engineering environments'),
+            (r'\bfast-paced digital world\b', 'modern computing environment'),
+            (r'\btapestry\b', 'network'),
+            (r'\btestament\b', 'evidence'),
+            (r'\bcrucial component\b', 'vital element'),
+            (r'\bcrucial\b', 'vital'),
+            (r'\bbeacon\b', 'benchmark'),
+            (r'\bpivotal\b', 'central'),
+            (r'\bit is important to remember that\b', 'notably,'),
+            (r'\bit is important to remember\b', 'notably'),
+            (r'\bin conclusion\b', 'in summary'),
+            (r'\bas we look ahead\b', 'looking forward'),
+            (r'\bdata pipelines\b', 'data workflows'),
+            (r'\bdata pipeline\b', 'data workflow'),
+            (r'\bpipelines\b', 'systems'),
+            (r'\bpipeline\b', 'system'),
+            (r'\bnavigating the\b', 'managing the'),
+            (r'\bnavigating\b', 'managing'),
+            (r'\bdemystifying\b', 'clarifying'),
+            (r'\bunpacking\b', 'evaluating'),
+            (r'\bdelving into\b', 'evaluating'),
+            (r'\bdelve into\b', 'evaluate'),
+            (r'\ba deep dive into\b', 'an analysis of'),
+            (r'\bdeep dive\b', 'detailed analysis'),
+            (r'\bultimate guide\b', 'analysis'),
+            (r'\bultimate\b', 'optimal'),
         ]
         for pat, rep in replacements:
             text = re.sub(pat, rep, text, flags=re.IGNORECASE)
