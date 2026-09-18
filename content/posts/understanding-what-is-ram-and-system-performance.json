@@ -1,7 +1,7 @@
 {
   "title": "Understanding What Is RAM and System Performance",
   "target_keyword": "what is ram",
-  "excerpt": "Modern teams evaluating what is ram face real performance hurdles. We examine key implementation decisions, core bottlenecks, and real results.",
+  "excerpt": "Analyzing what is ram requires understanding memory bus bandwidth, DDR5 CAS latency, and virtual paging mechanics across modern high-speed motherboards.",
   "coverImage": "https://images.unsplash.com/photo-1542978709-19c95dc3bc7e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYwMzI3fDB8MXxzZWFyY2h8MXx8Y29tcHV0ZXIlMjBtZW1vcnklMjBzdGlja3xlbnwwfDB8fHwxNzg5NDAxNzkwfDA&ixlib=rb-4.1.0&q=80&w=1080",
   "coverImageAlt": "what is ram - RAM Technology Architecture and Engineering Analysis",
   "date": "2026-09-14",

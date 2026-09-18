@@ -1,7 +1,7 @@
 {
   "title": "Architecting Scalable Systems That Chat With AI",
   "target_keyword": "chat with ai",
-  "excerpt": "Modern teams adopting chat with ai face real architectural hurdles. We examine key implementation decisions, core bottlenecks, and real results.",
+  "excerpt": "Deploying real-time chat with ai interfaces requires low-latency websocket channels, scalable model routing, and strict state management across users.",
   "coverImage": "https://images.unsplash.com/photo-1623479322729-28b25c16b011?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYwMzI3fDB8MXxzZWFyY2h8MXx8ZGV2ZWxvcGVyJTIwdHlwaW5nJTIwY29kZXxlbnwwfDB8fHwxNzg5NjYxMDM1fDA&ixlib=rb-4.1.0&q=80&w=1080",
   "coverImageAlt": "chat with ai - Large Language Models Technology Architecture and Engineering Analysis",
   "date": "2026-09-17",

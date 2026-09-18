@@ -1,7 +1,7 @@
 {
   "title": "Granular Recovery Technology in Enterprise Systems",
   "target_keyword": "granular recovery technology",
-  "excerpt": "Granular recovery technology introduces serious engineering tradeoffs across latency, memory, and cost. Here is how teams evaluate performance in production.",
+  "excerpt": "Implementing granular recovery technology allows IT teams to restore single application items from disk images without mounting entire monolithic backups.",
   "coverImage": "https://images.unsplash.com/photo-1695668548342-c0c1ad479aee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYwMzI3fDB8MXxzZWFyY2h8Mnx8c2VydmVyJTIwcmFjayUyMGRhdGF8ZW58MHwwfHx8MTc4OTIyODk5NXww&ixlib=rb-4.1.0&q=80&w=1080",
   "coverImageAlt": "granular recovery technology - Cloud Computing Technology Architecture and Engineering Analysis",
   "date": "2026-09-12",
