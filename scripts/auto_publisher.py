@@ -16,9 +16,49 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 UNSPLASH_ACCESS_KEY = os.environ.get("UNSPLASH_ACCESS_KEY")
 GOOGLE_SHEET_CSV_URL = os.environ.get("GOOGLE_SHEET_CSV_URL") or "https://docs.google.com/spreadsheets/d/1ksudXZ2GVgcCccHuvRRQC9OMTrBqjZtJYNxUEM1X93A/export?format=csv"
 GOOGLE_SHEET_ID = os.environ.get("GOOGLE_SHEET_ID") or "1ksudXZ2GVgcCccHuvRRQC9OMTrBqjZtJYNxUEM1X93A"
+GOOGLE_INDEXING_KEY = os.environ.get("GOOGLE_INDEXING_KEY")
+SITE_URL = os.environ.get("SITE_URL") or "https://www.compors.com"
 POSTS_DIR = os.path.join(os.getcwd(), "content", "posts")
 
 os.makedirs(POSTS_DIR, exist_ok=True)
+
+def notify_google_indexing(url, action="URL_UPDATED"):
+    """
+    Submits live article URL to Google Indexing API for instant crawling and indexing.
+    Accepts GOOGLE_INDEXING_KEY from GitHub Secrets (JSON service account key).
+    """
+    indexing_key_raw = GOOGLE_INDEXING_KEY or os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON")
+    if not indexing_key_raw:
+        print("[INFO] No GOOGLE_INDEXING_KEY found. Skipping Google Indexing API ping.")
+        return False
+
+    try:
+        from oauth2client.service_account import ServiceAccountCredentials
+        import httplib2
+
+        print(f"[INDEXING] Preparing Google Indexing API notification for: {url} ({action})...")
+        key_data = json.loads(indexing_key_raw)
+        scopes = ["https://www.googleapis.com/auth/indexing"]
+        credentials = ServiceAccountCredentials.from_json_keyfile_dict(key_data, scopes=scopes)
+        http = credentials.authorize(httplib2.Http())
+
+        endpoint = "https://indexing.googleapis.com/v3/urlNotifications:publish"
+        payload = json.dumps({
+            "url": url,
+            "type": action
+        })
+        headers = {"Content-Type": "application/json"}
+        response, content = http.request(endpoint, method="POST", body=payload, headers=headers)
+
+        if response.status in [200, 201, 202]:
+            print(f"[SUCCESS] Google Indexing API responded {response.status}: Googlebot notified to index {url}!")
+            return True
+        else:
+            print(f"[WARN] Google Indexing API returned status {response.status}: {content.decode('utf-8', errors='ignore')}")
+            return False
+    except Exception as e:
+        print(f"[WARN] Failed to ping Google Indexing API: {e}")
+        return False
 
 def fetch_keyword_from_sheet():
     """
@@ -1044,9 +1084,12 @@ def main():
     with open(target_file, "w", encoding="utf-8") as f:
         json.dump(post_record, f, indent=2)
 
-    site_base_url = os.environ.get("SITE_URL") or "https://tech-new-auto.vercel.app"
-    post_url = f"{site_base_url.rstrip('/')}/{slug}"
+    site_base_url = SITE_URL or os.environ.get("SITE_URL") or "https://www.compors.com"
+    post_url = f"{site_base_url.rstrip('/')}/{slug}/"
     post_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # 1. Trigger Instant Google Indexing API ping for the newly published article
+    notify_google_indexing(post_url, action="URL_UPDATED")
 
     # 1. Update directly via Google Sheets Service Account (gspread) if active
     if keyword_data.get("_gspread_sheet") and keyword_data.get("_sheet_row_idx"):
