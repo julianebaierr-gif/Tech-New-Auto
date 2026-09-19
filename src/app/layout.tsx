@@ -120,6 +120,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="ZrHugvRsK2zap7c7iittGA"
+          async
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
