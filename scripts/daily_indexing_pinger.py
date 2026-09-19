@@ -1,4 +1,4 @@
-﻿import os
+import os
 import json
 import glob
 import time
@@ -81,6 +81,27 @@ def ping_google_indexing(url_list):
     except Exception as err:
         print(f"[ERROR] Error during Google Indexing batch submission: {err}")
 
+def ping_indexnow(url_list):
+    indexnow_key = "d0b9826a117b4fe38c4b22c7a5fa8291"
+    host = "www.compors.com"
+    payload = {
+        "host": host,
+        "key": indexnow_key,
+        "keyLocation": f"https://{host}/{indexnow_key}.txt",
+        "urlList": url_list[:1000]
+    }
+    print(f"\n[INDEXNOW PING] Submitting {len(url_list)} URLs to IndexNow (Bing, Yandex, Seznam, Naver)...")
+    endpoints = [
+        "https://api.indexnow.org/indexnow",
+        "https://www.bing.com/indexnow"
+    ]
+    for ep in endpoints:
+        try:
+            r = requests.post(ep, json=payload, headers={"Content-Type": "application/json; charset=utf-8"}, timeout=15)
+            print(f"[INDEXNOW PING] {ep} -> HTTP {r.status_code}")
+        except Exception as e:
+            print(f"[INDEXNOW PING] {ep} failed: {e}")
+
 def ping_search_engines():
     sitemap_url = f"{SITE_URL}/sitemap.xml"
     print(f"\n[SITEMAP PING] Pinging Search Engines with sitemap: {sitemap_url}...")
@@ -99,5 +120,6 @@ if __name__ == "__main__":
     print(f"=== COMPORS DAILY INDEXING & CRAWL ENFORCER ({datetime.now().strftime('%Y-%m-%d %H:%M:%S')}) ===")
     all_urls = get_all_website_urls()
     ping_google_indexing(all_urls)
+    ping_indexnow(all_urls)
     ping_search_engines()
     print("=== DAILY INDEXING RUN FINISHED ===\n")

@@ -60,6 +60,30 @@ def notify_google_indexing(url, action="URL_UPDATED"):
         print(f"[WARN] Failed to ping Google Indexing API: {e}")
         return False
 
+def notify_indexnow(url):
+    """
+    Instantly submits new article to IndexNow protocol (Bing, Yandex, Seznam, etc.).
+    """
+    indexnow_key = "d0b9826a117b4fe38c4b22c7a5fa8291"
+    host = "www.compors.com"
+    payload = {
+        "host": host,
+        "key": indexnow_key,
+        "keyLocation": f"https://{host}/{indexnow_key}.txt",
+        "urlList": [url]
+    }
+    endpoints = [
+        "https://api.indexnow.org/indexnow",
+        "https://www.bing.com/indexnow"
+    ]
+    for ep in endpoints:
+        try:
+            r = requests.post(ep, json=payload, headers={"Content-Type": "application/json; charset=utf-8"}, timeout=15)
+            if r.status_code in [200, 202]:
+                print(f"[SUCCESS] IndexNow ({ep}) accepted {url} with code {r.status_code}!")
+        except Exception as e:
+            print(f"[WARN] Failed to ping IndexNow ({ep}): {e}")
+
 def fetch_keyword_from_sheet():
     """
     Fetches target keyword from Google Sheet.
@@ -1088,8 +1112,9 @@ def main():
     post_url = f"{site_base_url.rstrip('/')}/{slug}/"
     post_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # 1. Trigger Instant Google Indexing API ping for the newly published article
+    # 1. Trigger Instant Google Indexing API & IndexNow ping for the newly published article
     notify_google_indexing(post_url, action="URL_UPDATED")
+    notify_indexnow(post_url)
 
     # 1. Update directly via Google Sheets Service Account (gspread) if active
     if keyword_data.get("_gspread_sheet") and keyword_data.get("_sheet_row_idx"):
