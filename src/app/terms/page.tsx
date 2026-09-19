@@ -1,8 +1,24 @@
 export const metadata = {
-  title: "Terms of Service | Com Pors", // 27 chars
-  description: "Review the Com Pors terms of service, intellectual property guidelines, code snippet licensing, and editorial liability disclaimers.", // 132 chars
+  title: {
+    absolute: "Terms of Service | Com Pors",
+  },
+  description: "Review the Com Pors terms of service, intellectual property guidelines, code snippet licensing, and editorial liability disclaimers.",
   alternates: {
     canonical: "https://www.compors.com/terms/",
+  },
+  openGraph: {
+    title: "Terms of Service | Com Pors",
+    description: "Review the Com Pors terms of service, intellectual property guidelines, code snippet licensing, and editorial liability disclaimers.",
+    url: "https://www.compors.com/terms/",
+    type: "website",
+    images: [
+      {
+        url: "https://www.compors.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Terms of Service | Com Pors",
+      },
+    ],
   },
 };
 

@@ -1,10 +1,26 @@
 import { Mail, MessageSquare, MapPin, Send, Globe, ShieldAlert, Newspaper, Clock } from "lucide-react";
 
 export const metadata = {
-  title: "Contact Editorial Desk | Com Pors", // 33 chars
-  description: "Get in touch with the Com Pors newsroom, submit press announcements, send technical corrections, or connect with our investigative tech journalists.", // 149 chars
+  title: {
+    absolute: "Contact Editorial Desk | Com Pors",
+  },
+  description: "Get in touch with the Com Pors newsroom, submit press announcements, send technical corrections, or connect with our investigative tech journalists.",
   alternates: {
     canonical: "https://www.compors.com/contact/",
+  },
+  openGraph: {
+    title: "Contact Editorial Desk | Com Pors",
+    description: "Get in touch with the Com Pors newsroom, submit press announcements, send technical corrections, or connect with our investigative tech journalists.",
+    url: "https://www.compors.com/contact/",
+    type: "website",
+    images: [
+      {
+        url: "https://www.compors.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Contact Editorial Desk | Com Pors",
+      },
+    ],
   },
 };
 

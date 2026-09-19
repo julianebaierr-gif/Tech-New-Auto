@@ -22,7 +22,9 @@ export async function generateMetadata({ params }: Props) {
   const authorUrl = `${siteUrl}/author/${author.slug}/`;
 
   return {
-    title: `${author.name} | Com Pors Analyst`, // ~28 chars
+    title: {
+      absolute: `${author.name} | Com Pors Analyst`,
+    },
     description: author.bio,
     alternates: {
       canonical: authorUrl,

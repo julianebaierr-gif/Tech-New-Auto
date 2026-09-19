@@ -2,10 +2,26 @@ import { Cpu, Zap, Database, RefreshCw, Shield, Layers, CheckCircle2, Award, Fil
 import Link from "next/link";
 
 export const metadata = {
-  title: "About Our Journal & Editorial Standards | Com Pors", // 50 chars
-  description: "Meet the Com Pors editorial team, our rigorous fact-checking policies, and our mission investigating modern computing and artificial intelligence.", // 146 chars
+  title: {
+    absolute: "About Our Journal & Editorial Standards | Com Pors",
+  },
+  description: "Meet the Com Pors editorial team, our rigorous fact-checking policies, and our mission investigating modern computing and artificial intelligence.",
   alternates: {
     canonical: "https://www.compors.com/about/",
+  },
+  openGraph: {
+    title: "About Our Journal & Editorial Standards | Com Pors",
+    description: "Meet the Com Pors editorial team, our rigorous fact-checking policies, and our mission investigating modern computing and artificial intelligence.",
+    url: "https://www.compors.com/about/",
+    type: "website",
+    images: [
+      {
+        url: "https://www.compors.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "About Com Pors",
+      },
+    ],
   },
 };
 

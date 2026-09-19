@@ -1,8 +1,24 @@
 export const metadata = {
-  title: "Privacy Policy | Com Pors Tech Journal", // 39 chars
-  description: "Read the Com Pors Privacy Policy covering user data protection, cookie disclosures, GDPR compliance, and our strict reader privacy standards.", // 142 chars
+  title: {
+    absolute: "Privacy Policy | Com Pors Tech Journal",
+  },
+  description: "Read the Com Pors Privacy Policy covering user data protection, cookie disclosures, GDPR compliance, and our strict reader privacy standards.",
   alternates: {
     canonical: "https://www.compors.com/privacy-policy/",
+  },
+  openGraph: {
+    title: "Privacy Policy | Com Pors Tech Journal",
+    description: "Read the Com Pors Privacy Policy covering user data protection, cookie disclosures, GDPR compliance, and our strict reader privacy standards.",
+    url: "https://www.compors.com/privacy-policy/",
+    type: "website",
+    images: [
+      {
+        url: "https://www.compors.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Privacy Policy | Com Pors",
+      },
+    ],
   },
 };
 

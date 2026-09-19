@@ -37,7 +37,9 @@ export async function generateMetadata({ params }: Props) {
   const catUrl = `${siteUrl}/category/${slug}/`;
 
   return {
-    title: `${titleName} | Com Pors`,
+    title: {
+      absolute: `${titleName} | Com Pors`,
+    },
     description,
     alternates: {
       canonical: catUrl,
@@ -45,7 +47,16 @@ export async function generateMetadata({ params }: Props) {
     openGraph: {
       title: `${titleName} | Com Pors`,
       description,
+      url: catUrl,
       type: "website",
+      images: [
+        {
+          url: `${siteUrl}/og-image.jpg`,
+          width: 1200,
+          height: 630,
+          alt: `${titleName} - Com Pors`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",

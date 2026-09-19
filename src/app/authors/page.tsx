@@ -3,10 +3,26 @@ import { getAuthors, getPostsByAuthor } from "@/lib/posts";
 import { ArrowRight, BookOpen, ShieldCheck, Award, GraduationCap, CheckCircle2 } from "lucide-react";
 
 export const metadata = {
-  title: "Editorial Masthead & Authors | Com Pors", // 39 chars
-  description: "Meet the verified system architects and artificial intelligence analysts authoring technical evaluations for Com Pors.", // 119 chars
+  title: {
+    absolute: "Editorial Masthead & Authors | Com Pors",
+  },
+  description: "Meet the verified system architects and artificial intelligence analysts authoring technical evaluations for Com Pors.",
   alternates: {
     canonical: "https://www.compors.com/authors/",
+  },
+  openGraph: {
+    title: "Editorial Masthead & Authors | Com Pors",
+    description: "Meet the verified system architects and artificial intelligence analysts authoring technical evaluations for Com Pors.",
+    url: "https://www.compors.com/authors/",
+    type: "website",
+    images: [
+      {
+        url: "https://www.compors.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Editorial Masthead & Authors | Com Pors",
+      },
+    ],
   },
 };
 

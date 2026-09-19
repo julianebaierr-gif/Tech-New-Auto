@@ -3,10 +3,26 @@ import { getAllPosts } from "@/lib/posts";
 import { ArrowRight, Calendar, Clock, BookOpen } from "lucide-react";
 
 export const metadata = {
-  title: "All Articles & Research | Com Pors", // 34 chars
-  description: "Browse the complete archive of technical analyses, computing benchmarks, and engineering breakdowns published by Com Pors.", // 122 chars
+  title: {
+    absolute: "All Articles & Research | Com Pors",
+  },
+  description: "Browse the complete archive of technical analyses, computing benchmarks, and engineering breakdowns published by Com Pors.",
   alternates: {
     canonical: "https://www.compors.com/blog/",
+  },
+  openGraph: {
+    title: "All Articles & Research | Com Pors",
+    description: "Browse the complete archive of technical analyses, computing benchmarks, and engineering breakdowns published by Com Pors.",
+    url: "https://www.compors.com/blog/",
+    type: "website",
+    images: [
+      {
+        url: "https://www.compors.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "All Articles & Research | Com Pors",
+      },
+    ],
   },
 };
 

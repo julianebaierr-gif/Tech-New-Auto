@@ -6,6 +6,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://www.compors.com/",
   },
+  openGraph: {
+    url: "https://www.compors.com/",
+    title: "Com Pors | Tech Intelligence & Systems",
+    description: "Independent tech journalism reporting on emerging AI models, software architecture, semiconductors, cybersecurity, and future computing.",
+    type: "website",
+    images: [
+      {
+        url: "https://www.compors.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Com Pors - Tech Intelligence & Systems",
+      },
+    ],
+  },
 };
 
 export default function HomePage() {
