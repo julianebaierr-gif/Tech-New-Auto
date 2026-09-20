@@ -64,7 +64,7 @@ def notify_indexnow(url):
     """
     Instantly submits new article to IndexNow protocol (Bing, Yandex, Seznam, etc.).
     """
-    indexnow_key = "d0b9826a117b4fe38c4b22c7a5fa8291"
+    indexnow_key = "8e728390f9e840bcaaea591763f6bba9"
     host = "www.compors.com"
     payload = {
         "host": host,

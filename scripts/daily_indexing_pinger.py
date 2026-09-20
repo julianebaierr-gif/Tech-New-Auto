@@ -88,7 +88,7 @@ def ping_google_indexing(url_list):
         print(f"[ERROR] Error during Google Indexing batch submission: {err}")
 
 def ping_indexnow(url_list):
-    indexnow_key = "d0b9826a117b4fe38c4b22c7a5fa8291"
+    indexnow_key = "8e728390f9e840bcaaea591763f6bba9"
     host = "www.compors.com"
     payload = {
         "host": host,
