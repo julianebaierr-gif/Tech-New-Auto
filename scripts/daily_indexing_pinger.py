@@ -38,7 +38,10 @@ def get_all_website_urls():
         urls.append(f"{SITE_URL}/author/{auth}/")
 
     # Published Articles
-    posts_dir = os.path.join(os.getcwd(), "content", "posts")
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    posts_dir = os.path.join(repo_root, "content", "posts")
+    if not os.path.exists(posts_dir):
+        posts_dir = os.path.join(os.getcwd(), "content", "posts")
     if os.path.exists(posts_dir):
         post_files = sorted(glob.glob(os.path.join(posts_dir, "*.json")), key=os.path.getmtime, reverse=True)
         for pf in post_files:
@@ -71,6 +74,9 @@ def ping_google_indexing(url_list):
                 if response.status in [200, 201, 202]:
                     success_count += 1
                     print(f"[{idx}/{len(url_list)}] [OK {response.status}] {url}")
+                elif response.status == 429:
+                    print(f"[{idx}/{len(url_list)}] [QUOTA 429] Daily Google Indexing API quota limit reached. Stopping batch.")
+                    break
                 else:
                     print(f"[{idx}/{len(url_list)}] [STATUS {response.status}] {url}")
                 time.sleep(0.2)  # respectful pacing
@@ -104,17 +110,12 @@ def ping_indexnow(url_list):
 
 def ping_search_engines():
     sitemap_url = f"{SITE_URL}/sitemap.xml"
-    print(f"\n[SITEMAP PING] Pinging Search Engines with sitemap: {sitemap_url}...")
-    ping_urls = [
-        f"https://www.google.com/ping?sitemap={sitemap_url}",
-        f"https://www.bing.com/ping?sitemap={sitemap_url}",
-    ]
-    for pu in ping_urls:
-        try:
-            r = requests.get(pu, timeout=10)
-            print(f"[SITEMAP PING] {pu} -> HTTP {r.status_code}")
-        except Exception as e:
-            print(f"[SITEMAP PING] {pu} failed: {e}")
+    print(f"\n[SITEMAP CHECK] Verifying live sitemap availability: {sitemap_url}...")
+    try:
+        r = requests.get(sitemap_url, timeout=10)
+        print(f"[SITEMAP CHECK] {sitemap_url} -> HTTP {r.status_code}")
+    except Exception as e:
+        print(f"[SITEMAP CHECK] Failed to fetch sitemap: {e}")
 
 if __name__ == "__main__":
     print(f"=== COMPORS DAILY INDEXING & CRAWL ENFORCER ({datetime.now().strftime('%Y-%m-%d %H:%M:%S')}) ===")

@@ -1,9 +1,9 @@
-﻿name: Daily Google Crawl & Indexing Enforcer
+name: 12-Hour Site Crawl & Indexing Enforcer
 
 on:
   schedule:
-    # Runs everyday at 06:00 UTC (11:00 AM PKT)
-    - cron: '0 6 * * *'
+    # Runs every 12 hours (06:00 UTC & 18:00 UTC / 11:00 AM & 11:00 PM PKT)
+    - cron: '0 6,18 * * *'
   workflow_dispatch: # Allows manual trigger anytime
 
 jobs:
@@ -24,9 +24,10 @@ jobs:
           pip install --upgrade pip
           pip install requests oauth2client httplib2
 
-      - name: Run Daily Indexing & Crawl Ping
+      - name: Run Indexing & Crawl Ping
         env:
           GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
           SITE_URL: "https://www.compors.com"
         run: |
           python scripts/daily_indexing_pinger.py

@@ -1,9 +1,9 @@
-name: Auto Publish Tech Article (Active)
+name: Auto Publish Tech Article & Site Indexing (Every 12 Hours)
 
 on:
   schedule:
-    # Runs automatically every 8 hours
-    - cron: '0 */8 * * *'
+    # Runs automatically every 12 hours (00:00 UTC and 12:00 UTC)
+    - cron: '0 */12 * * *'
   workflow_dispatch: # Allows manual run anytime from GitHub Actions tab
 
 permissions:
@@ -29,7 +29,7 @@ jobs:
           pip install --upgrade pip
           pip install google-genai requests gspread oauth2client httplib2
 
-      - name: Run Automation Engine
+      - name: Run Automation Engine (Publish 1 Article)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
@@ -53,3 +53,13 @@ jobs:
             git commit -m "Auto Post: New Tech Article $(date +'%Y-%m-%d %H:%M')"
             git push origin main
           fi
+
+      - name: Full Website API Indexing (Googlebot, IndexNow & Sitemaps)
+        if: always()
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          SITE_URL: "https://www.compors.com"
+        run: |
+          python scripts/daily_indexing_pinger.py
+

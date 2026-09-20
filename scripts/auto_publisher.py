@@ -751,7 +751,13 @@ Respond ONLY with valid JSON:
 
 def main():
     print("[START] TechPulse Autonomous Publisher running...")
-    keyword_data = fetch_keyword_from_sheet()
+    try:
+        keyword_data = fetch_keyword_from_sheet()
+    except Exception as e:
+        print(f"[INFO] {e}")
+        print("[INFO] No pending keyword found in Google Sheet. Skipping post generation for this cycle.")
+        return
+
     print(f"[PROCESS] Processing keyword: {keyword_data['keyword']}")
 
     # Collect existing posts metadata to guarantee 100% uniqueness with zero repetition
