@@ -74,7 +74,7 @@ export default function BlogListPage() {
                 <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {post.readTime}</span>
               </div>
               <h2 className="font-bold text-xl text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-3">
-                <Link href={`/${post.slug}`}>{post.title}</Link>
+                <Link href={`/${post.slug}/`}>{post.title}</Link>
               </h2>
               <p className="text-slate-600 text-sm line-clamp-3 leading-relaxed mb-6 flex-1">
                 {post.excerpt}
@@ -82,7 +82,7 @@ export default function BlogListPage() {
               <div className="flex items-center justify-between pt-4 border-t border-slate-100 text-xs">
                 <span className="text-slate-700 font-semibold">{post.author.name}</span>
                 <Link
-                  href={`/${post.slug}`}
+                  href={`/${post.slug}/`}
                   className="text-blue-600 font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1"
                 >
                   Full Story <ArrowRight className="h-3 w-3" />

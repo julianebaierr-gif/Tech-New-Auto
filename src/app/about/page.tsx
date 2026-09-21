@@ -119,7 +119,7 @@ export default function AboutPage() {
             <p className="text-sm text-slate-500 mt-1">Our technical analyses are guided by verified industry specialists.</p>
           </div>
           <Link
-            href="/authors"
+            href="/authors/"
             className="text-xs font-bold text-blue-600 hover:text-blue-700 underline shrink-0"
           >
             View Complete Author Directory &rarr;

@@ -22,7 +22,7 @@ export default function TopUtilityBar() {
                   <Flame className="h-3.5 w-3.5 fill-current" /> Trending:
                 </span>
                 <Link
-                  href={`/${trendingPost.slug}`}
+                  href={`/${trendingPost.slug}/`}
                   className="text-cyan-400 hover:text-cyan-300 font-medium hover:underline transition truncate max-w-[400px] inline-block"
                   title={trendingPost.title}
                 >
@@ -33,9 +33,9 @@ export default function TopUtilityBar() {
           )}
         </div>
         <nav className="flex items-center gap-4 text-xs font-medium text-slate-300 shrink-0">
-          <Link href="/about" className="hover:text-cyan-400 transition">About</Link>
-          <Link href="/privacy-policy" className="hover:text-cyan-400 transition">Privacy</Link>
-          <Link href="/contact" className="hover:text-cyan-400 transition">Contact</Link>
+          <Link href="/about/" className="hover:text-cyan-400 transition">About</Link>
+          <Link href="/privacy-policy/" className="hover:text-cyan-400 transition">Privacy</Link>
+          <Link href="/contact/" className="hover:text-cyan-400 transition">Contact</Link>
         </nav>
       </div>
     </div>

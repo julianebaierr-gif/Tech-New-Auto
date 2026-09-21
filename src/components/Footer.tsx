@@ -45,9 +45,9 @@ export default function Footer() {
             Company & Masthead
           </h4>
           <ul className="space-y-2.5 text-xs">
-            <li><Link href="/authors" className="text-slate-300 hover:text-white hover:underline transition">Our Authors & Masthead</Link></li>
-            <li><Link href="/about" className="text-slate-300 hover:text-white hover:underline transition">About Com Pors</Link></li>
-            <li><Link href="/contact" className="text-slate-300 hover:text-white hover:underline transition">Contact Us</Link></li>
+            <li><Link href="/authors/" className="text-slate-300 hover:text-white hover:underline transition">Our Authors & Masthead</Link></li>
+            <li><Link href="/about/" className="text-slate-300 hover:text-white hover:underline transition">About Com Pors</Link></li>
+            <li><Link href="/contact/" className="text-slate-300 hover:text-white hover:underline transition">Contact Us</Link></li>
           </ul>
         </div>
 
@@ -56,8 +56,8 @@ export default function Footer() {
             Legal & Privacy
           </h4>
           <ul className="space-y-2.5 text-xs">
-            <li><Link href="/privacy-policy" className="text-slate-300 hover:text-white hover:underline transition">Privacy Policy</Link></li>
-            <li><Link href="/terms" className="text-slate-300 hover:text-white hover:underline transition">Terms of Service</Link></li>
+            <li><Link href="/privacy-policy/" className="text-slate-300 hover:text-white hover:underline transition">Privacy Policy</Link></li>
+            <li><Link href="/terms/" className="text-slate-300 hover:text-white hover:underline transition">Terms of Service</Link></li>
           </ul>
         </div>
       </div>

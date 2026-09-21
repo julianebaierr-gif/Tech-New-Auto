@@ -93,7 +93,7 @@ export default function SearchNewsBar({ posts }: Props) {
               results.map((post) => (
                 <Link
                   key={post.slug}
-                  href={`/${post.slug}`}
+                  href={`/${post.slug}/`}
                   onClick={handleSelect}
                   className="p-3.5 block hover:bg-blue-600/10 transition group"
                 >
@@ -115,7 +115,7 @@ export default function SearchNewsBar({ posts }: Props) {
 
           {results.length > 0 && (
             <Link
-              href="/blog"
+              href="/blog/"
               onClick={handleSelect}
               className="p-2.5 text-center block bg-[#070d1d] hover:bg-slate-900 text-blue-400 hover:text-blue-300 font-bold text-[11px] tracking-wide border-t border-slate-800 transition"
             >

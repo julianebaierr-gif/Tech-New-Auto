@@ -168,7 +168,7 @@ export default async function BlogPostPage({ params }: Props) {
         />
       )}
       <Link
-        href="/blog"
+        href="/blog/"
         className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition mb-6"
       >
         <ArrowLeft className="h-4 w-4" /> Back to Newsroom
@@ -265,7 +265,7 @@ export default async function BlogPostPage({ params }: Props) {
                       {rel.category}:
                     </span>
                     <Link
-                      href={`/${rel.slug}`}
+                      href={`/${rel.slug}/`}
                       className="font-semibold text-red-700 hover:text-red-800 hover:underline transition group-hover:text-red-900"
                     >
                       {rel.title}
@@ -308,7 +308,7 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Author Bio Box */}
       <div className="mt-10 p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start gap-4 group">
-        <Link href={`/author/${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="shrink-0">
+        <Link href={`/author/${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/`} className="shrink-0">
           <img
             src={post.author.avatar}
             alt={post.author.name}
@@ -319,14 +319,14 @@ export default async function BlogPostPage({ params }: Props) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <h3 className="font-bold text-slate-900 text-sm hover:text-blue-600 transition">
-                <Link href={`/author/${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}>
+                <Link href={`/author/${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/`}>
                   {post.author.name}
                 </Link>
               </h3>
               <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 text-blue-700">Editorial Staff</span>
             </div>
             <Link
-              href={`/author/${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+              href={`/author/${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/`}
               className="text-xs font-bold text-blue-600 hover:text-blue-700 transition hidden sm:inline"
             >
               All Articles &rarr;
@@ -350,7 +350,7 @@ export default async function BlogPostPage({ params }: Props) {
               </h2>
             </div>
             <Link
-              href="/blog"
+              href="/blog/"
               className="text-xs font-bold text-blue-600 hover:text-blue-700 hidden sm:inline-flex items-center gap-1"
             >
               Browse Newsroom <ArrowRight className="h-3.5 w-3.5" />
@@ -382,7 +382,7 @@ export default async function BlogPostPage({ params }: Props) {
                     <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {rel.readTime}</span>
                   </div>
                   <h3 className="font-bold text-sm sm:text-base text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-2 leading-snug">
-                    <Link href={`/${rel.slug}`}>{rel.title}</Link>
+                    <Link href={`/${rel.slug}/`}>{rel.title}</Link>
                   </h3>
                   <p className="text-slate-600 text-xs line-clamp-2 leading-relaxed mb-4 flex-1">
                     {rel.excerpt}
@@ -390,7 +390,7 @@ export default async function BlogPostPage({ params }: Props) {
                   <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                     <span className="text-slate-600 font-semibold text-[11px]">{rel.author.name}</span>
                     <Link
-                      href={`/${rel.slug}`}
+                      href={`/${rel.slug}/`}
                       className="text-blue-600 font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1 text-[11px]"
                     >
                       Read Analysis <ArrowRight className="h-3 w-3" />

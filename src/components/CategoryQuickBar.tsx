@@ -16,7 +16,7 @@ export default function CategoryQuickBar() {
         </Link>
       ))}
       <Link
-        href="/blog"
+        href="/blog/"
         className="text-xs px-3.5 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold transition flex items-center gap-1 shadow-xs"
       >
         ✨ All Stories

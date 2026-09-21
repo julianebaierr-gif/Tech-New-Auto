@@ -51,9 +51,9 @@ export default function MainNavbar() {
             })}
             <li className="ml-auto">
               <Link
-                href="/blog"
+                href="/blog/"
                 className={`px-3 py-1.5 rounded-md transition inline-block font-semibold ${
-                  pathname === "/blog"
+                  pathname === "/blog" || pathname === "/blog/"
                     ? "bg-blue-50 text-blue-700"
                     : "text-slate-600 hover:bg-blue-50 hover:text-blue-700"
                 }`}
@@ -145,10 +145,10 @@ export default function MainNavbar() {
                 })}
                 <li>
                   <Link
-                    href="/blog"
+                    href="/blog/"
                     onClick={closeMenu}
                     className={`flex items-center justify-between px-3 py-2.5 rounded-xl font-bold text-sm ${
-                      pathname === "/blog" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                      pathname === "/blog" || pathname === "/blog/" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
                     }`}
                   >
                     <span className="flex items-center gap-2">
@@ -166,28 +166,28 @@ export default function MainNavbar() {
               </span>
               <div className="grid grid-cols-2 gap-2 text-xs font-semibold">
                 <Link
-                  href="/about"
+                  href="/about/"
                   onClick={closeMenu}
                   className="px-3 py-2 rounded-lg bg-slate-50 text-slate-700 hover:bg-blue-50 hover:text-blue-700"
                 >
                   About Us
                 </Link>
                 <Link
-                  href="/authors"
+                  href="/authors/"
                   onClick={closeMenu}
                   className="px-3 py-2 rounded-lg bg-slate-50 text-slate-700 hover:bg-blue-50 hover:text-blue-700"
                 >
                   Our Authors
                 </Link>
                 <Link
-                  href="/contact"
+                  href="/contact/"
                   onClick={closeMenu}
                   className="px-3 py-2 rounded-lg bg-slate-50 text-slate-700 hover:bg-blue-50 hover:text-blue-700"
                 >
                   Contact Desk
                 </Link>
                 <Link
-                  href="/privacy-policy"
+                  href="/privacy-policy/"
                   onClick={closeMenu}
                   className="px-3 py-2 rounded-lg bg-slate-50 text-slate-700 hover:bg-blue-50 hover:text-blue-700"
                 >

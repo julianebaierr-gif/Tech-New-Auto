@@ -109,7 +109,7 @@ export default async function CategoryPage({ params }: Props) {
               Our technical newsroom is actively conducting benchmarks, compiling architectural teardowns, and preparing investigative reporting for the {categoryTitle} track. All dispatches undergo strict peer-review and fact-checking before publication.
             </p>
             <div className="pt-2">
-              <Link href="/blog" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white font-bold text-xs shadow-sm hover:bg-blue-700 transition">
+              <Link href="/blog/" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white font-bold text-xs shadow-sm hover:bg-blue-700 transition">
                 Browse All Published Research
               </Link>
             </div>
@@ -152,7 +152,7 @@ export default async function CategoryPage({ params }: Props) {
                   {post.category}
                 </span>
                 <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition line-clamp-2 leading-snug mb-2">
-                  <Link href={`/${post.slug}`}>{post.title}</Link>
+                  <Link href={`/${post.slug}/`}>{post.title}</Link>
                 </h3>
                 <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4 flex-1">
                   {post.excerpt}
