@@ -621,44 +621,39 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
    - Under this <h2>, write 1-2 rich paragraphs sharing REAL PRACTITIONER/HUMAN EXPERIENCE (e.g. real-world trade-offs observed in production, common pitfalls teams hit when migrating, latency vs cost realities, or hands-on benchmarks).
    - This directly builds Google E-E-A-T trust, stops boring generic text, and prevents Google helpful content penalties.
 
-4. TITLE REQUIREMENT (STRICTLY NO AI WORDS):
+4. TITLE REQUIREMENT (STRICTLY 0% AI WORDS):
    - Must naturally feature or strictly relate to "{kw}".
    - Complete the title into a punchy, professional, and editorial headline.
-   - STRICTLY FORBIDDEN WORDS IN TITLE & HEADINGS: NEVER use "Comprehensive", "Guide", "A Guide to", "Navigating", "Navigating the", "Demystifying", "Unpacking", "Delving", "Deep Dive", or "Ultimate" / "Ultimate Guide".
-   - Craft natural, human editorial headlines (e.g. "Cybersecurity Tools: Architectural Realities in Production", "Evaluating Machine Learning Frameworks", "Production Lessons from Distributed Caching").
-   - DO NOT force fixed phrases (like "for Modern Systems" or "Guide and Analysis").
-   - Strictly between 50 and 65 characters in length (optimal SEO headline range, never truncating mid-thought).
-   - NEVER cut words in half. The headline must read like a complete, natural sentence or title.
+   - STRICTLY FORBIDDEN WORDS IN TITLE & HEADINGS (NEVER USE ANY OF THESE):
+     * NEVER use: "Modern", "Comprehensive", "Guide", "A Guide to", "Navigating", "Navigating the", "Demystifying", "Unpacking", "Delving", "Deep Dive", "Ultimate", or "Ultimate Guide".
+   - Craft natural, human editorial headlines (e.g. "Evaluating Machine Learning Frameworks", "Production Lessons from Distributed Caching").
+   - Strictly between 45 and 54 characters in length (optimal SEO headline range, never truncating mid-thought).
    - NEVER include any years (such as 2025, 2026, etc.). Evergreen content only.
 
-5. META DESCRIPTION (EXCERPT - STRICTLY NO REPETITIVE AI TEMPLATES):
+5. META DESCRIPTION (EXCERPT - STRICTLY 0% AI WORDS & NO REPETITIVE TEMPLATES):
    - Must directly mention "{kw}".
-   - Strictly between 150 and 155 characters in length. Complete sentence, never truncated.
-   - BANNED META DESCRIPTION STARTERS & CLICHES (NEVER USE ANY OF THESE):
-     * NEVER use or start with: "Discover", "Explore", "Uncover", "Dive into", "A deep dive into", "Unlock", "Delve into", "Learn how", "In this article", "In this article, we explore", "An in-depth look at", "An in-depth look into", "An in-depth look"
-     * NEVER use repetitive words like: "pipelines", "tapestry", "crucial", "crucial component", "testament", "beacon", "pivotal"
-   - WRITE LIKE A REAL HUMAN TECH JOURNALIST (vary the sentence structure organically across articles):
-     * Style A (Problem / Reality): "{kw} introduces serious engineering tradeoffs across latency, memory, and cost. Here is how teams evaluate performance in production."
-     * Style B (Practical Engineering): "Building reliable systems with {kw} requires careful benchmarking, solid configuration rules, and battle-tested operational patterns."
-     * Style C (Direct Insight): "Modern teams adopting {kw} face real architectural hurdles. We examine key implementation decisions, core bottlenecks, and real results."
-   - Every single article must have a unique, organic phrasing that reads like genuine editorial commentary written by a human editor.
+   - Strictly between 135 and 155 characters in length. Complete sentence, ending with a period.
+   - STRICTLY FORBIDDEN PHRASES & STARTERS (NEVER USE ANY OF THESE):
+     * NEVER use or start with: "Modern teams adopting", "Modern teams", "Teams adopting", "Modern", "Adopting", "Building reliable systems with", "Discover", "Explore", "Uncover", "Dive into", "A deep dive into", "Unlock", "Delve into", "Learn how", "In this article", "In this article, we explore", "An in-depth look at", "An in-depth look into", "An in-depth look"
+     * NEVER use repetitive words: "pipelines", "tapestry", "crucial", "crucial component", "testament", "beacon", "pivotal", "vital", "seamless", "robust", "game-changer", "moreover", "furthermore"
+   - WRITE LIKE A VETERAN HUMAN JOURNALIST:
+     * Describe the concrete engineering reality, hardware metrics, or technical facts specific to "{kw}".
+     * Every single article must have a 100% unique, organic sentence structure completely unlike any other article.
 
 6. CONTENT BODY & HEADINGS CLICHE BAN (STRICTLY FORBIDDEN):
    - NEVER use generic AI cliches anywhere in the article:
-     * "In today's fast-paced digital world"
-     * "tapestry"
-     * "testament"
-     * "crucial" or "crucial component" (use "essential", "key", or "vital")
-     * "beacon"
-     * "pivotal"
-     * "It is important to remember"
-     * "In conclusion" (use natural section names like "Final Verdict")
-     * "As we look ahead"
-     * "pipelines" (use "systems", "architectures", "workflows", or "dataflows")
-     * "delving" or "delve into"
-     * "demystifying" or "unpacking"
-     * "comprehensive" or "guide"
-     * "navigating" or "navigating the"
+     * "Modern teams adopting", "modern", "adopting"
+     * "In today's fast-paced digital world" or "fast-paced world"
+     * "tapestry", "testament"
+     * "crucial", "crucial component", "vital", "beacon", "pivotal"
+     * "It is important to remember", "It is worth noting", "At its core"
+     * "In conclusion" (use natural section names like "Architectural Verdict")
+     * "As we look ahead", "Looking ahead"
+     * "pipelines" (use "systems", "architectures", "workflows", or "networks")
+     * "delving", "delve into", "demystifying", "unpacking"
+     * "comprehensive", "guide", "ultimate"
+     * "navigating", "navigating the"
+     * "seamless", "robust", "game-changer", "moreover", "furthermore"
 
 6. FREQUENTLY ASKED QUESTIONS (REAL GOOGLE 'PEOPLE ALSO ASK' / FAQPAGE SCHEMA):
    - You MUST provide between 5 to 8 FAQs (minimum 5, maximum 8).
@@ -789,40 +784,46 @@ def main():
     def remove_years(text):
         if not isinstance(text, str):
             return text
-        text = re.sub(r'\bin (2020|2021|2022|2023|2024|2025|2026|2027|2028|2029|2030)\b', 'in modern computing', text, flags=re.IGNORECASE)
-        text = re.sub(r'\b(2020|2021|2022|2023|2024|2025|2026|2027|2028|2029|2030)\b', 'modern', text)
-        return text
+        text = re.sub(r'\bin\s+(2020|2021|2022|2023|2024|2025|2026|2027|2028|2029|2030)\b', '', text, flags=re.IGNORECASE)
+        text = re.sub(r'\b(2020|2021|2022|2023|2024|2025|2026|2027|2028|2029|2030)\b', '', text)
+        return re.sub(r'\s{2,}', ' ', text).strip()
 
     def clean_title(title):
         cleaned = clean_dashes(remove_years(title)).strip()
-        # Clean common robotic AI buzzword prefixes/words if accidentally produced
-        ai_words_pattern = r'\b(Comprehensive\s+Guide\s+to|The\s+Ultimate\s+Guide\s+to|A\s+Comprehensive\s+Guide\s+to|Ultimate\s+Guide\s+to|A\s+Guide\s+to|Comprehensive|Ultimate\s+Guide|Ultimate|Navigating\s+the|Navigating|Demystifying|Unpacking|Delving\s+into|Delving|Deep\s+Dive\s+into|Deep\s+Dive|A\s+Deep\s+Dive)\b\s*'
+        # Clean common robotic AI buzzwords and banned words from title
+        ai_words_pattern = r'\b(Comprehensive\s+Guide\s+to|The\s+Ultimate\s+Guide\s+to|A\s+Comprehensive\s+Guide\s+to|Ultimate\s+Guide\s+to|A\s+Guide\s+to|Comprehensive|Ultimate\s+Guide|Ultimate|Navigating\s+the|Navigating|Demystifying|Unpacking|Delving\s+into|Delving|Deep\s+Dive\s+into|Deep\s+Dive|A\s+Deep\s+Dive|Modern)\b\s*'
         cleaned = re.sub(ai_words_pattern, '', cleaned, flags=re.IGNORECASE).strip()
         # Clean isolated "Guide" if trailing or leading
         cleaned = re.sub(r'^\s*Guide\s*:\s*', '', cleaned, flags=re.IGNORECASE).strip()
         cleaned = re.sub(r'\s*:\s*A\s+Guide\s*$', '', cleaned, flags=re.IGNORECASE).strip()
         cleaned = re.sub(r'\s+Guide\s*$', '', cleaned, flags=re.IGNORECASE).strip()
+        cleaned = re.sub(r'\s{2,}', ' ', cleaned).strip()
         # Ensure first character is capitalized
         if cleaned:
             cleaned = cleaned[0].upper() + cleaned[1:]
-        # Google search title optimal limit is ~65 chars.
-        # If Gemini generated over 68 characters, cleanly trim at the last word boundary before 65
-        if len(cleaned) > 68:
-            words = cleaned[:65].split()
+        # Strict 54 character limit so layout suffix "| Com Pors" never exceeds 65
+        if len(cleaned) > 54:
+            words = cleaned[:52].split()
             if len(words) > 1:
                 cleaned = ' '.join(words[:-1]).rstrip('.,;:- ')
             else:
-                cleaned = cleaned[:65].rstrip('.,;:- ')
+                cleaned = cleaned[:52].rstrip('.,;:- ')
         return cleaned
 
     def clean_excerpt(text):
         cleaned = clean_dashes(remove_years(text)).strip()
-        # Clean repetitive robotic AI starter phrases and verbs
-        starter_patterns = r'^(An\s+in-depth\s+look\s+at\s+how|An\s+in-depth\s+look\s+at|An\s+in-depth\s+look\s+into|An\s+in-depth\s+look|A\s+deep\s+dive\s+into|A\s+deep\s+dive|In\s+this\s+article,\s*we\s+explore|In\s+this\s+article,\s*we\s+examine|In\s+this\s+article|Discover\s+how|Discover\s+the|Discover|Explore\s+how|Explore\s+the|Explore|Uncover\s+how|Uncover\s+the|Uncover|Unlock\s+how|Unlock\s+the|Unlock|Delve\s+into\s+how|Delve\s+into|Delving\s+into|Learn\s+how|Learn\s+the)\s+'
+        # Clean repetitive robotic AI starter phrases and templates
+        starter_patterns = r'^(Modern\s+teams\s+adopting|Teams\s+adopting|Modern\s+teams|Building\s+reliable\s+systems\s+with|An\s+in-depth\s+look\s+at\s+how|An\s+in-depth\s+look\s+at|An\s+in-depth\s+look\s+into|An\s+in-depth\s+look|A\s+deep\s+dive\s+into|A\s+deep\s+dive|In\s+this\s+article,\s*we\s+explore|In\s+this\s+article,\s*we\s+examine|In\s+this\s+article|Discover\s+how|Discover\s+the|Discover|Explore\s+how|Explore\s+the|Explore|Uncover\s+how|Uncover\s+the|Uncover|Unlock\s+how|Unlock\s+the|Unlock|Delve\s+into\s+how|Delve\s+into|Delving\s+into|Learn\s+how|Learn\s+the)\s+'
         cleaned = re.sub(starter_patterns, '', cleaned, flags=re.IGNORECASE).strip()
         
         # Replace banned AI words inside excerpt
         excerpt_replacements = [
+            (r'\bmodern teams adopting\b', 'teams using'),
+            (r'\bteams adopting\b', 'teams using'),
+            (r'\badopting\b', 'using'),
+            (r'\badopts\b', 'uses'),
+            (r'\badopt\b', 'use'),
+            (r'\bmodern\b', 'current'),
             (r'\bdiscover\b', 'review'),
             (r'\bexplore\b', 'examine'),
             (r'\buncover\b', 'analyze'),
@@ -831,6 +832,8 @@ def main():
             (r'\bunlock\b', 'enable'),
             (r'\bdelve into\b', 'assess'),
             (r'\bdelving into\b', 'assessing'),
+            (r'\bdelve\b', 'look'),
+            (r'\bdelving\b', 'looking'),
             (r'\blearn how\b', 'see how'),
             (r'\bin this article\b', 'here'),
             (r'\ban in-depth look\b', 'an analysis'),
@@ -843,13 +846,24 @@ def main():
             (r'\btapestry\b', 'network'),
             (r'\btestament\b', 'reflection'),
             (r'\bcrucial component\b', 'core element'),
-            (r'\bcrucial\b', 'vital'),
+            (r'\bcrucial\b', 'key'),
             (r'\bbeacon\b', 'benchmark'),
             (r'\bpivotal\b', 'central'),
             (r'\bcomprehensive\b', 'thorough'),
             (r'\bnavigating\b', 'handling'),
             (r'\bdemystifying\b', 'clarifying'),
             (r'\bunpacking\b', 'evaluating'),
+            (r'\bvital\b', 'key'),
+            (r'\bmoreover\b', 'also'),
+            (r'\bfurthermore\b', 'also'),
+            (r'\brealm\b', 'area'),
+            (r'\bfoster\b', 'support'),
+            (r'\bembark\b', 'start'),
+            (r'\bseamless\b', 'smooth'),
+            (r'\brobust\b', 'reliable'),
+            (r'\bgame-changer\b', 'major shift'),
+            (r'\bat its core\b', 'fundamentally'),
+            (r'\bit is worth noting\b', 'notably'),
         ]
         for pat, rep in excerpt_replacements:
             cleaned = re.sub(pat, rep, cleaned, flags=re.IGNORECASE)
@@ -860,13 +874,13 @@ def main():
         # Ensure it ends with proper terminal punctuation
         if not cleaned.endswith(('.', '!', '?')):
             cleaned = cleaned.rstrip('.,;:- ') + '.'
-        # If over 160 characters, truncate at the last complete sentence or clean word boundary with period
-        if len(cleaned) > 160:
-            m = re.search(r'^(.*?[.!?])\s+[A-Z]', cleaned[:160])
+        # Strict 155 character limit for Google SERP
+        if len(cleaned) > 155:
+            m = re.search(r'^(.*?[.!?])\s+[A-Z]', cleaned[:155])
             if m and len(m.group(1)) >= 100:
-                cleaned = m.group(1)
+                cleaned = m.group(1).strip()
             else:
-                words = cleaned[:155].split()
+                words = cleaned[:150].split()
                 cleaned = ' '.join(words[:-1]).rstrip('.,;:- ') + '.'
         return cleaned
 

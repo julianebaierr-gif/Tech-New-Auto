@@ -1,7 +1,7 @@
 {
-  "title": "Engineering Resilient Enterprise Cyber Security Solutions",
+  "title": "Resilient Enterprise Cyber Security Solutions",
   "target_keyword": "cyber security solutions",
-  "excerpt": "Modern teams adopting cyber security solutions face real architectural hurdles. We examine key implementation decisions, core bottlenecks, and real results.",
+  "excerpt": "Deploying cyber security solutions across distributed infrastructure demands zero-trust architecture, endpoint isolation, and automated incident response.",
   "coverImage": "https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYwMzI3fDB8MXxzZWFyY2h8Mnx8Y3liZXIlMjBzZWN1cml0eSUyMG9wZXJhdGlvbnN8ZW58MHwwfHx8MTc4OTk0OTkzNnww&ixlib=rb-4.1.0&q=80&w=1080",
   "coverImageAlt": "cyber security solutions - Cybersecurity Technology Architecture and Engineering Analysis",
   "date": "2026-09-21",

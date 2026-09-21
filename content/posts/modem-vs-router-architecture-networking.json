@@ -1,7 +1,7 @@
 {
   "title": "Modem vs Router: Core Architecture and Networking",
   "target_keyword": "modem vs router",
-  "excerpt": "Modem vs router introduces serious engineering tradeoffs across latency, memory, and cost. Here is how teams evaluate performance in production.",
+  "excerpt": "Evaluating modem vs router differences requires analyzing OSI layer boundaries, IP routing tables, signal modulation, and local network packet switching.",
   "coverImage": "https://images.unsplash.com/photo-1606904825846-647eb07f5be2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYwMzI3fDB8MXxzZWFyY2h8MXx8bW9kZW0lMjBhbmQlMjByb3V0ZXJ8ZW58MHwwfHx8MTc4OTgzMzc5MXww&ixlib=rb-4.1.0&q=80&w=1080",
   "coverImageAlt": "modem vs router - Networking Technology Architecture and Engineering Analysis",
   "date": "2026-09-19",
