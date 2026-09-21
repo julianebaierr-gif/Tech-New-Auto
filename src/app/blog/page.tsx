@@ -51,7 +51,8 @@ export default function BlogListPage() {
         </div>
 
         {/* Editorial Archive & Systems Engineering Index Guide (Collapsible) */}
-        <details className="group p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200 text-sm text-slate-600 leading-relaxed">
+        <div className="sr-only">
+          <details className="group">
           <summary className="cursor-pointer list-none flex items-center justify-between font-bold text-slate-900 hover:text-blue-600 transition">
             <span className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-blue-600"></span>
@@ -158,6 +159,7 @@ export default function BlogListPage() {
             </div>
           </div>
         </details>
+        </div>
       </div>
 
       {/* Featured Technical Dispatches */}
@@ -261,7 +263,7 @@ export default function BlogListPage() {
       )}
 
       {/* Newsroom Archival Methodology & Research Framework (Collapsible) */}
-      <section className="rounded-3xl bg-slate-50 border border-slate-200 p-6 sm:p-8">
+      <section className="sr-only">
         <details className="group">
           <summary className="cursor-pointer list-none flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>

@@ -300,9 +300,9 @@ export default async function CategoryPage({ params }: Props) {
         </div>
       )}
 
-      {/* Domain Architecture Reference Guide Section (Collapsible) */}
-      <section className="mt-10">
-        <details className="group p-6 sm:p-8 bg-white rounded-2xl border border-slate-200 shadow-xs">
+      {/* Domain Architecture Reference Guide Section (Backend Search & Crawl Index) */}
+      <section className="sr-only">
+        <details className="group">
           <summary className="cursor-pointer list-none flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">

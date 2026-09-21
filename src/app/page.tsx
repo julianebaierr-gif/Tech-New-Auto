@@ -360,8 +360,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. EDITORIAL STANDARDS & SYSTEMS INTELLIGENCE OVERVIEW (Collapsible) */}
-      <section className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8">
+      {/* 5. EDITORIAL STANDARDS & SYSTEMS INTELLIGENCE OVERVIEW (Backend Search & Crawl Index) */}
+      <section className="sr-only">
         <details className="group">
           <summary className="cursor-pointer list-none flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>

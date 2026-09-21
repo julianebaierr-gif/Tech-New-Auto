@@ -248,7 +248,7 @@ export default async function AuthorProfilePage({ params }: Props) {
         )}
 
         {/* Author Editorial Standards & Verification Process (Collapsible) */}
-        <section className="mt-12">
+        <section className="sr-only">
           <details className="group bg-white rounded-2xl border border-slate-200 shadow-xs p-6 sm:p-8">
             <summary className="cursor-pointer list-none flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>

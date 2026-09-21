@@ -161,7 +161,7 @@ export default function AuthorsIndexPage() {
         </div>
 
         {/* Detailed Review Methodology & Testing Standards (Collapsible) */}
-        <div className="rounded-3xl bg-slate-50 border border-slate-200 p-6 sm:p-8">
+        <div className="sr-only">
           <details className="group">
             <summary className="cursor-pointer list-none flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>

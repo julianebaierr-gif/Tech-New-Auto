@@ -62,8 +62,8 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Editorial Scope & Independent Publishing Manifesto (Collapsible) */}
-      <div className="border-t border-slate-800/80 py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-xs text-slate-400">
+      {/* Editorial Scope & Independent Publishing Manifesto (Backend Search & Crawl Index) */}
+      <div className="sr-only">
         <details className="group">
           <summary className="cursor-pointer list-none flex items-center justify-between font-bold text-slate-300 hover:text-white py-1 transition-colors">
             <span className="flex items-center gap-2">
