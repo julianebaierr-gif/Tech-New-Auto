@@ -46,40 +46,118 @@ export default function BlogListPage() {
             </h1>
           </div>
           <p className="max-w-md text-sm text-slate-500 leading-relaxed">
-            Investigative reports, system teardowns, and engineering perspectives across modern computing.
+            Investigative reports, system teardowns, and engineering perspectives across global computing.
           </p>
         </div>
 
-        {/* Editorial Archive & Systems Engineering Index Guide */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-slate-50 border border-slate-200 text-sm text-slate-600 leading-relaxed space-y-4">
-          <h2 className="text-base sm:text-lg font-bold text-slate-900">
-            Systems Engineering Index &amp; Research Repository
-          </h2>
-          <p>
-            Welcome to the Com Pors publishing archive. Every investigation in this repository represents an in-depth breakdown of computing infrastructure, software architecture, hardware engineering, or algorithmic performance. Our staff journalists evaluate real-world engineering constraints rather than recycling superficial product announcements.
-          </p>
-          <p className="text-xs sm:text-sm text-slate-600">
-            Articles in our repository undergo periodic technical re-benchmarking when major kernel versions, compiler toolchains, or hardware microarchitectures enter production. We maintain explicit change logs and code repositories, allowing practitioners to verify our findings against their own server fleets and local workstations.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2 text-xs">
-            <div className="p-4 rounded-xl bg-white border border-slate-200">
-              <strong className="block text-slate-900 font-bold mb-1">Systems &amp; Kernel Architecture</strong>
-              Low-level memory management, process scheduling, distributed consensus, and Linux kernel execution boundaries.
+        {/* Editorial Archive & Systems Engineering Index Guide (Collapsible) */}
+        <details className="group p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200 text-sm text-slate-600 leading-relaxed">
+          <summary className="cursor-pointer list-none flex items-center justify-between font-bold text-slate-900 hover:text-blue-600 transition">
+            <span className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-blue-600"></span>
+              Systems Engineering Index &amp; Research Repository
+            </span>
+            <span className="text-xs font-semibold text-blue-600 group-open:hidden">+ View Details</span>
+            <span className="text-xs font-semibold text-slate-500 hidden group-open:inline">- Hide Details</span>
+          </summary>
+          <div className="pt-4 space-y-3 text-xs sm:text-sm text-slate-600">
+            <p>
+              Welcome to the Com Pors archive. Every report covers computer systems, chips, and fast networks. Our team writes clear guides based on real hardware tests.
+            </p>
+            <p>
+              We re-test articles when new Linux tools come out. We keep open test logs so engineers can check our work on their own machines.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2 text-xs">
+              <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                <strong className="block text-slate-900 font-bold">Systems &amp; Kernels</strong>
+                <span>Memory allocators, task queues, and Linux kernel limits.</span>
+              </div>
+              <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                <strong className="block text-slate-900 font-bold">Hardware &amp; Chips</strong>
+                <span>Silicon dies, memory bus width, and chip cache speed.</span>
+              </div>
+              <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                <strong className="block text-slate-900 font-bold">Network &amp; Security</strong>
+                <span>TLS setups, secure tunnels, and fast packet routing tests.</span>
+              </div>
+              <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                <strong className="block text-slate-900 font-bold">Cloud &amp; Databases</strong>
+                <span>Server clusters, data consensus, and distributed storage.</span>
+              </div>
+              <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                <strong className="block text-slate-900 font-bold">Tool Benchmarks</strong>
+                <span>Real speed tests comparing compilers, engines, and runtimes.</span>
+              </div>
+              <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                <strong className="block text-slate-900 font-bold">Telemetry Probes</strong>
+                <span>eBPF monitoring, memory leak checks, and thread lock detection.</span>
+              </div>
             </div>
-            <div className="p-4 rounded-xl bg-white border border-slate-200">
-              <strong className="block text-slate-900 font-bold mb-1">Hardware &amp; Microprocessors</strong>
-              Transistor lithography, high-bandwidth memory interfaces, cache latency benchmarks, and multi-die chiplet interconnects.
+            <div className="pt-2 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+              <div className="p-3 rounded-lg bg-white border border-slate-200">
+                <strong className="text-slate-900 block font-bold mb-0.5">Topic Search</strong>
+                <span>Use categories to find guides by engineering field.</span>
+              </div>
+              <div className="p-3 rounded-lg bg-white border border-slate-200">
+                <strong className="text-slate-900 block font-bold mb-0.5">Code Repos</strong>
+                <span>Each guide links to code for open test runs.</span>
+              </div>
+              <div className="p-3 rounded-lg bg-white border border-slate-200">
+                <strong className="text-slate-900 block font-bold mb-0.5">Lab Badges</strong>
+                <span>Look for lab marks on deep hardware tests.</span>
+              </div>
+              <div className="p-3 rounded-lg bg-white border border-slate-200">
+                <strong className="text-slate-900 block font-bold mb-0.5">Fresh Posts</strong>
+                <span>Articles are sorted from newest to oldest.</span>
+              </div>
             </div>
-            <div className="p-4 rounded-xl bg-white border border-slate-200">
-              <strong className="block text-slate-900 font-bold mb-1">Network &amp; Cyber Defense</strong>
-              Zero-trust perimeter enforcement, TLS 1.3 optimization, cryptographic agility, and packet routing diagnostics.
-            </div>
-            <div className="p-4 rounded-xl bg-white border border-slate-200">
-              <strong className="block text-slate-900 font-bold mb-1">Cloud &amp; Distributed Systems</strong>
-              Multi-region consensus, CAP theorem trade-offs, object storage compaction, and zero-trust service meshes.
+            <div className="pt-2 border-t border-slate-200 space-y-2">
+              <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider">Repository Topic Taxonomies</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 text-xs">
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">1. Chips</strong>
+                  <span>We test CPU dies, cache speed, and socket heat limits. Our reports show true chip speed.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">2. Kernels</strong>
+                  <span>We trace Linux task queues, disk buffers, and thread speeds. We check memory safety under load.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">3. Cloud</strong>
+                  <span>We test server clusters, data consensus, and network delay. We show how to stop server crashes.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">4. Networks</strong>
+                  <span>We test HTTP/3 and QUIC over busy internet links. We measure round-trip ping times.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">5. Defense</strong>
+                  <span>We test zero-trust tunnels, key rotation, and memory safety. We show how to stop security breaches.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">6. Model Speed</strong>
+                  <span>We test token speed on server hardware. We track memory pressure under heavy load.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">7. Metrics</strong>
+                  <span>We track latency spikes, page faults, and thread contention with eBPF probes.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">8. Edge Systems</strong>
+                  <span>We test serverless workers, edge caches, and global request routing.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">9. Databases</strong>
+                  <span>We test write buffers, database clusters, and quorum rules during network splits.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">10. Compilers</strong>
+                  <span>We test compiler flags across LLVM, GCC, and Go. We measure real binary size savings.</span>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </details>
       </div>
 
       {/* Featured Technical Dispatches */}
@@ -182,109 +260,188 @@ export default function BlogListPage() {
         </section>
       )}
 
-      {/* Comprehensive Newsroom Archival Methodology & Research Framework */}
-      <section className="p-8 sm:p-10 rounded-3xl bg-slate-50 border border-slate-200 space-y-6 text-slate-700 leading-relaxed">
-        <div className="border-b border-slate-200 pb-4">
-          <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">
-            Archival Preservation &amp; Editorial Methodology
-          </span>
-          <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-            Com Pors Technical Documentation &amp; Peer Review Standards
-          </h2>
-        </div>
+      {/* Newsroom Archival Methodology & Research Framework (Collapsible) */}
+      <section className="rounded-3xl bg-slate-50 border border-slate-200 p-6 sm:p-8">
+        <details className="group">
+          <summary className="cursor-pointer list-none flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">
+                Newsroom Archive Standards &bull; Peer Review
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-blue-600"></span>
+                Archival Standards &amp; Technical Research Tracks
+              </h2>
+            </div>
+            <span className="text-xs font-bold text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-lg group-open:hidden self-start sm:self-auto">
+              + View Standards &amp; Tracks
+            </span>
+            <span className="text-xs font-bold text-slate-600 bg-slate-200 border border-slate-300 px-3 py-1.5 rounded-lg hidden group-open:inline self-start sm:self-auto">
+              - Hide Standards
+            </span>
+          </summary>
 
-        <div className="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
-          <p>
-            The Com Pors technical archive is curated to serve as a permanent, authoritative record of computing infrastructure evolution. Unlike fast-moving general tech news aggregators that discard historical articles, our editorial board treats every published dispatch as living technical documentation. When operating systems receive major kernel releases or when industry standards (such as TLS, HTTP, or CXL) evolve, our analysts update existing technical teardowns with timestamped revisions.
-          </p>
-          <p>
-            Our investigative methodology requires all empirical claims to be backed by verifiable test datasets. Whether benchmarking memory allocation latencies across NUMA nodes, measuring container cold-start durations across serverless platforms, or assessing post-quantum cryptographic handshake overhead, our authors construct isolated, repeatable testbeds. Hardware specifications, kernel flags, and measurement scripts are documented to enable independent verification by researchers worldwide.
-          </p>
-          <p>
-            Before any technical analysis enters our permanent newsroom repository, it undergoes a two-stage peer-review process. Primary technical claims, mathematical formulas, and algorithmic time complexity proofs are verified by staff engineers. We cross-reference implementation steps with official RFC standards, Linux kernel documentation, and open IEEE proceedings to prevent inaccurate architectural assumptions.
-          </p>
-          <p>
-            Transparency is paramount in systems engineering. If an independent researcher discovers a discrepancy in our published benchmarks or code samples, our newsroom investigates the finding in our laboratory test environment. Confirmed updates and corrections are published directly to the article with explicit timestamped errata notices, preserving full historical transparency for our readership.
-          </p>
-          <p>
-            Editorial independence remains our core foundation. Com Pors does not accept vendor funding, sponsored article placements, or undisclosed promotional agreements. Software tool reviews, cloud platform evaluations, and semiconductor teardowns are authored with zero commercial bias. By maintaining uncompromising technical standards, we ensure our archive provides systems architects, software engineers, and IT leaders with dependable, peer-reviewed engineering intelligence.
-          </p>
-        </div>
+          <div className="pt-8 space-y-6 border-t border-slate-200 mt-6 text-slate-600 text-xs sm:text-sm leading-relaxed">
+            <p>
+              Every article passes review before publication. Engineers test code samples against open web standards.
+            </p>
+            <p>
+              We keep full independence. We do not take paid article spots or vendor money. Our tool tests and chip guides stay fair and honest.
+            </p>
 
-        <div className="pt-4 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-slate-600">
-          <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
-            <strong className="text-slate-900 block font-bold">Verifiable Benchmarks</strong>
-            <span>All latency and throughput numbers are measured in reproducible laboratory testbeds.</span>
-          </div>
-          <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
-            <strong className="text-slate-900 block font-bold">Living Documentation</strong>
-            <span>Articles are updated with errata notes when industry specifications or protocols change.</span>
-          </div>
-          <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
-            <strong className="text-slate-900 block font-bold">Zero Sponsored Bias</strong>
-            <span>Complete editorial independence across all software reviews and hardware teardowns.</span>
-          </div>
-          <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
-            <strong className="text-slate-900 block font-bold">Peer-Reviewed Quality</strong>
-            <span>Every submission is vetted by verified system architects before publication.</span>
-          </div>
-        </div>
-      </section>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2 text-xs">
+              <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                <strong className="text-slate-900 block font-bold">Real Benchmarks</strong>
+                <span>All speed and latency numbers are tested on physical hardware.</span>
+              </div>
+              <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                <strong className="text-slate-900 block font-bold">Living Docs</strong>
+                <span>Guides are updated with notes when software rules change.</span>
+              </div>
+              <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                <strong className="text-slate-900 block font-bold">Zero Paid Reviews</strong>
+                <span>We keep complete independence across all tool tests.</span>
+              </div>
+              <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                <strong className="text-slate-900 block font-bold">Peer Reviewed</strong>
+                <span>Senior architects check every guide before publishing.</span>
+              </div>
+            </div>
 
-      {/* Systems Engineering Tracks & Investigation Focus */}
-      <section className="p-8 sm:p-10 rounded-3xl bg-white border border-slate-200 space-y-6 text-slate-700 leading-relaxed shadow-xs">
-        <div className="border-b border-slate-200 pb-4">
-          <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">
-            Technical Architecture Repository Structure
-          </span>
-          <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-            Systems Engineering Tracks &amp; Investigation Focus
-          </h2>
-        </div>
+            <div className="pt-4 border-t border-slate-200 space-y-3">
+              <h3 className="font-bold text-slate-900 text-sm">Research Disciplines</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">Kernel Tools</strong>
+                  <span>We trace Linux task queues, disk buffers, and thread speeds.</span>
+                </div>
+                <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">Silicon Chips</strong>
+                  <span>We check chip size, memory bus width, and hardware delay.</span>
+                </div>
+                <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">Distributed Data</strong>
+                  <span>We test database clustering, backup rules, and server failover.</span>
+                </div>
+                <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">System Defense</strong>
+                  <span>We check secure web keys, login tokens, and memory safety.</span>
+                </div>
+                <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">Edge Systems</strong>
+                  <span>We test serverless runtimes and fast delivery networks.</span>
+                </div>
+                <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">Web Transport</strong>
+                  <span>We benchmark QUIC handshakes, TLS resumption, and socket queues.</span>
+                </div>
+              </div>
+            </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm text-slate-600">
-          <div className="space-y-3">
-            <h3 className="font-bold text-slate-900 text-sm">Low-Latency Runtime &amp; Kernel Diagnostics</h3>
-            <p>
-              Our systems architecture track investigates how operating system kernels schedule threads, manage virtual memory pages, and handle high-throughput network interfaces. From Linux epoll socket multiplexing to eBPF packet filtering and io_uring ring-buffer IO, our articles document production profiling techniques that minimize kernel context switches and eliminate memory allocations in hot paths.
-            </p>
-            <p>
-              We evaluate synchronous and asynchronous programming paradigms under high concurrency. Articles provide concrete metrics on thread contention, lock-free data structures, atomic memory operations, and memory barriers across x86_64 and ARM64 server architectures.
-            </p>
-          </div>
+            <div className="pt-4 border-t border-slate-200 space-y-3">
+              <h3 className="font-bold text-slate-900 text-sm">Archival Review Steps</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 text-xs">
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">1. Lab Tests</strong>
+                  <span>Engineers test hardware on bare-metal test machines.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">2. Code Audit</strong>
+                  <span>Staff review code samples for safety, thread leaks, and bugs.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">3. Editorial Check</strong>
+                  <span>Senior editors review writing for clarity and simplicity.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">4. Fast Publish</strong>
+                  <span>The finished report goes live on our global edge network.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">5. Re-Test</strong>
+                  <span>We re-run benchmarks when major software versions release.</span>
+                </div>
+              </div>
+            </div>
 
-          <div className="space-y-3">
-            <h3 className="font-bold text-slate-900 text-sm">Microprocessor Floorplans &amp; Compute Accelerators</h3>
-            <p>
-              Our hardware analysis covers silicon manufacturing processes, packaging interconnects, cache coherency protocols, and dedicated compute accelerators. We dissect architectural whitepapers, die shot schematics, and transistor lithography roadmaps to explain how hardware innovations influence software performance.
-            </p>
-            <p>
-              We examine matrix multiplication units, systolic arrays, high-bandwidth memory (HBM3e) buses, and PCIe Gen 5/6 interconnect bandwidth. Our teardowns clarify the trade-offs between precision quantization (FP8, INT4) and numerical accuracy in high-performance computing workloads.
-            </p>
-          </div>
-        </div>
+            <div className="pt-4 border-t border-slate-200 space-y-3">
+              <h3 className="font-bold text-slate-900 text-sm">Archival Caching, Version Control &amp; Errata Policy</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 text-xs">
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">1. Version Tracking</strong>
+                  <span>Every guide links to code revisions in our public repository.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">2. Fresh Tests</strong>
+                  <span>We re-run benchmarks when major software versions release.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">3. Open Test Code</strong>
+                  <span>We share test shell scripts for every hardware review.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">4. Fast Errata</strong>
+                  <span>Readers report bugs, and we post fixes within 24 hours.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">5. Data Quotes</strong>
+                  <span>Researchers can cite our benchmark data in their papers.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">6. Edge Delivery</strong>
+                  <span>Our newsroom pages load fast on edge servers worldwide.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">7. Living Docs</strong>
+                  <span>Guides get updates whenever software standards change.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">8. Zero Sponsored Ads</strong>
+                  <span>We do not accept vendor money or paid review spots.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">9. Peer Review</strong>
+                  <span>Senior system architects test all code before release.</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">10. Free Access</strong>
+                  <span>All technical teardowns remain open without paywalls.</span>
+                </div>
+              </div>
+            </div>
 
-        <div className="pt-4 border-t border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm text-slate-600">
-          <div className="space-y-3">
-            <h3 className="font-bold text-slate-900 text-sm">Distributed Consensus &amp; Cloud Reliability</h3>
-            <p>
-              Building fault-tolerant software requires rigorous understanding of network partitions, state machine replication, and distributed consensus algorithms like Raft and Paxos. Our analyses explore quorum configurations, clock drift mitigation, write-ahead log compaction, and cross-datacenter replication topologies.
-            </p>
-            <p>
-              We benchmark distributed key-value engines, relational database shards, and object storage tiers. Every guide outlines real-world trade-offs between consistency, availability, and partition tolerance, helping engineering leads architect resilient multi-region infrastructure.
-            </p>
+            <div className="pt-4 border-t border-slate-200 space-y-3 text-xs text-slate-600">
+              <h3 className="text-sm font-bold text-slate-900">Repository Archival Policies &amp; Engineering Governance</h3>
+              <p>
+                The Com Pors technical repository preserves full version history for all published engineering blueprints, benchmark results, and system teardowns. We treat every technical article as an evolving document. When underlying software libraries, runtime dependencies, or hardware components receive updates, our editorial newsroom audits the original claims.
+              </p>
+              <p>
+                Our laboratory benchmarks evaluate real performance metrics on dedicated bare-metal hardware. We capture raw CPU utilization, memory allocations, and network latency traces during stress testing. We never rely on synthetic vendor benchmarks or promotional presentations.
+              </p>
+              <p>
+                All published code snippets undergo verification against current compiler versions and runtime environments. We check for memory safety vulnerabilities, race conditions, and unhandled exceptions. Each code listing includes comprehensive annotations explaining execution paths and boundary conditions.
+              </p>
+              <p>
+                Our editorial newsroom adheres to strict conflict-of-interest policies. Contributing analysts do not maintain financial holdings or advisory contracts with companies evaluated in our research tracks. We purchase hardware equipment through standard retail channels to guarantee representative evaluation units.
+              </p>
+              <p>
+                We provide public access to benchmark datasets and testing scripts through open code repositories. Practicing engineers can clone our testing harness to reproduce published findings in their own lab environments. We document exact configuration flags, kernel parameters, and hardware specifications.
+              </p>
+              <p>
+                Technical dispatches undergo rigorous peer review prior to publication. Systems architects and domain specialists review technical accuracy, mathematical modeling, and experimental methodology. Our editorial team enforces clear sentence structures and high readability standards.
+              </p>
+              <p>
+                We actively solicit feedback from the global computing community. Practicing engineers can submit technical corrections, performance optimizations, or alternative benchmark measurements through our editorial desk. Verified contributions receive formal attribution in updated article revisions.
+              </p>
+              <p>
+                Our archival infrastructure retains historic benchmark telemetry across multiple hardware generations. This allows systems researchers to evaluate performance regressions and throughput trends across evolving kernel architectures. We maintain strict cryptographic checksums for all published data assets.
+              </p>
+              <p>
+                Every engineering report is structured for maximum practical utility. We organize topics by hardware layer, protocol boundary, and software runtime. Readers can navigate directly to configuration manifests, benchmark comparative charts, or security boundary specifications.
+              </p>
+            </div>
           </div>
-
-          <div className="space-y-3">
-            <h3 className="font-bold text-slate-900 text-sm">Zero-Trust Cryptography &amp; Threat Mitigation</h3>
-            <p>
-              Security analysis at Com Pors focuses on cryptographic primitives, hardware security modules (HSM), mutual TLS authentication, and memory-safe software transitions. We analyze threat models, side-channel attacks, supply chain dependencies, and formal verification frameworks.
-            </p>
-            <p>
-              Our articles guide security engineers through post-quantum cryptography transition timelines, kernel-level memory isolation mechanisms, and verifiable audit logging architectures.
-            </p>
-          </div>
-        </div>
+        </details>
       </section>
     </div>
   );

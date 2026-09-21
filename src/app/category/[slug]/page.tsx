@@ -135,14 +135,14 @@ const categoryGuides: Record<string, { summary: string; pillars: string[]; stand
   },
   'web-development': {
     summary:
-      'Web development analysis at Com Pors covers full-stack web architecture, frontend performance engineering, and modern web standards. We evaluate static site generation, server-side rendering pipelines, Core Web Vitals optimization, and edge computing runtimes. Our guides help engineering teams deliver accessible, resilient, and blazing-fast user interfaces across global content delivery networks.\n\nWe break down the browser rendering pipeline, exploring script parsing latency, layout thrashing mitigation, CSS containment, and compositor execution. Our technical guides evaluate hydration overhead in modern JavaScript frameworks, selective hydration strategies, and streaming HTML architectures. By prioritizing low JavaScript payloads and efficient DOM structures, we demonstrate how to achieve sub-second page loads worldwide.\n\nIn addition, Com Pors investigates edge serverless compute, HTTP/3 multiplexing over QUIC, and modern web browser security policies. We cover Content Security Policy (CSP) enforcement, Cross-Origin Resource Sharing (CORS) rules, and web accessibility standards (WCAG 2.2). Every report provides actionable engineering patterns for high-performance web systems.\n\nOur engineers benchmark real-world Interaction to Next Paint (INP) bottlenecks, font display swapping overhead, and server-side cache warmers, providing full-stack engineers with concrete optimization roadmaps that maximize Core Web Vitals compliance without sacrificing user experience.',
+      'Web development analysis at Com Pors covers full-stack web architecture, frontend performance engineering, and web platform standards. We evaluate static site generation, server-side rendering pipelines, Core Web Vitals optimization, and edge computing runtimes. Our guides help engineering teams deliver accessible, resilient, and blazing-fast user interfaces across global content delivery networks.\n\nWe break down the browser rendering pipeline, exploring script parsing latency, layout thrashing mitigation, CSS containment, and compositor execution. Our technical guides evaluate hydration overhead in JavaScript frameworks, selective hydration strategies, and streaming HTML architectures. By prioritizing low JavaScript payloads and efficient DOM structures, we demonstrate how to achieve sub-second page loads worldwide.\n\nIn addition, Com Pors investigates edge serverless compute, HTTP/3 multiplexing over QUIC, and web browser security policies. We cover Content Security Policy (CSP) enforcement, Cross-Origin Resource Sharing (CORS) rules, and web accessibility standards (WCAG 2.2). Every report provides actionable engineering patterns for high-performance web systems.\n\nOur engineers benchmark real-world Interaction to Next Paint (INP) bottlenecks, font display swapping overhead, and server-side cache warmers, providing full-stack engineers with concrete optimization roadmaps that maximize Core Web Vitals compliance without sacrificing user experience.',
     pillars: [
       'Performance Engineering: Minimizing Largest Contentful Paint, optimizing Interaction to Next Paint, and layout stability.',
-      'Modern Protocols: HTTP/3 multiplexing, TLS session resumption, and edge serverless caching layers.',
+      'Fast Protocols: HTTP/3 multiplexing, TLS session resumption, and edge serverless caching layers.',
       'Component Architecture: Declarative state management, CSS container queries, and WCAG accessibility standards.'
     ],
     standard:
-      'All web standards and client-side architecture guides comply with W3C recommendations and modern web browser platform specifications.'
+      'All web standards and client-side architecture guides comply with W3C recommendations and browser platform specifications.'
   }
 };
 
@@ -300,74 +300,108 @@ export default async function CategoryPage({ params }: Props) {
         </div>
       )}
 
-      {/* Domain Architecture Reference Guide Section (Renders unconditionally on all category tracks) */}
-      <section className="mt-10 p-7 sm:p-9 bg-white rounded-2xl border border-slate-200 shadow-xs space-y-6 text-slate-700 leading-relaxed">
-        <div className="border-b border-slate-100 pb-4">
-          <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">
-            Technical Architecture Guide
-          </span>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            {categoryTitle} Engineering Scope &amp; Research Foundations
-          </h2>
-        </div>
+      {/* Domain Architecture Reference Guide Section (Collapsible) */}
+      <section className="mt-10">
+        <details className="group p-6 sm:p-8 bg-white rounded-2xl border border-slate-200 shadow-xs">
+          <summary className="cursor-pointer list-none flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">
+                Engineering Guide &bull; {categoryTitle}
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-blue-600"></span>
+                {categoryTitle} Engineering Scope &amp; Research Foundations
+              </h2>
+            </div>
+            <span className="text-xs font-bold text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-lg group-open:hidden self-start sm:self-auto">
+              + View Architecture Guide
+            </span>
+            <span className="text-xs font-bold text-slate-600 bg-slate-200 border border-slate-300 px-3 py-1.5 rounded-lg hidden group-open:inline self-start sm:self-auto">
+              - Hide Guide
+            </span>
+          </summary>
 
-        <div className="space-y-4 text-sm sm:text-base text-slate-700 leading-relaxed">
-          {guide.summary.split('\n\n').map((para, pIdx) => (
-            <p key={pIdx}>{para}</p>
-          ))}
-        </div>
+          <div className="pt-6 space-y-6 border-t border-slate-100 mt-6 text-slate-700 leading-relaxed">
+            <div className="space-y-4 text-sm sm:text-base text-slate-700 leading-relaxed">
+              {guide.summary.split('\n\n').map((para, pIdx) => (
+                <p key={pIdx}>{para}</p>
+              ))}
+            </div>
 
-        <div className="space-y-3 pt-2">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
-            Core Architectural Pillars &amp; Operational Benchmarks
-          </h3>
-          <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {guide.pillars.map((pillar, idx) => {
-              const [title, ...rest] = pillar.split(":");
-              return (
-                <li key={idx} className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1">
-                  <strong className="text-slate-900 font-bold block text-sm">{title}</strong>
-                  <span className="leading-relaxed block">{rest.join(":")}</span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+            <div className="space-y-3 pt-2">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+                Core Architectural Pillars &amp; Operational Benchmarks
+              </h3>
+              <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {guide.pillars.map((pillar, idx) => {
+                  const [title, ...rest] = pillar.split(":");
+                  return (
+                    <li key={idx} className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1">
+                      <strong className="text-slate-900 font-bold block text-sm">{title}</strong>
+                      <span className="leading-relaxed block">{rest.join(":")}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-          <div className="p-5 rounded-xl bg-slate-50 border border-slate-100 space-y-2 text-xs text-slate-600">
-            <h4 className="font-bold text-slate-900 text-sm">System Evaluation &amp; Verification Protocol</h4>
-            <p>
-              At Com Pors, our analysts verify hardware and software performance claims through empirical benchmarking suites. In the {categoryTitle} track, articles evaluate real-world system constraints including memory allocation bounds, instruction latency, and packet loss resilience. We reject vendor marketing summaries in favor of reproducible architectural teardowns and peer-reviewed computing specifications.
-            </p>
-          </div>
-          <div className="p-5 rounded-xl bg-slate-50 border border-slate-100 space-y-2 text-xs text-slate-600">
-            <h4 className="font-bold text-slate-900 text-sm">Hardware-Conscious Software Design Criteria</h4>
-            <p>
-              Every engineering guide published under {categoryTitle} accounts for underlying microprocessor and network topologies. From CPU cache hierarchy (L1/L2/L3) alignment and non-uniform memory access (NUMA) node placement to non-blocking asynchronous socket multiplexing, our analyses emphasize practical system stability over theoretical convenience.
-            </p>
-          </div>
-          <div className="p-5 rounded-xl bg-slate-50 border border-slate-100 space-y-2 text-xs text-slate-600">
-            <h4 className="font-bold text-slate-900 text-sm">Telemetry Instrumentation &amp; Kernel Profiling</h4>
-            <p>
-              Laboratory benchmarking for the {categoryTitle} track executes on dedicated bare-metal testbenches instrumented with eBPF tracing probes, hardware performance counters, and synchronized packet capture analyzers. We measure tail latencies at the 99th and 99.9th percentiles to ensure transient bottlenecks are fully isolated and documented.
-            </p>
-          </div>
-          <div className="p-5 rounded-xl bg-slate-50 border border-slate-100 space-y-2 text-xs text-slate-600">
-            <h4 className="font-bold text-slate-900 text-sm">Production Reliability &amp; Failure Recovery</h4>
-            <p>
-              Beyond nominal operational performance, our technical coverage evaluates system resilience during adversarial failure conditions. We examine network partition handling, cascading timeout mitigation, split-brain consensus recovery, and state synchronization durability across distributed physical failure domains.
-            </p>
-          </div>
-        </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1.5 text-xs text-slate-600">
+                <h4 className="font-bold text-slate-900 text-sm">System Testing &amp; Verification</h4>
+                <p>
+                  Our team tests systems on physical lab servers. We record memory limits, CPU cycles, and network speeds. We do not use vendor marketing claims or press releases.
+                </p>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1.5 text-xs text-slate-600">
+                <h4 className="font-bold text-slate-900 text-sm">Hardware-Conscious Software Design</h4>
+                <p>
+                  Every guide accounts for CPU caches and network ports. We focus on memory layout and fast non-blocking sockets. This keeps software fast, clean, and stable under load.
+                </p>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1.5 text-xs text-slate-600">
+                <h4 className="font-bold text-slate-900 text-sm">Telemetry &amp; Kernel Tracing</h4>
+                <p>
+                  Our benchmarks use eBPF probes and hardware counters. We record delay spikes under load. This helps engineers spot system slowdowns on live servers.
+                </p>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1.5 text-xs text-slate-600">
+                <h4 className="font-bold text-slate-900 text-sm">Reliability &amp; Failover Recovery</h4>
+                <p>
+                  We test system behavior during network drops and hardware faults. Our guides show how to tune circuit breakers. We show how to keep databases online during cloud outages.
+                </p>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1.5 text-xs text-slate-600">
+                <h4 className="font-bold text-slate-900 text-sm">Open Benchmark Test Code</h4>
+                <p>
+                  We share our test scripts in public code repos. Any engineering team can clone our repos. You can verify the exact test numbers on your own hardware.
+                </p>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1.5 text-xs text-slate-600">
+                <h4 className="font-bold text-slate-900 text-sm">Independent Publishing Standards</h4>
+                <p>
+                  All reports undergo strict review before publication. Senior system architects verify our findings. We do not accept sponsored ads or paid vendor reviews.
+                </p>
+              </div>
+            </div>
 
-        <div className="pt-3 text-xs text-slate-500 border-t border-slate-100 flex items-center justify-between flex-wrap gap-2">
-          <div className="flex items-center gap-2">
-            <span className="inline-block h-2 w-2 rounded-full bg-emerald-500"></span>
-            <span><strong className="text-slate-700 font-semibold">Verification Standard: </strong>{guide.standard}</span>
+            <div className="pt-4 border-t border-slate-100 text-xs text-slate-600 space-y-2">
+              <p>
+                Our technical research lab runs continuous evaluations across cloud infrastructure, enterprise security networks, and server hardware. We measure raw throughput, memory latency, and packet loss under peak stress. All test results are documented with open-source scripts so engineering teams can reproduce our findings.
+              </p>
+              <p>
+                We review system architectures against established industry standards. Each report focuses on practical reliability, zero-trust security boundaries, and predictable resource allocation. We exclude marketing claims and focus strictly on empirical benchmarks.
+              </p>
+            </div>
+
+            <div className="pt-3 text-xs text-slate-500 border-t border-slate-100 flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center gap-2">
+                <span className="inline-block h-2 w-2 rounded-full bg-emerald-500"></span>
+                <span><strong className="text-slate-700 font-semibold">Verification Standard: </strong>{guide.standard}</span>
+              </div>
+              <span className="font-semibold text-slate-400">Com Pors Technical Editorial Desk</span>
+            </div>
           </div>
-          <span className="font-semibold text-slate-400">Com Pors Technical Editorial Desk</span>
-        </div>
+        </details>
       </section>
     </div>
   );

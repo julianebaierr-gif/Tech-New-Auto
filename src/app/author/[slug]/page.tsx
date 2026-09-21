@@ -247,101 +247,119 @@ export default async function AuthorProfilePage({ params }: Props) {
           </div>
         )}
 
-        {/* Author Editorial Standards & Verification Process */}
-        <section className="mt-12 p-8 sm:p-10 bg-white rounded-2xl border border-slate-200 shadow-xs space-y-6 text-slate-700 leading-relaxed">
-          <div className="border-b border-slate-100 pb-4">
-            <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">
-              Editorial Methodology &amp; E-E-A-T Accountability
-            </span>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
-              Reporting Standards, Benchmarking &amp; Technical Verification by {author.name}
-            </h2>
-          </div>
-          <p className="text-sm text-slate-600 leading-relaxed">
-            As a lead technical analyst at Com Pors, {author.name} conducts empirical investigations into software architectures, distributed computing frameworks, and semiconductor innovations. Every dispatch published under this masthead adheres to strict investigative protocols, ensuring technical accuracy, full reproducible testing data, and absolute independence from corporate sponsorship.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1.5">
-              <strong className="text-slate-900 block text-sm">Primary Source Review</strong>
-              <p>Validates RFC specifications, Linux kernel patches, IEEE microprocessor papers, and vendor documentation before formulating architectural conclusions.</p>
-            </div>
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1.5">
-              <strong className="text-slate-900 block text-sm">Empirical Benchmarks</strong>
-              <p>Reproduces latency bounds, resource footprints, memory allocation patterns, and scaling limits in isolated physical test environments.</p>
-            </div>
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1.5">
-              <strong className="text-slate-900 block text-sm">Editorial Independence</strong>
-              <p>Zero sponsored placement, maintaining complete objectivity in software tool reviews, cloud platform analyses, and chip comparisons.</p>
-            </div>
-          </div>
+        {/* Author Editorial Standards & Verification Process (Collapsible) */}
+        <section className="mt-12">
+          <details className="group bg-white rounded-2xl border border-slate-200 shadow-xs p-6 sm:p-8">
+            <summary className="cursor-pointer list-none flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">
+                  Editorial Accountability &bull; E-E-A-T Standards
+                </span>
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-blue-600"></span>
+                  Reporting Standards, Benchmarks &amp; Lab Methods by {author.name}
+                </h3>
+              </div>
+              <span className="text-xs font-bold text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-lg group-open:hidden self-start sm:self-auto">
+                + View Standards
+              </span>
+              <span className="text-xs font-bold text-slate-600 bg-slate-200 border border-slate-300 px-3 py-1.5 rounded-lg hidden group-open:inline self-start sm:self-auto">
+                - Hide Standards
+              </span>
+            </summary>
 
-          <div className="pt-4 border-t border-slate-100 space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
-            <h3 className="text-base font-bold text-slate-900">Laboratory Instrumentation &amp; Measurement Standards</h3>
-            <p>
-              In our computing laboratory, {author.name} designs repeatable testing pipelines to evaluate system throughput, memory saturation, and CPU instruction cycles. Rather than relying on vendor-supplied synthetic marketing numbers, all evaluations use standardized telemetry suites, eBPF kernel tracing, and open hardware performance counters.
-            </p>
-            <p>
-              Whether analyzing zero-trust cloud communication protocols, microservice failover cascades, or extreme ultraviolet lithography roadmaps, {author.name} emphasizes architectural clarity and practical engineering tradeoffs for systems architects and developers. Each guide provides code examples verified against stable runtime versions and open-source implementation standards.
-            </p>
-            <p>
-              All benchmarks include explicit hardware configurations, kernel runtime flags, and measurement error tolerances. If an independent researcher discovers an anomaly in our published figures, our editorial team re-runs the benchmark suite in our lab and publishes transparent errata updates within 24 business hours.
-            </p>
-            <p>
-              Software code samples accompanying analyses by {author.name} are validated using automated continuous integration pipelines, memory leak sanitizers, and static analysis linters. Whether demonstrating asynchronous concurrency patterns, socket multiplexing, or post-quantum cryptographic primitives, code snippets are provided with complete dependency manifests and execution instructions.
-            </p>
-            <p>
-              In accordance with Com Pors newsroom policy, {author.name} maintains complete financial and advisory independence from technology vendors covered in our dispatches. All hardware and software products evaluated are tested without pre-publication editorial review by vendors or commercial sponsors.
-            </p>
-          </div>
-
-          <div className="pt-4 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-600">
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
-              <strong className="text-slate-900 block font-bold">Tested Code Samples</strong>
-              <p>Every snippet is compiled and verified against current runtime versions.</p>
-            </div>
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
-              <strong className="text-slate-900 block font-bold">Open Errata Registry</strong>
-              <p>Transparent public updates within 24 hours of verified technical feedback.</p>
-            </div>
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
-              <strong className="text-slate-900 block font-bold">SPJ Ethics Grounded</strong>
-              <p>Absolute editorial independence from hardware and cloud vendors.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Laboratory Toolchains & Measurement Rig Specifications */}
-        <section className="p-8 sm:p-10 bg-slate-50 rounded-2xl border border-slate-200 space-y-6 text-slate-700 leading-relaxed">
-          <div className="border-b border-slate-200 pb-4">
-            <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">
-              Instrumentation &amp; Laboratory Testbeds
-            </span>
-            <h3 className="text-xl sm:text-2xl font-bold text-slate-900">
-              Benchmarking Protocols &amp; Reproducible Test Environments
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm text-slate-600">
-            <div className="space-y-3">
-              <h4 className="font-bold text-slate-900 text-sm">System Telemetry &amp; Kernel Tracing</h4>
+            <div className="pt-6 space-y-6 border-t border-slate-100 mt-6 text-xs sm:text-sm text-slate-600 leading-relaxed">
               <p>
-                When conducting system performance audits, {author.name} deploys non-invasive eBPF programs, Linux perf counters, and kernel ftrace probes. This approach measures instruction retiring rates, branch prediction accuracy, memory controller bandwidth, and page faults without altering CPU execution dynamics or introducing instrumentation skew.
+                As a technical analyst at Com Pors, {author.name} tests software systems and computer hardware. Every article follows strict rules to ensure factual accuracy and open testing data. We do not accept paid placements.
               </p>
-              <p>
-                All networking investigations evaluate real packet latency distributions across TCP, UDP, and QUIC protocols using high-precision hardware timestamping interfaces. Tail latency distributions (p95, p99, p99.9) are analyzed alongside average throughput to document worst-case execution bounds.
-              </p>
-            </div>
 
-            <div className="space-y-3">
-              <h4 className="font-bold text-slate-900 text-sm">Compiler Optimization &amp; Runtime Profiling</h4>
-              <p>
-                Analyses authored by {author.name} evaluate software compilation across Clang/LLVM, GCC, and language-specific compilers including Rustc and Go. Benchmark suites assess the impact of vectorization flags (AVX-512, NEON), link-time optimization (LTO), and profile-guided optimization (PGO) on binary size and execution efficiency.
-              </p>
-              <p>
-                Memory safety and thread safety are verified using AddressSanitizer, ThreadSanitizer, and memory leak detection suites. Readers can inspect published test configurations to replicate findings in their own continuous integration systems.
-              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                  <strong className="text-slate-900 block font-bold text-xs">Primary Sources</strong>
+                  <p className="text-xs text-slate-600">We verify RFC standards, Linux kernel code, and IEEE papers before writing.</p>
+                </div>
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                  <strong className="text-slate-900 block font-bold text-xs">Hardware Tests</strong>
+                  <p className="text-xs text-slate-600">We test memory limits, app speed, and CPU delays on physical lab servers.</p>
+                </div>
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                  <strong className="text-slate-900 block font-bold text-xs">Zero Sponsored Ads</strong>
+                  <p className="text-xs text-slate-600">We keep full editorial independence across all tool tests and chip guides.</p>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-slate-100 space-y-3">
+                <h4 className="text-sm font-bold text-slate-900">Laboratory Testing Methods</h4>
+                <p>
+                  In our lab, {author.name} tests software speed, memory use, and CPU clock cycles. All tests use kernel probes and hardware counters.
+                </p>
+                <p>
+                  Every code sample is tested on real runtime engines. If an error is reported, our team checks the issue. We publish a fix within 24 hours.
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-slate-100 space-y-3">
+                <h4 className="text-sm font-bold text-slate-900">Laboratory Verification Checklist</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 text-xs">
+                  <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                    <strong className="text-slate-900 block font-bold">1. Clean Setup</strong>
+                    <p className="text-slate-600">Fresh OS installs on dedicated server hardware.</p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                    <strong className="text-slate-900 block font-bold">2. Digital Meters</strong>
+                    <p className="text-slate-600">Real power use recorded with digital power meters.</p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                    <strong className="text-slate-900 block font-bold">3. Open Test Code</strong>
+                    <p className="text-slate-600">Benchmark test scripts shared in public code repos.</p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                    <strong className="text-slate-900 block font-bold">4. Error Checks</strong>
+                    <p className="text-slate-600">Memory tests run for 24 hours before logging data.</p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                    <strong className="text-slate-900 block font-bold">5. Peer Review</strong>
+                    <p className="text-slate-600">Senior engineers check code samples before release.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-slate-100 space-y-2 text-xs">
+                <h4 className="text-sm font-bold text-slate-900">Editorial Independence</h4>
+                <p>
+                  Our authors do not own stock or take consulting jobs from vendors. We buy retail test gear in regular stores to avoid hand-picked review samples.
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-slate-100 space-y-3 text-xs">
+                <h4 className="text-sm font-bold text-slate-900">Lab Benchmarking &amp; Testing Methodology</h4>
+                <p>
+                  Our lab benchmarks focus on reproducible execution time, memory usage, and CPU cycles. We deploy test suites on clean hardware machines running minimal Linux installations. This methodology isolates system performance from background process interference and hypervisor scheduling jitter.
+                </p>
+                <p>
+                  Every technical article authored by {author.name} incorporates real terminal output and telemetry traces. We document kernel parameters, network socket configurations, and disk caching policies used during test runs. Readers can inspect our measurement scripts and rerun benchmarks in their own development environments.
+                </p>
+                <p>
+                  We evaluate software tools using open-source benchmarks and public datasets. When analyzing network throughput, we test packet loss recovery, connection handshake times, and TLS decryption speed. We avoid synthetic marketing benchmarks in favor of sustained workload tests.
+                </p>
+                <p>
+                  Code snippets published in our technical guides undergo strict static analysis and runtime verification. We ensure each code example compiles without warnings and adheres to rigorous memory safety best practices. We explicitly document potential runtime bottlenecks and edge-case exceptions.
+                </p>
+                <p>
+                  Our newsroom maintains complete transparency regarding technical methodology. When new compiler releases or kernel patches alter performance characteristics, our analysts update corresponding guides with comparative benchmark charts and updated configuration recommendations.
+                </p>
+                <p>
+                  We invite peer review from practicing systems engineers and researchers. Any reader can submit benchmark reproductions or alternative measurements through our editorial contact channel. Verified reader contributions receive full attribution in subsequent article revisions.
+                </p>
+                <p>
+                  Our laboratory preserves all raw telemetry logs, packet captures, and processor counter readings. When testing database throughput, we execute multi-threaded queries against realistic datasets to measure tail latency at the ninety-ninth percentile. We identify systemic bottlenecks before recommending architectural patterns.
+                </p>
+                <p>
+                  Every technical dispatch adheres to strict reproducibility standards. We provide step-by-step instructions for provisioning identical test servers and configuring network interfaces. Practicing engineers can independently confirm our findings and adapt our benchmark scripts for internal infrastructure evaluations.
+                </p>
+              </div>
             </div>
-          </div>
+          </details>
         </section>
       </section>
     </div>

@@ -160,76 +160,115 @@ export default function AuthorsIndexPage() {
           </div>
         </div>
 
-        {/* Detailed Review Methodology & Testing Standards */}
-        <div className="p-8 sm:p-10 rounded-3xl bg-slate-50 border border-slate-200 space-y-6">
-          <div className="border-b border-slate-200 pb-4">
-            <h3 className="text-xl font-bold text-slate-900">
-              Laboratory Benchmarking &amp; Empirical Reproducibility Framework
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-600 mt-1">
-              How Com Pors analysts design, verify, and document technical benchmarks before publication.
-            </p>
-          </div>
+        {/* Detailed Review Methodology & Testing Standards (Collapsible) */}
+        <div className="rounded-3xl bg-slate-50 border border-slate-200 p-6 sm:p-8">
+          <details className="group">
+            <summary className="cursor-pointer list-none flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">
+                  Testing Rig Standards &bull; Peer Review
+                </span>
+                <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-blue-600"></span>
+                  Lab Benchmarking &amp; Code Verification Standards
+                </h3>
+              </div>
+              <span className="text-xs font-bold text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-lg group-open:hidden self-start sm:self-auto">
+                + View Standards
+              </span>
+              <span className="text-xs font-bold text-slate-600 bg-slate-200 border border-slate-300 px-3 py-1.5 rounded-lg hidden group-open:inline self-start sm:self-auto">
+                - Hide Standards
+              </span>
+            </summary>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm text-slate-600 leading-relaxed">
-            <div className="space-y-3">
-              <h4 className="font-bold text-slate-900 text-sm">Physical Testbeds &amp; Isolation</h4>
-              <p>
-                All computational benchmarks are conducted on dedicated bare-metal test nodes rather than shared virtualized cloud instances. This eliminates noisy-neighbor CPU throttling, variable hypervisor scheduling latency, and inconsistent network jitter from benchmark results.
-              </p>
-              <p>
-                Our test configurations record ambient temperatures, power draw metrics, CPU clock frequencies, and memory sub-timings. When publishing hardware teardowns or compiler optimization passes, test environment variables and kernel compilation flags are published alongside the results.
-              </p>
-            </div>
+            <div className="pt-6 space-y-6 border-t border-slate-200 mt-6 text-xs sm:text-sm text-slate-600 leading-relaxed">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <h4 className="font-bold text-slate-900 text-sm">Physical Test Servers</h4>
+                  <p>
+                    All tests run on dedicated physical computers. We do not use shared virtual machines for speed benchmarks. This stops noisy neighbor slowdowns and CPU throttling.
+                  </p>
+                  <p>
+                    We track CPU clock speeds, room heat, and RAM timings. When we share compiler flags or kernel settings, we publish the full config for engineers to review.
+                  </p>
+                </div>
 
-            <div className="space-y-3">
-              <h4 className="font-bold text-slate-900 text-sm">Code Verification &amp; Synthetic Stress Testing</h4>
-              <p>
-                Every code snippet published on Com Pors is tested against standard compiler toolchains and runtime engines. We verify syntax correctness, dependency compatibility, and memory leak absence under sustained load using memory sanitizers and stress-testing suites.
-              </p>
-              <p>
-                Articles detailing algorithmic complexity compare theoretical Big-O curves with real-world execution profiles. If an algorithm encounters CPU cache miss bottlenecks or branch misprediction stalls, our authors document the physical hardware factors impacting runtime performance.
-              </p>
-            </div>
-          </div>
+                <div className="space-y-2">
+                  <h4 className="font-bold text-slate-900 text-sm">Code Verification &amp; Testing</h4>
+                  <p>
+                    Every code snippet on Com Pors is tested against standard compiler tools. We verify syntax correctness and memory safety before publishing.
+                  </p>
+                  <p>
+                    Our articles compare theory with real-world runtimes. If an algorithm causes CPU cache stalls, our authors explain why the hardware slowed down.
+                  </p>
+                </div>
+              </div>
 
-          <div className="pt-4 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-600">
-            <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
-              <strong className="text-slate-900 block font-bold">100% Original Reporting</strong>
-              <p>No syndicated fluff, PR re-writes, or automated regurgitation of third-party press releases.</p>
-            </div>
-            <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
-              <strong className="text-slate-900 block font-bold">Transparent Corrections</strong>
-              <p>Noticed an inaccuracy? Our newsroom investigates and issues public corrections within 24 hours.</p>
-            </div>
-            <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
-              <strong className="text-slate-900 block font-bold">Open Review Feedback</strong>
-              <p>Readers and researchers can inspect our testing scripts and submit reproducibility feedback.</p>
-            </div>
-          </div>
+              <div className="pt-4 border-t border-slate-200 space-y-3">
+                <h4 className="text-sm font-bold text-slate-900">Laboratory Verification Checklist</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 text-xs">
+                  <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                    <strong className="text-slate-900 block font-bold">1. Clean Setup</strong>
+                    <p className="text-slate-600">Fresh OS installs on dedicated server hardware.</p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                    <strong className="text-slate-900 block font-bold">2. Digital Meters</strong>
+                    <p className="text-slate-600">Real power use recorded with digital power meters.</p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                    <strong className="text-slate-900 block font-bold">3. Open Test Code</strong>
+                    <p className="text-slate-600">Benchmark test scripts shared in public code repos.</p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                    <strong className="text-slate-900 block font-bold">4. Error Checks</strong>
+                    <p className="text-slate-600">Memory tests run for 24 hours before logging data.</p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                    <strong className="text-slate-900 block font-bold">5. Peer Review</strong>
+                    <p className="text-slate-600">Senior engineers check code samples before release.</p>
+                  </div>
+                </div>
+              </div>
 
-          <div className="pt-6 border-t border-slate-200 space-y-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
-            <h4 className="font-bold text-slate-900 text-sm">Editorial Independence &amp; Anti-Bias Commitments</h4>
-            <p>
-              To safeguard the objectivity of our analyses, Com Pors maintains an absolute firewall between editorial research and commercial operations. Our authors do not hold equity, advisory positions, or consulting agreements with companies whose hardware or software products they review. We do not participate in paid speaking bureaus, vendor-sponsored junkets, or reciprocal backlink rings.
-            </p>
-            <p>
-              All software evaluations are conducted using retail accounts or open-source software distributions. When hardware manufacturers provide review hardware samples, units are accepted exclusively under unconditional editorial autonomy with zero pre-publication review rights.
-            </p>
-          </div>
+              <div className="pt-4 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">100% Original Tests</strong>
+                  <p>We do not copy press releases or syndicate third-party summaries.</p>
+                </div>
+                <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">Transparent Errata</strong>
+                  <p>We review error reports and publish fixes within 24 hours.</p>
+                </div>
+                <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <strong className="text-slate-900 block font-bold">Open Review Feedback</strong>
+                  <p>Engineers can inspect test scripts and share feedback.</p>
+                </div>
+              </div>
 
-          <div className="pt-6 border-t border-slate-200 space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
-            <h4 className="font-bold text-slate-900 text-sm">Technical Review Board &amp; Codebase Integrity Verification</h4>
-            <p>
-              In addition to individual author research, Com Pors maintains a technical review protocol for software architectural patterns. Before code samples are published in our technical guides, snippets undergo automated static analysis to identify memory safety hazards, unhandled error conditions, and algorithmic edge cases.
-            </p>
-            <p>
-              We prioritize code clarity, idiomatic syntax, and standard library primitives over obscure language hacks. Each code example includes explicit compilation commands, language runtime versions, and dependency manifests, ensuring developers can reproduce our architectural blueprints in local testing environments without unexpected failures.
-            </p>
-            <p>
-              Our authors continuously track updates to open RFC specifications, cryptographic deprecation notices from NIST, and Linux kernel stable releases. When upstream APIs evolve, existing guides are re-evaluated and revised with explicit changelogs to preserve their value as dependable engineering references.
-            </p>
-          </div>
+              <div className="pt-4 border-t border-slate-200 space-y-2 text-xs">
+                <h4 className="font-bold text-slate-900 text-sm">Editorial Independence</h4>
+                <p>
+                  Com Pors keeps a strict firewall between editorial research and business sales. Our writers do not hold stocks or consulting roles with companies whose products they review. We run software tests using retail accounts or open-source releases with zero vendor review.
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-slate-200 space-y-3 text-xs">
+                <h4 className="font-bold text-slate-900 text-sm">Empirical Lab Verification Workflow</h4>
+                <p>
+                  Our analysts test all code samples against multiple operating systems and compiler versions. When reviewing server hardware, we run memory stress tests for twenty-four hours to detect memory leaks and thermal throttling. We log raw test metrics in text format to ensure reproducible results.
+                </p>
+                <p>
+                  Every technical dispatch undergoes a two-tier review process. First, a systems engineer verifies mathematical calculations, architectural diagrams, and network topology charts. Next, a senior editor checks linguistic clarity, readability scores, and factual consistency. This rigorous process prevents inaccurate technical claims.
+                </p>
+                <p>
+                  We maintain full editorial independence across all technical reviews. Our newsroom never accepts free evaluation units with contractual review stipulations. If software documentation contains ambiguities, our team contacts upstream maintainers or examines open-source source code directly.
+                </p>
+                <p>
+                  Readers can submit technical feedback or request clarifications on published benchmarks. Our team reviews all technical inquiries within one business day and issues transparent errata notes whenever corrections are required.
+                </p>
+              </div>
+            </div>
+          </details>
         </div>
       </div>
     </div>
