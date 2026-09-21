@@ -82,15 +82,25 @@ export default async function BlogPostPage({ params }: Props) {
 
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "NewsArticle",
+    "@type": ["TechArticle", "NewsArticle"],
     headline: post.title,
     description: post.excerpt,
     image: [post.coverImage],
     datePublished: post.date,
     dateModified: post.date,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": postUrl,
+    },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".executive-summary-text", ".faq-answer"],
+    },
+    about: {
+      "@type": "Thing",
+      name: post.target_keyword || post.title,
     },
     author: [
       {
@@ -221,7 +231,7 @@ export default async function BlogPostPage({ params }: Props) {
       </header>
 
       {/* Featured Cover Image */}
-      <div className="relative rounded-2xl overflow-hidden border border-slate-200 mb-10 shadow-lg bg-slate-100 aspect-16/9">
+      <div className="relative rounded-2xl overflow-hidden border border-slate-200 mb-8 shadow-lg bg-slate-100 aspect-16/9">
         <img
           src={post.coverImage}
           alt={post.coverImageAlt || post.title}
@@ -234,6 +244,22 @@ export default async function BlogPostPage({ params }: Props) {
           className="w-full h-auto max-h-[500px] object-cover"
         />
       </div>
+
+      {/* AI Search & Executive Architectural Summary */}
+      <section
+        aria-label="Executive Architectural Summary"
+        className="mb-10 p-6 sm:p-7 rounded-2xl bg-gradient-to-r from-blue-50/90 via-indigo-50/60 to-slate-50 border border-blue-200/80 shadow-xs not-prose"
+      >
+        <div className="flex items-center gap-2 mb-2.5">
+          <span className="flex h-2.5 w-2.5 rounded-full bg-blue-600 animate-pulse"></span>
+          <h2 className="text-xs font-black uppercase tracking-widest text-blue-950 m-0">
+            Executive Summary &amp; Key Architectural Insights
+          </h2>
+        </div>
+        <p className="executive-summary-text text-sm sm:text-base font-medium text-slate-800 leading-relaxed m-0">
+          {post.excerpt}
+        </p>
+      </section>
 
       {/* Post Body */}
       <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed space-y-6 text-base sm:text-lg">

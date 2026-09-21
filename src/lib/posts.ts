@@ -11,6 +11,7 @@ export interface Post {
   slug: string;
   title: string;
   excerpt: string;
+  target_keyword?: string;
   coverImage: string;
   coverImageAlt?: string;
   date: string;

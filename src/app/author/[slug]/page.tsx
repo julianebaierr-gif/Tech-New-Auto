@@ -182,6 +182,35 @@ export default async function AuthorProfilePage({ params }: Props) {
             ))}
           </div>
         )}
+
+        {/* Author Editorial Standards & Verification Process */}
+        <section className="mt-12 p-8 bg-white rounded-2xl border border-slate-200 shadow-xs space-y-5 text-slate-700 leading-relaxed">
+          <div className="border-b border-slate-100 pb-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">
+              Editorial Methodology
+            </span>
+            <h2 className="text-xl font-bold text-slate-900">
+              Reporting Standards &amp; Technical Verification by {author.name}
+            </h2>
+          </div>
+          <p className="text-sm text-slate-600 leading-relaxed">
+            As a staff analyst at Com Pors, {author.name} adheres to strict peer-reviewed investigative protocols. Every technical report, architecture diagram, and benchmark analysis is cross-referenced with primary documentation, academic research publications, and open-source implementation repositories.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1">
+              <strong className="text-slate-900 block text-sm">Primary Source Review</strong>
+              <span>Validates RFC specifications, vendor whitepapers, and kernel patches before reporting.</span>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1">
+              <strong className="text-slate-900 block text-sm">Empirical Benchmarks</strong>
+              <span>Reproduces latency bounds, resource footprints, and scaling limits in test environments.</span>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1">
+              <strong className="text-slate-900 block text-sm">Editorial Independence</strong>
+              <span>Zero sponsored bias, maintaining complete objectivity in software tool reviews.</span>
+            </div>
+          </div>
+        </section>
       </section>
     </div>
   );
