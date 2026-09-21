@@ -1,10 +1,7 @@
 import Link from "next/link";
-import { getSearchIndex } from "@/lib/posts";
 import SearchNewsBar from "./SearchNewsBar";
 
 export default function MainHeader() {
-  const searchIndex = getSearchIndex();
-
   return (
     <header className="bg-white border-b border-slate-200 py-4 sm:py-6 px-4 sm:px-6 lg:px-8 shadow-xs">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center sm:items-center justify-between gap-4 sm:gap-6">
@@ -37,7 +34,7 @@ export default function MainHeader() {
 
         {/* Right Action: Search News input */}
         <div className="w-full sm:w-auto flex items-center justify-center sm:justify-end">
-          <SearchNewsBar posts={searchIndex} />
+          <SearchNewsBar />
         </div>
       </div>
     </header>

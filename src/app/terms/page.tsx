@@ -92,8 +92,25 @@ export default function TermsPage() {
         </p>
       </section>
 
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">6. Dispute Resolution, Governing Law &amp; Jurisdiction</h2>
+        <p className="text-slate-600 text-sm leading-relaxed">
+          These Terms of Service and any dispute arising out of or related to your use of Com Pors shall be governed by and construed in accordance with applicable laws governing digital publications, intellectual property, and electronic commerce, without giving effect to any choice or conflict of law provision. Any legal suit, action, or proceeding arising out of or related to these Terms of Service shall be instituted exclusively in competent courts of jurisdiction.
+        </p>
+        <p className="text-slate-600 text-sm leading-relaxed">
+          Before initiating formal legal proceedings, parties agree to engage in good-faith informal negotiations for a period of at least thirty (30) business days following written notice to our legal operations team.
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">7. Severability &amp; Modification of Terms</h2>
+        <p className="text-slate-600 text-sm leading-relaxed">
+          If any provision of these Terms of Service is held by a court or other tribunal of competent jurisdiction to be invalid, illegal, or unenforceable for any reason, such provision shall be eliminated or limited to the minimum extent necessary such that the remaining provisions of these Terms will continue in full force and effect. We reserve the right to revise and update these terms at our sole discretion with immediate effect upon posting.
+        </p>
+      </section>
+
       <section className="space-y-4 border-t border-slate-200 pt-8">
-        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">6. Newsroom Contact &amp; Legal Notices</h2>
+        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">8. Newsroom Contact &amp; Legal Notices</h2>
         <p className="text-sm text-slate-600">
           Formal legal notices, DMCA inquiries, or copyright dispute submissions should be directed in writing to our legal desk at <a href="mailto:williamcheeke4@gmail.com" className="text-blue-600 underline">williamcheeke4@gmail.com</a> or via our <a href="/contact/" className="text-blue-600 underline">contact page</a>.
         </p>

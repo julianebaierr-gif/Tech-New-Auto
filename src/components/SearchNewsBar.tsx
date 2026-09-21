@@ -6,13 +6,27 @@ import { Search, X, Calendar, ArrowRight, BookOpen } from "lucide-react";
 import { SearchItem } from "@/lib/posts";
 
 interface Props {
-  posts: SearchItem[];
+  initialPosts?: SearchItem[];
 }
 
-export default function SearchNewsBar({ posts }: Props) {
+export default function SearchNewsBar({ initialPosts }: Props) {
+  const [posts, setPosts] = useState<SearchItem[]>(initialPosts || []);
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const hasFetched = useRef(false);
+
+  const fetchIndex = () => {
+    if (!hasFetched.current && posts.length === 0) {
+      hasFetched.current = true;
+      fetch("/api/search")
+        .then((res) => (res.ok ? res.json() : []))
+        .then((data) => {
+          if (Array.isArray(data)) setPosts(data);
+        })
+        .catch(() => {});
+    }
+  };
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -53,10 +67,14 @@ export default function SearchNewsBar({ posts }: Props) {
         <input
           type="text"
           value={query}
-          onFocus={() => setIsOpen(true)}
+          onFocus={() => {
+            setIsOpen(true);
+            fetchIndex();
+          }}
           onChange={(e) => {
             setQuery(e.target.value);
             setIsOpen(true);
+            fetchIndex();
           }}
           placeholder="SEARCH NEWS..."
           className="w-full pl-10 pr-9 py-2 rounded-lg bg-[#070d1d] hover:bg-[#0b1426] focus:bg-[#0b1426] border border-slate-700/80 focus:border-blue-500 text-slate-100 placeholder:text-slate-400 placeholder:font-black placeholder:tracking-wider placeholder:text-xs text-xs font-semibold tracking-wide transition-all shadow-inner outline-none"

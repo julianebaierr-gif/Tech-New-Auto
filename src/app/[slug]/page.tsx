@@ -367,11 +367,13 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Related Technical Analyses & Internal Cross-Links */}
       {relatedPosts.length > 0 && (
-        <section className="mt-14 pt-10 border-t-2 border-slate-200">
+        <section className="mt-12 pt-8 border-t border-slate-200">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">Internal Reference &amp; Research</span>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">
+                Internal Reference &amp; Research
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                 Related Technical Analyses
               </h2>
             </div>
@@ -379,49 +381,34 @@ export default async function BlogPostPage({ params }: Props) {
               href="/blog/"
               className="text-xs font-bold text-blue-600 hover:text-blue-700 hidden sm:inline-flex items-center gap-1"
             >
-              Browse Newsroom <ArrowRight className="h-3.5 w-3.5" />
+              Browse Newsroom &rarr;
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {relatedPosts.map((rel) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {relatedPosts.slice(0, 3).map((rel) => (
               <article
                 key={rel.slug}
-                className="group flex flex-col rounded-2xl border border-slate-200 bg-white overflow-hidden hover:border-blue-400 hover:shadow-lg transition duration-300"
+                className="group flex flex-col rounded-xl border border-slate-200 bg-white p-5 hover:border-blue-400 hover:shadow-md transition duration-200"
               >
-                <div className="h-40 relative overflow-hidden bg-slate-100">
-                  <img
-                    src={rel.coverImage}
-                    alt={rel.coverImageAlt || rel.title}
-                    width={400}
-                    height={200}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                  />
-                  <span className="absolute top-2.5 left-2.5 text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-white/95 text-blue-700 backdrop-blur-md shadow-xs">
-                    {rel.category}
-                  </span>
+                <div className="flex items-center justify-between gap-2 mb-2 text-[11px] text-slate-500">
+                  <span className="font-bold uppercase text-blue-600">{rel.category}</span>
+                  <span>{rel.readTime}</span>
                 </div>
-                <div className="p-4 flex flex-col flex-1">
-                  <div className="flex items-center gap-2 text-[11px] text-slate-600 font-medium mb-2">
-                    <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {rel.date}</span>
-                    <span>&bull;</span>
-                    <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {rel.readTime}</span>
-                  </div>
-                  <h3 className="font-bold text-sm sm:text-base text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-2 leading-snug">
-                    <Link href={`/${rel.slug}/`}>{rel.title}</Link>
-                  </h3>
-                  <p className="text-slate-600 text-xs line-clamp-2 leading-relaxed mb-4 flex-1">
-                    {rel.excerpt}
-                  </p>
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span className="text-slate-600 font-semibold text-[11px]">{rel.author.name}</span>
-                    <Link
-                      href={`/${rel.slug}/`}
-                      className="text-blue-600 font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1 text-[11px]"
-                    >
-                      Read Analysis <ArrowRight className="h-3 w-3" />
-                    </Link>
-                  </div>
+                <h3 className="font-bold text-sm sm:text-base text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-2 leading-snug">
+                  <Link href={`/${rel.slug}/`}>{rel.title}</Link>
+                </h3>
+                <p className="text-slate-600 text-xs line-clamp-2 leading-relaxed mb-4 flex-1">
+                  {rel.excerpt}
+                </p>
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                  <span className="text-slate-600 font-medium">{rel.author.name}</span>
+                  <Link
+                    href={`/${rel.slug}/`}
+                    className="text-blue-600 font-bold group-hover:translate-x-0.5 transition-transform"
+                  >
+                    Read &rarr;
+                  </Link>
                 </div>
               </article>
             ))}

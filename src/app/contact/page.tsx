@@ -127,6 +127,108 @@ export default function ContactPage() {
           </form>
         </div>
       </div>
+
+      {/* Newsroom Submission Guidelines & Embargo Policy */}
+      <div className="border-t border-slate-200 pt-10 space-y-8 text-slate-700 text-sm leading-relaxed">
+        <div>
+          <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-1">
+            Editorial Protocol
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            Newsroom Submission Guidelines &amp; Corrections Workflow
+          </h2>
+          <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-3xl leading-relaxed">
+            Com Pors maintains high journalistic standards for technical coverage, investigative teardowns, and peer review. Before submitting materials, please review our newsroom criteria.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-xs">
+            <h3 className="font-bold text-slate-900 text-base">Press Releases &amp; Research Embargos</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              We respect scheduled disclosure embargos when communicated in writing at least 48 hours prior to public announcement. Our technical editors conduct independent verification, reproduce benchmark claims, and inspect documentation before agreeing to embargo terms.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-xs">
+            <h3 className="font-bold text-slate-900 text-base">Technical Corrections Policy</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              When readers or engineering practitioners identify factual inaccuracies, code syntax errors, or outdated API references in our articles, our editorial staff evaluates the submission against verified documentation. Corrections are published transparently with timestamped editorial notes.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-xs">
+            <h3 className="font-bold text-slate-900 text-base">Investigative Leads &amp; Source Security</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              We protect confidential sources who share insights regarding vulnerability disclosures, security flaws, or enterprise IT governance failures. Please indicate in your initial outreach if sensitive communication protocols or cryptographic signing are requested.
+            </p>
+          </div>
+        </div>
+
+        {/* Coordinated Disclosure Matrix & Newsroom FAQ */}
+        <div className="p-8 sm:p-10 rounded-3xl bg-slate-50 border border-slate-200 space-y-8">
+          <div className="border-b border-slate-200 pb-4">
+            <h3 className="text-xl font-bold text-slate-900">
+              Coordinated Vulnerability Disclosure &amp; Security Protocols
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 mt-1">
+              Protocols for submitting software vulnerability reports, zero-day research, and security audits.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm text-slate-600 leading-relaxed">
+            <div className="space-y-3">
+              <h4 className="font-bold text-slate-900 text-sm">Vulnerability Verification Requirements</h4>
+              <p>
+                When submitting reports regarding zero-day exploits, CVE discoveries, or cloud authentication bypasses, submitters must provide verifiable reproduction scripts or packet capture data. Our newsroom works directly with affected vendors to facilitate coordinated patch releases before publishing technical breakdowns.
+              </p>
+              <p>
+                We do not publish weaponized exploit code or proof-of-concept payloads that enable unauthenticated remote code execution against unpatched production systems. Our coverage focuses strictly on the architectural root causes, memory safety failures, and cryptographic flaws enabling the vulnerability.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="font-bold text-slate-900 text-sm">Response Timeframes &amp; Editorial Review SLA</h4>
+              <p>
+                All communications sent to our editorial desk receive an automated acknowledgment followed by human review within 24 business hours. Technical corrections that affect factual assertions, benchmark numbers, or code correctness are prioritized and typically addressed within one business day.
+              </p>
+              <p>
+                If an investigation warrants a formal retraction or major structural revision, an editor's note is appended to the top of the article detailing the date, the nature of the correction, and the verified empirical evidence supporting the change.
+              </p>
+            </div>
+          </div>
+
+          <div className="pt-6 border-t border-slate-200 space-y-4">
+            <h4 className="font-bold text-slate-900 text-sm">Editorial Desk Frequently Asked Questions</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-600">
+              <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1.5">
+                <strong className="text-slate-900 block font-bold">Do you accept paid guest articles?</strong>
+                <p>No. Com Pors does not accept sponsored guest posts, paid text links, or third-party marketing placements. All articles are produced by our verified editorial staff.</p>
+              </div>
+              <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1.5">
+                <strong className="text-slate-900 block font-bold">How can I submit hardware for laboratory benchmarking?</strong>
+                <p>Hardware vendors may submit evaluation units to our lab. However, we accept review hardware only under unconditional editorial freedom with zero pre-publication review rights.</p>
+              </div>
+              <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1.5">
+                <strong className="text-slate-900 block font-bold">Can academic researchers republish your diagrams?</strong>
+                <p>Yes. Non-commercial academic research papers and university coursework may cite our architectural diagrams with standard bibliographic attribution to Com Pors.</p>
+              </div>
+              <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1.5">
+                <strong className="text-slate-900 block font-bold">Where are your editorial offices located?</strong>
+                <p>Com Pors operates as a distributed digital newsroom with contributing analysts, laboratory testbeds, and editors across North America and Europe.</p>
+              </div>
+              <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1.5">
+                <strong className="text-slate-900 block font-bold">What is your embargo verification timeline?</strong>
+                <p>We require at least 48 hours to evaluate technical documentation, reproduce benchmark figures, and formulate independent editorial questions before agreeing to embargo terms.</p>
+              </div>
+              <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1.5">
+                <strong className="text-slate-900 block font-bold">How do you protect confidential whistleblowers?</strong>
+                <p>Our newsroom provides end-to-end PGP encrypted communication channels. We never disclose source identities, IP logs, or communication metadata under any circumstances.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

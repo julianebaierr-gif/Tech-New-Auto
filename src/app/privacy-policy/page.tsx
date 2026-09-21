@@ -115,8 +115,22 @@ export default function PrivacyPolicyPage() {
         </ul>
       </section>
 
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">6. Data Retention Schedules &amp; Automated Purging</h2>
+        <p className="text-slate-600 text-sm leading-relaxed">
+          Com Pors adheres to strict data minimization principles. Server-level access logs (including IP addresses and user-agent strings collected for network diagnostic purposes) are automatically rotated and purged after thirty (30) days. Editorial inquiries and press submissions are retained only as long as necessary to investigate the correspondence, after which records are archived securely or deleted.
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">7. Children&apos;s Online Privacy &amp; Cryptographic Security</h2>
+        <p className="text-slate-600 text-sm leading-relaxed">
+          Our technical publication is designed for systems engineers, enterprise IT professionals, and software developers. We do not knowingly collect or solicit personal information from children under the age of 13. All data transmissions across Com Pors are encrypted using modern Transport Layer Security (TLS 1.3) protocols with strict HTTP Strict Transport Security (HSTS) headers enforced.
+        </p>
+      </section>
+
       <section className="space-y-4 border-t border-slate-200 pt-8">
-        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">6. Data Protection Officer &amp; Contact</h2>
+        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">8. Data Protection Officer &amp; Contact</h2>
         <p>
           For questions, formal legal requests, or rights exercising regarding our privacy practices, please contact our designated privacy compliance team:
         </p>

@@ -168,6 +168,79 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
+
+      {/* Technical Review Methodology & Research Ethics */}
+      <div className="space-y-6 border-t border-slate-200 pt-10 text-slate-700 text-sm leading-relaxed">
+        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          Benchmarking Methodologies &amp; Research Protocol
+        </h2>
+        <p>
+          Technical accuracy requires structured testing environments and reproducible procedures. When our team conducts hardware evaluations or software architecture comparisons, we execute benchmarks on isolated bare-metal testbenches and standardized cloud instances. We document operating system versions, kernel build parameters, compiler optimization flags, and background process states to eliminate measurement noise.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+            <h3 className="font-bold text-slate-900 text-base">Network &amp; Latency Auditing</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Packet latency and bandwidth evaluations utilize synchronized hardware timestamping, round-trip packet inspection, and packet loss rate measurements under controlled synthetic traffic saturation. We isolate internal routing layers to provide realistic connection numbers rather than optimistic ping responses.
+            </p>
+          </div>
+          <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+            <h3 className="font-bold text-slate-900 text-base">Algorithmic &amp; Runtime Verification</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Algorithm performance profiles measure execution time, memory allocation patterns, garbage collection pauses, and cache hit ratios under varied data scale workloads. All code implementations are tested across clean runtime containers to verify reproducibility.
+            </p>
+          </div>
+        </div>
+
+        {/* Laboratory Instrumentation & Hardware Rigor */}
+        <div className="p-8 sm:p-10 rounded-3xl bg-slate-50 border border-slate-200 space-y-6 mt-8">
+          <div className="border-b border-slate-200 pb-4">
+            <h3 className="text-xl font-bold text-slate-900">
+              Laboratory Instrumentation &amp; Measurement Standards
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 mt-1">
+              The physical infrastructure, telemetry tools, and analytical pipelines powering Com Pors investigations.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm text-slate-600 leading-relaxed">
+            <div className="space-y-3">
+              <h4 className="font-bold text-slate-900 text-sm">Telemetry Stack &amp; Kernel Profiling</h4>
+              <p>
+                Our laboratory test rigs run mainline Linux kernels instrumented with extended Berkeley Packet Filter (eBPF) probes, perf profilers, and hardware performance counters. This enables non-invasive tracing of CPU instruction retiring rates, cache misses across L1, L2, and Last-Level Cache (LLC), and context switch frequency under load.
+              </p>
+              <p>
+                When testing container orchestration engines or microservice meshes, our analysts employ distributed OpenTelemetry tracing collectors configured to measure tail latencies at the 99th and 99.9th percentiles, ensuring transient latency spikes are fully captured.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="font-bold text-slate-900 text-sm">Hardware Verification Rig</h4>
+              <p>
+                Silicon and memory architecture investigations utilize dedicated workstations featuring dual-channel and quad-channel DDR5 platforms, PCIe 5.0 interconnect analyzers, and thermal monitoring thermocouple arrays. We log sustained socket power dissipation and VRM thermal stability to evaluate whether advertised turbo frequencies can be sustained indefinitely.
+              </p>
+              <p>
+                By publishing raw telemetry datasets alongside our written analyses, we provide systems architects and software developers with verifiable ground truth that withstands rigorous peer examination.
+              </p>
+            </div>
+          </div>
+
+          <div className="pt-4 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-600">
+            <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1.5">
+              <strong className="text-slate-900 block font-bold">SPJ Code of Ethics</strong>
+              <p>Our newsroom adheres strictly to the Society of Professional Journalists Code of Ethics for accuracy and independence.</p>
+            </div>
+            <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1.5">
+              <strong className="text-slate-900 block font-bold">ACM Software Guidelines</strong>
+              <p>Technical evaluations follow the Association for Computing Machinery standards for reproducible experimental computer science.</p>
+            </div>
+            <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-1.5">
+              <strong className="text-slate-900 block font-bold">Open Errata Registry</strong>
+              <p>All corrections are timestamped and preserved in our permanent editorial log for journalistic accountability.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

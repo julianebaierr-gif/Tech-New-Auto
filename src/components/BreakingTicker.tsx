@@ -3,7 +3,7 @@ import { getAllPosts } from "@/lib/posts";
 import { Zap } from "lucide-react";
 
 export default function BreakingTicker() {
-  const posts = getAllPosts().slice(0, 10);
+  const posts = getAllPosts().slice(0, 5);
 
   return (
     <div className="bg-slate-100 border-b border-slate-200 py-2 px-4 sm:px-6 lg:px-8 text-xs overflow-hidden">
@@ -14,9 +14,9 @@ export default function BreakingTicker() {
         </div>
         <div className="flex-1 overflow-hidden relative">
           <div className="animate-ticker flex items-center gap-8 text-slate-600">
-            {[...posts, ...posts].map((post, idx) => (
+            {posts.map((post) => (
               <Link
-                key={`${post.slug}-${idx}`}
+                key={post.slug}
                 href={`/${post.slug}/`}
                 className="hover:text-blue-600 transition inline-flex items-center gap-2 font-medium shrink-0"
               >
