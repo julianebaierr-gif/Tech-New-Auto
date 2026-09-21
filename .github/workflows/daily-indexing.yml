@@ -4,6 +4,13 @@ on:
   schedule:
     # Runs every 12 hours (06:00 UTC & 18:00 UTC / 11:00 AM & 11:00 PM PKT)
     - cron: '0 6,18 * * *'
+  push:
+    branches:
+      - main
+    paths:
+      - 'content/posts/**'
+      - 'scripts/**'
+      - '.github/workflows/**'
   workflow_dispatch: # Allows manual trigger anytime
 
 jobs:
@@ -22,7 +29,7 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install --upgrade pip
-          pip install requests oauth2client httplib2
+          pip install requests oauth2client httplib2 google-auth
 
       - name: Run Indexing & Crawl Ping
         env:

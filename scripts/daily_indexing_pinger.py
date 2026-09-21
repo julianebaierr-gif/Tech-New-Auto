@@ -51,35 +51,58 @@ def get_all_website_urls():
     return urls
 
 def ping_google_indexing(url_list):
-    if not GOOGLE_INDEXING_KEY:
-        print("[WARN] No GOOGLE_INDEXING_KEY found. Cannot ping Google Indexing API.")
+    raw_key = GOOGLE_INDEXING_KEY
+    if not raw_key:
+        print("[WARN] No GOOGLE_INDEXING_KEY or GOOGLE_SERVICE_ACCOUNT_JSON found. Skipping Google Indexing API.")
         return
 
     try:
-        from oauth2client.service_account import ServiceAccountCredentials
-        import httplib2
+        if os.path.exists(raw_key):
+            key_data = json.load(open(raw_key, 'r', encoding='utf-8'))
+        else:
+            key_data = json.loads(raw_key)
 
-        key_data = json.loads(GOOGLE_INDEXING_KEY)
         scopes = ["https://www.googleapis.com/auth/indexing"]
-        credentials = ServiceAccountCredentials.from_json_keyfile_dict(key_data, scopes=scopes)
-        http = credentials.authorize(httplib2.Http())
         endpoint = "https://indexing.googleapis.com/v3/urlNotifications:publish"
+
+        try:
+            from google.oauth2 import service_account
+            from google.auth.transport.requests import Request
+            credentials = service_account.Credentials.from_service_account_info(key_data, scopes=scopes)
+            credentials.refresh(Request())
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {credentials.token}"
+            }
+            use_requests = True
+        except ImportError:
+            from oauth2client.service_account import ServiceAccountCredentials
+            import httplib2
+            credentials = ServiceAccountCredentials.from_json_keyfile_dict(key_data, scopes=scopes)
+            http = credentials.authorize(httplib2.Http())
+            use_requests = False
 
         print(f"\n[GOOGLE INDEXING] Submitting {len(url_list)} URLs to Googlebot for immediate crawling...")
         success_count = 0
         for idx, url in enumerate(url_list, 1):
             try:
                 payload = json.dumps({"url": url, "type": "URL_UPDATED"})
-                response, content = http.request(endpoint, method="POST", body=payload, headers={"Content-Type": "application/json"})
-                if response.status in [200, 201, 202]:
+                if use_requests:
+                    res = requests.post(endpoint, headers=headers, data=payload, timeout=15)
+                    status = res.status_code
+                else:
+                    response, content = http.request(endpoint, method="POST", body=payload, headers={"Content-Type": "application/json"})
+                    status = response.status
+
+                if status in [200, 201, 202]:
                     success_count += 1
-                    print(f"[{idx}/{len(url_list)}] [OK {response.status}] {url}")
-                elif response.status == 429:
+                    print(f"[{idx}/{len(url_list)}] [OK {status}] {url}")
+                elif status == 429:
                     print(f"[{idx}/{len(url_list)}] [QUOTA 429] Daily Google Indexing API quota limit reached. Stopping batch.")
                     break
                 else:
-                    print(f"[{idx}/{len(url_list)}] [STATUS {response.status}] {url}")
-                time.sleep(0.2)  # respectful pacing
+                    print(f"[{idx}/{len(url_list)}] [STATUS {status}] {url}")
+                time.sleep(0.2)
             except Exception as e:
                 print(f"[ERR] Failed to submit {url}: {e}")
 
@@ -99,7 +122,8 @@ def ping_indexnow(url_list):
     print(f"\n[INDEXNOW PING] Submitting {len(url_list)} URLs to IndexNow (Bing, Yandex, Seznam, Naver)...")
     endpoints = [
         "https://api.indexnow.org/indexnow",
-        "https://www.bing.com/indexnow"
+        "https://www.bing.com/indexnow",
+        "https://yandex.com/indexnow"
     ]
     for ep in endpoints:
         try:
