@@ -9,7 +9,30 @@ GOOGLE_INDEXING_KEY = os.environ.get("GOOGLE_INDEXING_KEY") or os.environ.get("G
 SITE_URL = (os.environ.get("SITE_URL") or "https://www.compors.com").rstrip("/")
 
 def get_all_website_urls():
-    urls = [
+    priority_slugs = [
+        "architecting-a-secure-remote-desktop-connection",
+        "architecting-ai-resume-builder-free",
+        "architecting-scalable-systems-chat-with-ai",
+        "architecting-systems-ai-writing-tools-updates",
+        "architectural-realities-when-you-check-wifi-speed",
+        "chip-industry-updates-today-manufacturing-realities",
+        "engineering-realities-behind-ai-detector-turnitin",
+        "engineering-resilient-enterprise-cyber-security-solutions",
+        "evaluating-best-ai-apps-for-modern-software-work",
+        "evaluating-modern-ai-generator-free-tools-in-systems",
+        "evaluating-modern-character-ai-alternatives",
+        "evaluating-the-true-practical-chatgpt-plus-cost",
+        "grammarly-ai-detector-architectural-analysis",
+        "modem-vs-router-architecture-networking",
+        "optimizing-modern-data-center-solutions-for-scale",
+        "quantum-computing-applications-in-modern-enterprise-it",
+        "scaling-remote-infrastructure-with-google-remote-desktop",
+        "sora-app-invite-codes-architecture-and-access-reality"
+    ]
+
+    urls = [f"{SITE_URL}/{slug}/" for slug in priority_slugs]
+
+    urls += [
         f"{SITE_URL}/",
         f"{SITE_URL}/blog/",
         f"{SITE_URL}/authors/",
@@ -37,7 +60,7 @@ def get_all_website_urls():
     for auth in authors:
         urls.append(f"{SITE_URL}/author/{auth}/")
 
-    # Published Articles
+    # Published Articles (append remaining)
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     posts_dir = os.path.join(repo_root, "content", "posts")
     if not os.path.exists(posts_dir):
@@ -46,9 +69,19 @@ def get_all_website_urls():
         post_files = sorted(glob.glob(os.path.join(posts_dir, "*.json")), key=os.path.getmtime, reverse=True)
         for pf in post_files:
             slug = os.path.basename(pf).replace(".json", "")
-            urls.append(f"{SITE_URL}/{slug}/")
+            post_url = f"{SITE_URL}/{slug}/"
+            if post_url not in urls:
+                urls.append(post_url)
 
-    return urls
+    # Return deduplicated preserving order
+    seen = set()
+    deduped = []
+    for u in urls:
+        if u not in seen:
+            seen.add(u)
+            deduped.append(u)
+
+    return deduped
 
 def ping_google_indexing(url_list):
     raw_key = GOOGLE_INDEXING_KEY
