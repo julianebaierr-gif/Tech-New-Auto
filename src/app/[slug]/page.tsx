@@ -66,6 +66,35 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
+function parseHeadingsAndInjectIds(htmlContent: string) {
+  const headings: { id: string; text: string }[] = [];
+  let index = 0;
+
+  const modifiedHtml = htmlContent.replace(/<h2([^>]*)>(.*?)<\/h2>/gi, (match, attrs, text) => {
+    const cleanText = text.replace(/<[^>]+>/g, "").replace(/\.$/, "").trim();
+    let id = cleanText
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    if (!id) id = `section-${++index}`;
+
+    let uniqueId = id;
+    let counter = 1;
+    while (headings.some((h) => h.id === uniqueId)) {
+      uniqueId = `${id}-${counter++}`;
+    }
+
+    headings.push({ id: uniqueId, text: cleanText });
+
+    if (!attrs.includes("id=")) {
+      return `<h2 id="${uniqueId}"${attrs}>${text}</h2>`;
+    }
+    return match;
+  });
+
+  return { modifiedHtml, headings };
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
@@ -73,6 +102,8 @@ export default async function BlogPostPage({ params }: Props) {
   if (!post) {
     notFound();
   }
+
+  const { modifiedHtml, headings } = parseHeadingsAndInjectIds(post.content);
 
   const relatedPosts = getRelatedPosts(post.slug, 6);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.compors.com";
@@ -82,7 +113,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": ["TechArticle", "NewsArticle"],
+    "@type": "TechArticle",
     headline: post.title,
     description: post.excerpt,
     image: [post.coverImage],
@@ -111,9 +142,9 @@ export default async function BlogPostPage({ params }: Props) {
       },
     ],
     publisher: {
-      "@type": "NewsMediaOrganization",
+      "@type": "Organization",
       name: "Com Pors",
-      url: siteUrl,
+      url: `${siteUrl}/`,
       logo: {
         "@type": "ImageObject",
         url: `${siteUrl}/logo.png`,
@@ -261,11 +292,36 @@ export default async function BlogPostPage({ params }: Props) {
         </p>
       </section>
 
+      {/* Interactive Table of Contents */}
+      {headings.length > 0 && (
+        <nav
+          aria-label="Table of Contents"
+          className="mb-10 p-6 rounded-2xl bg-slate-50/90 border border-slate-200 shadow-xs not-prose"
+        >
+          <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-200">
+            <BookOpen className="h-4 w-4 text-blue-600" />
+            <h2 className="text-xs font-black uppercase tracking-wider text-slate-900 m-0">
+              Table of Contents &bull; Quick Navigation
+            </h2>
+          </div>
+          <ol className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm">
+            {headings.map((h, i) => (
+              <li key={h.id} className="flex items-start gap-2 text-slate-600 hover:text-blue-700 transition">
+                <span className="text-blue-600 font-bold shrink-0">{i + 1}.</span>
+                <a href={`#${h.id}`} className="hover:underline font-medium leading-snug">
+                  {h.text}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+
       {/* Post Body */}
       <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed space-y-6 text-base sm:text-lg">
         <div
-          dangerouslySetInnerHTML={{ __html: post.content }}
-          className="article-content space-y-6 [&>h2]:text-2xl sm:[&>h2]:text-3xl [&>h2]:font-black [&>h2]:text-slate-900 [&>h2]:mt-10 [&>h2]:mb-4 [&>h2]:tracking-tight [&>h3]:text-xl sm:[&>h3]:text-2xl [&>h3]:font-bold [&>h3]:text-blue-800 [&>h3]:mt-8 [&>h3]:mb-3 [&>h4]:text-lg sm:[&>h4]:text-xl [&>h4]:font-semibold [&>h4]:text-slate-800 [&>h4]:mt-6 [&>h4]:mb-2 [&>p]:leading-relaxed [&>p]:text-slate-700 [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:space-y-2 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:space-y-2 [&>blockquote]:border-l-4 [&>blockquote]:border-blue-500 [&>blockquote]:pl-4 [&>blockquote]:italic [&>blockquote]:text-slate-600 [&>blockquote]:bg-blue-50/50 [&>blockquote]:py-2 [&>blockquote]:rounded-r"
+          dangerouslySetInnerHTML={{ __html: modifiedHtml }}
+          className="article-content space-y-6 [&>h2]:scroll-mt-24 [&>h2]:text-2xl sm:[&>h2]:text-3xl [&>h2]:font-black [&>h2]:text-slate-900 [&>h2]:mt-10 [&>h2]:mb-4 [&>h2]:tracking-tight [&>h3]:text-xl sm:[&>h3]:text-2xl [&>h3]:font-bold [&>h3]:text-blue-800 [&>h3]:mt-8 [&>h3]:mb-3 [&>h4]:text-lg sm:[&>h4]:text-xl [&>h4]:font-semibold [&>h4]:text-slate-800 [&>h4]:mt-6 [&>h4]:mb-2 [&>p]:leading-relaxed [&>p]:text-slate-700 [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:space-y-2 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:space-y-2 [&>blockquote]:border-l-4 [&>blockquote]:border-blue-500 [&>blockquote]:pl-4 [&>blockquote]:italic [&>blockquote]:text-slate-600 [&>blockquote]:bg-blue-50/50 [&>blockquote]:py-2 [&>blockquote]:rounded-r"
         />
 
         {/* Dedicated "Read Also This / Related Technical Reports" Box matching sample UI */}

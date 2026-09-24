@@ -84,10 +84,12 @@ def get_all_website_urls():
     return deduped
 
 def ping_google_indexing(url_list):
-    raw_key = GOOGLE_INDEXING_KEY
-    if not raw_key:
-        print("[WARN] No GOOGLE_INDEXING_KEY or GOOGLE_SERVICE_ACCOUNT_JSON found. Skipping Google Indexing API.")
-        return
+    """
+    Disabled per Google Spam & Scaled Content Policy (September 2026).
+    Standard web logs are indexed via XML sitemaps and IndexNow.
+    """
+    print("[SEO POLICY] Google Indexing API ping disabled to protect domain health.")
+    return
 
     try:
         if os.path.exists(raw_key):

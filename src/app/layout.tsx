@@ -94,7 +94,7 @@ export const metadata: Metadata = {
 
 const organizationSchema = {
   "@context": "https://schema.org",
-  "@type": "NewsMediaOrganization",
+  "@type": "Organization",
   name: "Com Pors",
   url: `${siteUrl}/`,
   logo: {
@@ -103,10 +103,10 @@ const organizationSchema = {
     width: 600,
     height: 60,
   },
-  publishingPrinciples: `${siteUrl}/about/`,
-  ethicsPolicy: `${siteUrl}/about/`,
+  publishingPrinciples: `${siteUrl}/editorial-policy/`,
+  ethicsPolicy: `${siteUrl}/editorial-policy/`,
   diversityPolicy: `${siteUrl}/about/`,
-  correctionsPolicy: `${siteUrl}/about/`,
+  correctionsPolicy: `${siteUrl}/editorial-policy/`,
 };
 
 export default function RootLayout({

@@ -45,8 +45,9 @@ export default function Footer() {
             Company & Masthead
           </h4>
           <ul className="space-y-2.5 text-xs">
-            <li><Link href="/authors/" className="text-slate-300 hover:text-white hover:underline transition">Our Authors & Masthead</Link></li>
+            <li><Link href="/authors/" className="text-slate-300 hover:text-white hover:underline transition">Our Authors &amp; Masthead</Link></li>
             <li><Link href="/about/" className="text-slate-300 hover:text-white hover:underline transition">About Com Pors</Link></li>
+            <li><Link href="/editorial-policy/" className="text-slate-300 hover:text-white hover:underline transition">Editorial Policy</Link></li>
             <li><Link href="/contact/" className="text-slate-300 hover:text-white hover:underline transition">Contact Us</Link></li>
           </ul>
         </div>

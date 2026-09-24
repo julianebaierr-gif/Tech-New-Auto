@@ -73,9 +73,9 @@ export default async function AuthorProfilePage({ params }: Props) {
     image: author.avatar,
     url: authorUrl,
     worksFor: {
-      "@type": "NewsMediaOrganization",
+      "@type": "Organization",
       name: "Com Pors",
-      url: siteUrl,
+      url: `${siteUrl}/`,
     },
     sameAs: [author.twitter, author.github].filter(Boolean),
   };

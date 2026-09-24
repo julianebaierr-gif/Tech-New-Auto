@@ -24,41 +24,12 @@ os.makedirs(POSTS_DIR, exist_ok=True)
 
 def notify_google_indexing(url, action="URL_UPDATED"):
     """
-    Submits live article URL to Google Indexing API for instant crawling and indexing.
-    Accepts GOOGLE_INDEXING_KEY from GitHub Secrets (JSON service account key).
+    DISABLED per Google September 2026 Spam Update compliance.
+    Google Indexing API is restricted to JobPosting and BroadcastEvent markup only.
+    Standard web posts rely exclusively on dynamic sitemap.xml and IndexNow.
     """
-    indexing_key_raw = GOOGLE_INDEXING_KEY or os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON")
-    if not indexing_key_raw:
-        print("[INFO] No GOOGLE_INDEXING_KEY found. Skipping Google Indexing API ping.")
-        return False
-
-    try:
-        from oauth2client.service_account import ServiceAccountCredentials
-        import httplib2
-
-        print(f"[INDEXING] Preparing Google Indexing API notification for: {url} ({action})...")
-        key_data = json.loads(indexing_key_raw)
-        scopes = ["https://www.googleapis.com/auth/indexing"]
-        credentials = ServiceAccountCredentials.from_json_keyfile_dict(key_data, scopes=scopes)
-        http = credentials.authorize(httplib2.Http())
-
-        endpoint = "https://indexing.googleapis.com/v3/urlNotifications:publish"
-        payload = json.dumps({
-            "url": url,
-            "type": action
-        })
-        headers = {"Content-Type": "application/json"}
-        response, content = http.request(endpoint, method="POST", body=payload, headers=headers)
-
-        if response.status in [200, 201, 202]:
-            print(f"[SUCCESS] Google Indexing API responded {response.status}: Googlebot notified to index {url}!")
-            return True
-        else:
-            print(f"[WARN] Google Indexing API returned status {response.status}: {content.decode('utf-8', errors='ignore')}")
-            return False
-    except Exception as e:
-        print(f"[WARN] Failed to ping Google Indexing API: {e}")
-        return False
+    print("[SEO SAFETY] Google Indexing API disabled to prevent Scaled Content Abuse flags.")
+    return False
 
 def notify_indexnow(url):
     """

@@ -10,12 +10,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/portal-desk', '/portal-desk/'],
+        disallow: ['/api/', '/portal-desk', '/portal-desk/', '/*?s=*', '/*?*'],
       },
       {
         userAgent: ['AhrefsBot', 'AhrefsSiteAudit'],
         allow: '/',
-        disallow: ['/api/', '/portal-desk', '/portal-desk/'],
+        disallow: ['/api/', '/portal-desk', '/portal-desk/', '/*?s=*', '/*?*'],
       },
       {
         userAgent: [
@@ -30,7 +30,7 @@ export default function robots(): MetadataRoute.Robots {
           'Applebot',
         ],
         allow: '/',
-        disallow: ['/portal-desk', '/portal-desk/'],
+        disallow: ['/portal-desk', '/portal-desk/', '/*?s=*', '/*?*'],
       },
     ],
     sitemap: baseUrl + '/sitemap.xml',
