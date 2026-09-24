@@ -1107,7 +1107,7 @@ export default function PortalDeskClient({ initialPosts }: Props) {
               </div>
               <div className="space-y-1 text-xs text-slate-400">
                 <Link
-                  href="/about"
+                  href="/about/"
                   target="_blank"
                   className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-800/50 hover:text-slate-200"
                 >
@@ -1115,7 +1115,7 @@ export default function PortalDeskClient({ initialPosts }: Props) {
                   <ExternalLink className="w-3 h-3 text-slate-500" />
                 </Link>
                 <Link
-                  href="/contact"
+                  href="/contact/"
                   target="_blank"
                   className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-800/50 hover:text-slate-200"
                 >
@@ -1123,7 +1123,7 @@ export default function PortalDeskClient({ initialPosts }: Props) {
                   <ExternalLink className="w-3 h-3 text-slate-500" />
                 </Link>
                 <Link
-                  href="/privacy-policy"
+                  href="/privacy-policy/"
                   target="_blank"
                   className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-800/50 hover:text-slate-200"
                 >
@@ -1131,7 +1131,7 @@ export default function PortalDeskClient({ initialPosts }: Props) {
                   <ExternalLink className="w-3 h-3 text-slate-500" />
                 </Link>
                 <Link
-                  href="/terms"
+                  href="/terms/"
                   target="_blank"
                   className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-800/50 hover:text-slate-200"
                 >
@@ -1586,7 +1586,7 @@ export default function PortalDeskClient({ initialPosts }: Props) {
                               <td className="py-3.5 px-4 text-right whitespace-nowrap">
                                 <div className="inline-flex items-center gap-1.5">
                                   <Link
-                                    href={`/${post.slug}`}
+                                    href={`/${post.slug}/`}
                                     target="_blank"
                                     className="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition"
                                     title="View Live"

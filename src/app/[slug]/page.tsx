@@ -131,7 +131,7 @@ export default async function BlogPostPage({ params }: Props) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: siteUrl,
+        item: `${siteUrl}/`,
       },
       {
         "@type": "ListItem",
@@ -203,7 +203,7 @@ export default async function BlogPostPage({ params }: Props) {
 
         <div className="flex items-center justify-between border-y border-slate-200 py-3.5 text-xs">
           <Link
-            href={`/author/${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+            href={`/author/${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/`}
             className="flex items-center gap-3 group"
           >
             <img

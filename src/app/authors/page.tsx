@@ -65,7 +65,7 @@ export default function AuthorsIndexPage() {
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 flex-wrap">
                       <h2 className="text-xl sm:text-2xl font-black text-slate-900 group-hover:text-blue-600 transition">
-                        <Link href={`/author/${author.slug}`}>{author.name}</Link>
+                        <Link href={`/author/${author.slug}/`}>{author.name}</Link>
                       </h2>
                       <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
                         Editorial Staff
@@ -112,7 +112,7 @@ export default function AuthorsIndexPage() {
               <div className="pt-6 border-t border-slate-100 flex items-center justify-between text-xs mt-6">
                 <span className="text-slate-500 font-medium">Full Editorial Profile</span>
                 <Link
-                  href={`/author/${author.slug}`}
+                  href={`/author/${author.slug}/`}
                   className="inline-flex items-center gap-1.5 font-bold text-blue-600 hover:text-blue-700 group-hover:translate-x-1 transition-transform"
                 >
                   Read Authored Guides <ArrowRight className="h-4 w-4" />

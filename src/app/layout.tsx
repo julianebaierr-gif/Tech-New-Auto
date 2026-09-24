@@ -28,8 +28,8 @@ export const metadata: Metadata = {
   description: "Independent tech journalism reporting on emerging AI models, software architecture, semiconductors, cybersecurity, and future computing.",
 
   authors: [
-    { name: "Cora Lee", url: `${siteUrl}/author/cora-lee` },
-    { name: "Kellie Anne", url: `${siteUrl}/author/kellie-anne` },
+    { name: "Cora Lee", url: `${siteUrl}/author/cora-lee/` },
+    { name: "Kellie Anne", url: `${siteUrl}/author/kellie-anne/` },
   ],
   creator: "Com Pors",
   publisher: "Com Pors Editorial Board",
@@ -96,17 +96,17 @@ const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "NewsMediaOrganization",
   name: "Com Pors",
-  url: siteUrl,
+  url: `${siteUrl}/`,
   logo: {
     "@type": "ImageObject",
     url: `${siteUrl}/logo.png`,
     width: 600,
     height: 60,
   },
-  publishingPrinciples: `${siteUrl}/about`,
-  ethicsPolicy: `${siteUrl}/about`,
-  diversityPolicy: `${siteUrl}/about`,
-  correctionsPolicy: `${siteUrl}/about`,
+  publishingPrinciples: `${siteUrl}/about/`,
+  ethicsPolicy: `${siteUrl}/about/`,
+  diversityPolicy: `${siteUrl}/about/`,
+  correctionsPolicy: `${siteUrl}/about/`,
 };
 
 export default function RootLayout({
