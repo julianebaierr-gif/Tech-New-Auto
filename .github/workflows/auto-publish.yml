@@ -1,9 +1,10 @@
-name: Auto Publish Tech Article & Site Indexing (Every 12 Hours)
+name: Auto Publish Tech Article & Site Indexing (PAUSED)
 
 on:
-  schedule:
-    # Runs automatically every 12 hours (00:00 UTC and 12:00 UTC)
-    - cron: '0 */12 * * *'
+  # SCHEDULE DISABLED BY USER REQUEST - PAUSED UNTIL EXPLICITLY RESUMED
+  # schedule:
+  #   # Runs automatically every 12 hours (00:00 UTC and 12:00 UTC)
+  #   - cron: '0 */12 * * *'
   workflow_dispatch: # Allows manual run anytime from GitHub Actions tab
 
 permissions:
