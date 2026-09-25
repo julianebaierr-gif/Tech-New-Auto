@@ -12,6 +12,11 @@ try:
 except ImportError:
     from serp_gap_analyzer import perform_deep_serp_analysis, calculate_flesch_score, expand_semantic_keywords
 
+try:
+    from scripts.internal_linking_engine import find_relevant_internal_posts, format_internal_links_prompt, inject_internal_links_if_missing, count_internal_post_links
+except ImportError:
+    from internal_linking_engine import find_relevant_internal_posts, format_internal_links_prompt, inject_internal_links_if_missing, count_internal_post_links
+
 # Suppress informational SDK notices
 warnings.filterwarnings("ignore", category=UserWarning)
 os.environ["PYTHONWARNINGS"] = "ignore"
@@ -370,7 +375,7 @@ def fetch_unsplash_image(query, used_image_ids=None, visual_subject=None):
 
     return diverse_unique_tech_pool[0]
 
-def generate_article_with_gemini(keyword_info, existing_titles=None):
+def generate_article_with_gemini(keyword_info, existing_titles=None, existing_posts=None):
     """
     Two-Phase Autonomous Generation via Gemini API:
     Phase 1: Generate Deep H2-H4 Technical Outline + 100+ Semantic/LSI Keyword Topics + Specific Unsplash Visual Prompt.
@@ -540,6 +545,17 @@ Respond ONLY with valid JSON:
     paa_questions_list = serp_paa if serp_paa else outline_data.get("people_also_ask_questions", [])
     outline_json_str = json.dumps(outline_data.get("outline", []), indent=2)
     visual_subject = serp_visual_subject or outline_data.get("visual_subject") or kw
+
+    # --- Find top 3-4 contextually relevant internal articles for topic clustering ---
+    relevant_internal_posts = find_relevant_internal_posts(
+        target_keyword=kw,
+        category=chosen_category,
+        all_posts=existing_posts or [],
+        top_n=4
+    )
+    internal_links_prompt_block = format_internal_links_prompt(relevant_internal_posts)
+    if relevant_internal_posts:
+        print(f"[INTERNAL LINKING] Identified {len(relevant_internal_posts)} relevant internal articles for topic clustering: {[p['slug'] for p in relevant_internal_posts]}")
 
     # --- PHASE 2: Write Comprehensive 1000+ Words Content & Google FAQs ---
     if is_listicle:
@@ -720,6 +736,9 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
    - The link MUST be woven naturally into the body text (e.g. inside a relevant paragraph using `<a href="https://..." target="_blank" rel="noopener noreferrer" class="text-blue-600 font-semibold hover:underline">Anchor Text</a>`).
    - DO NOT add more than 1 external link. Strictly 1 link.
 
+9. CONTEXTUAL INTERNAL LINKING (MANDATORY 2 TO 3 RELEVANT ARTICLES):
+{internal_links_prompt_block}
+
 Respond ONLY with valid JSON:
 {{
   "title": "Title with keyword strictly between 50 and 55 chars",
@@ -755,7 +774,7 @@ Respond ONLY with valid JSON:
       "answer": "Concise direct answer (25-45 words)."
     }}
   ],
-  "content": "Rich HTML content (around {target_words} words) including the Final Thoughts / Field Perspective H2 section before conclusion, containing exactly 1 natural external authoritative link."
+  "content": "Rich HTML content (around {target_words} words) including the Final Thoughts / Field Perspective H2 section before conclusion, containing exactly 1 natural external authoritative link and 2 to 3 contextual internal links."
 }}
 """
     article_data = None
@@ -792,6 +811,7 @@ Respond ONLY with valid JSON:
     if not article_data.get("category"):
         article_data["category"] = chosen_category
     article_data["visual_subject"] = visual_subject
+    article_data["_relevant_internal"] = relevant_internal_posts
     return article_data
 
 def main():
@@ -808,8 +828,11 @@ def main():
     # Collect existing posts metadata to guarantee 100% uniqueness with zero repetition
     existing_meta = get_existing_posts_metadata()
     print(f"[INFO] Analyzed {len(existing_meta['titles'])} existing posts to ensure 100% uniqueness.")
-
-    article_data = generate_article_with_gemini(keyword_data, existing_titles=existing_meta["titles"])
+    article_data = generate_article_with_gemini(
+        keyword_data,
+        existing_titles=existing_meta["titles"],
+        existing_posts=existing_meta.get("posts", [])
+    )
 
     visual_subject = article_data.get("visual_subject") or keyword_data["keyword"]
     cover_image = fetch_unsplash_image(keyword_data["keyword"], used_image_ids=existing_meta["image_ids"], visual_subject=visual_subject)
@@ -964,7 +987,7 @@ def main():
                 "answer": clean_dashes(remove_years(f["answer"])).strip()
             })
 
-    def clean_content(html_text):
+    def clean_content(html_text, relevant_internal_candidates=None):
         if not isinstance(html_text, str):
             return html_text
         text = clean_dashes(remove_years(html_text))
@@ -1129,6 +1152,15 @@ def main():
         text = re.sub(r'href="(/category/[^"/]+)(?<!/)"', r'href="\1/"', text)
         text = re.sub(r'href="(/(?:about|contact|terms|privacy-policy))(?<!/)"', r'href="\1/"', text)
 
+        # 5b. Automated Contextual Internal Linking Safety Net
+        # Guarantees that EVERY published article has at least 2 to 3 natural internal links
+        internal_candidates = relevant_internal_candidates or article_data.get("_relevant_internal", [])
+        text = inject_internal_links_if_missing(text, internal_candidates, min_links=2, max_links=3)
+
+        # Verify internal links
+        verified_internal = count_internal_post_links(text)
+        print(f"[INTERNAL LINKING] Verified {len(verified_internal)} contextual internal post link(s) in content: {verified_internal}")
+
         # 6. Automated Flesch-Kincaid Readability Score Check
         try:
             flesch_val = calculate_flesch_score(text)
@@ -1188,7 +1220,7 @@ def main():
         "author": selected_author,
         "readTime": article_data.get("readTime", "8 min read"),
         "tags": article_data.get("tags", ["Tech", "Engineering"]),
-        "content": clean_content(article_data["content"]),
+        "content": clean_content(article_data["content"], relevant_internal_candidates=article_data.get("_relevant_internal", [])),
         "faqs": cleaned_faqs
     }
 
