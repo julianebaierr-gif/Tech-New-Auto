@@ -7,6 +7,11 @@ import warnings
 import requests
 from datetime import datetime
 
+try:
+    from scripts.serp_gap_analyzer import perform_deep_serp_analysis, calculate_flesch_score, expand_semantic_keywords
+except ImportError:
+    from serp_gap_analyzer import perform_deep_serp_analysis, calculate_flesch_score, expand_semantic_keywords
+
 # Suppress informational SDK notices
 warnings.filterwarnings("ignore", category=UserWarning)
 os.environ["PYTHONWARNINGS"] = "ignore"
@@ -427,6 +432,35 @@ DYNAMIC OUTLINE & HEADING ARCHITECTURE:
 - Headings must be organic, engaging, and editorial (e.g. "Foundations of Modern Architecture", "The Real-World Latency Trap").
 """
 
+    # --- STEP 0: Live Google Search, Top 5-8 Competitor & Content Gap Analysis ---
+    print(f"\n=======================================================")
+    print(f"[SERP PIPELINE] Analyzing Google SERP for: '{kw}'")
+    print(f"=======================================================")
+    serp_data = perform_deep_serp_analysis(kw, client=client)
+    competitors = serp_data.get("top_competitors", [])
+    content_gaps = serp_data.get("content_gaps", [])
+    serp_semantic_kw = serp_data.get("semantic_keywords_50plus", [])
+    serp_paa = serp_data.get("people_also_ask", [])
+    recommended_table = serp_data.get("recommended_data_table", {})
+    recommended_title = serp_data.get("recommended_title", "")
+    serp_visual_subject = serp_data.get("visual_subject", "")
+
+    # Format competitor landscape block
+    comp_lines = []
+    for idx, c in enumerate(competitors[:8], 1):
+        comp_lines.append(f"{idx}. \"{c.get('title', '')}\" ({c.get('url', '')}) - Angle: {c.get('focus', '')}")
+    competitors_block = "\n".join(comp_lines) if comp_lines else f"Top 5-8 Google results for '{kw}' provide high-level summaries without architectural depth."
+
+    # Format content gaps block
+    gap_lines = []
+    for idx, g in enumerate(content_gaps, 1):
+        gap_lines.append(
+            f"GAP {idx}: {g.get('gap_name')}\n"
+            f"   - Competitors Failed To Cover: {g.get('competitor_deficiency')}\n"
+            f"   - Mandatory Solution Our Article Must Provide: {g.get('our_solution')}"
+        )
+    content_gaps_block = "\n\n".join(gap_lines)
+
     # --- PHASE 1: Generate Outline, Semantic Keywords & Visual Concept ---
     outline_prompt = f"""
 You are an expert SEO strategist and Chief Technology Architect.
@@ -434,11 +468,18 @@ Generate an extensive, engaging, and high-value architectural outline and semant
 
 {outline_structure_rule}
 
+GOOGLE SERP & COMPETITOR LANDSCAPE (TOP 5-8 RANKING PAGES ON GOOGLE):
+{competitors_block}
+
+CRITICAL COMPETITOR CONTENT GAPS (MANDATORY TO RESOLVE IN OUTLINE):
+{content_gaps_block}
+
 CORE REQUIREMENTS:
-1. Identify 25-40 high-relevance semantic entities, technical jargon, LSI keywords, and related concepts that Google's Knowledge Graph directly associates with "{kw}". Avoid generic fluff words.
-2. Provide a 2-3 word visual photo subject query for Unsplash that best represents "{kw}" (e.g. for "Renewable Energy" -> "solar wind turbine", for "Electric Vehicles" -> "ev charging car", etc.).
-3. Identify 5 to 8 real, high-intent questions that 99% of everyday people actually search on Google ("People Also Ask") for "{kw}".
-4. The outline must be designed to engage human readers immediately, answering their real engineering problems rather than reciting dictionary definitions.
+1. OUTLINE MUST RESOLVE ALL CONTENT GAPS: Include dedicated H2 and H3 sections explicitly addressing and solving each of the Content Gaps identified above. This guarantees that our article provides deeper, more practical, and more comprehensive coverage than the top ranking competitors.
+2. Identify 50+ high-relevance semantic entities, technical jargon, LSI keywords, and related concepts that Google's Knowledge Graph directly associates with "{kw}". Avoid generic fluff words.
+3. Provide a 2-3 word visual photo subject query for Unsplash that best represents "{kw}" (e.g. for "Renewable Energy" -> "solar wind turbine", for "Electric Vehicles" -> "ev charging car", etc.).
+4. Identify 5 to 8 real, high-intent questions that 99% of everyday people actually search on Google ("People Also Ask") for "{kw}".
+5. The outline must be designed to engage human readers immediately, answering their real engineering problems rather than reciting dictionary definitions.
 
 Respond ONLY with valid JSON:
 {{
@@ -488,10 +529,17 @@ Respond ONLY with valid JSON:
         raise Exception("Could not generate outline from Gemini API.")
 
     chosen_category = outline_data.get("category") or cat
-    semantic_kw_list = outline_data.get("semantic_keywords", [])
-    paa_questions_list = outline_data.get("people_also_ask_questions", [])
+    raw_outline_sem = outline_data.get("semantic_keywords", [])
+
+    # Merge SERP 50+ semantic keywords with Phase 1 keywords to guarantee 50-75+ terms
+    all_semantic_kw = list(dict.fromkeys(serp_semantic_kw + raw_outline_sem))
+    if len(all_semantic_kw) < 50:
+        all_semantic_kw = expand_semantic_keywords(kw, all_semantic_kw)
+    print(f"[SERP PIPELINE] Final Semantic & LSI Entity pool: {len(all_semantic_kw)} terms ready for Phase 2 integration.")
+
+    paa_questions_list = serp_paa if serp_paa else outline_data.get("people_also_ask_questions", [])
     outline_json_str = json.dumps(outline_data.get("outline", []), indent=2)
-    visual_subject = outline_data.get("visual_subject") or kw
+    visual_subject = serp_visual_subject or outline_data.get("visual_subject") or kw
 
     # --- PHASE 2: Write Comprehensive 1000+ Words Content & Google FAQs ---
     if is_listicle:
@@ -539,6 +587,30 @@ FLEXIBLE EDITORIAL STRUCTURE & NATURAL FLOW:
     if paa_questions_list:
         paa_prompt_block = "\nREAL GOOGLE SEARCH QUESTIONS (PEOPLE ALSO ASK) IDENTIFIED FOR THIS TOPIC:\n" + "\n".join([f"- {q}" for q in paa_questions_list]) + "\n"
 
+    table_data_str = json.dumps(recommended_table, indent=2) if recommended_table else ""
+    table_instruction = f"""
+3. PRODUCTION SPECIFICATION OR COMPARISON MATRIX TABLE (MANDATORY VALUE ADD):
+   - Competitor articles omit direct numerical comparisons and technical parameters.
+   - Under an appropriate H2/H3 section, you MUST render an extensive, beautifully styled HTML table with Tailwind CSS classes:
+     <div class="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm not-prose">
+       <table class="w-full text-left text-xs sm:text-sm border-collapse bg-white">
+         <thead class="bg-slate-100 text-slate-800 font-semibold border-b border-slate-200">
+           <tr>
+             <th class="p-3">Architecture Layer / Metric</th>
+             <th class="p-3">Baseline / Free Tier</th>
+             <th class="p-3">Production Standard</th>
+             <th class="p-3">Engineering Trade-Off</th>
+           </tr>
+         </thead>
+         <tbody class="divide-y divide-slate-100 text-slate-700">
+           <tr class="hover:bg-slate-50/50"><td class="p-3 font-medium text-slate-900">Core Metric</td><td class="p-3">Baseline Spec</td><td class="p-3">Target Spec</td><td class="p-3">Impact Analysis</td></tr>
+         </tbody>
+       </table>
+     </div>
+   - Reference table blueprint:
+   {table_data_str}
+"""
+
     write_prompt = f"""
 You are a Principal Software Engineer and elite tech journalist writing for Com Pors (compors.com).
 Write an authentic, highly detailed, deeply engaging, and SEO-optimized technical article on: "{kw}".
@@ -547,17 +619,23 @@ Write an authentic, highly detailed, deeply engaging, and SEO-optimized technica
 OUTLINE TO EXPAND:
 {outline_json_str}
 
-SEMANTIC ENTITIES & LSI TOPICS TO NATURALLY INTEGRATE (for Google 2026 E-E-A-T & Knowledge Graph):
-{', '.join(semantic_kw_list[:40])}
+COMPETITOR CONTENT GAPS THAT OUR ARTICLE MUST FULLY RESOLVE (ZERO GAP REQUIREMENT):
+{content_gaps_block}
+
+50+ SEMANTIC ENTITIES & LSI TOPICS TO NATURALLY INTEGRATE (Google Knowledge Graph & E-E-A-T):
+{', '.join(all_semantic_kw[:65])}
 {paa_prompt_block}
 CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
 {write_structure_rule}
 
-1. IN-DEPTH LONG-FORM CONTENT & MAXIMIZING USER DWELL TIME:
+1. IN-DEPTH LONG-FORM CONTENT & ZERO CONTENT GAPS:
    - Target word count: approximately {target_words} words (strictly within 1300 to 1900 words).
-   - Write thoroughly and deeply: unpack architectural trade-offs, practical configurations, real-world failure modes, and engineering workflows so the reader stays engaged and spends serious time reading on the site.
+   - YOU MUST FULLY RESOLVE ALL IDENTIFIED CONTENT GAPS: Top ranking competitors left out real benchmarks, hardware configurations, failure modes, and command syntax. Your article must provide these exact technical details so there is zero content deficiency.
+   - Naturally weave at least 35 to 50 of the semantic entities from the list above into headings and body text.
    - Ensure complete conceptual closure: the article must feel thoroughly researched, practical, and fully resolved.
    - Use rich semantic HTML: <p>, <ul><li>, <ol><li>, <blockquote>, and <strong>.
+
+{table_instruction}
 
 2. HIGH READABILITY & PUNCHY SENTENCES (MANDATORY SEO & AHREFS GUIDELINE):
    - KEEP SENTENCES SHORT: Keep average sentence length under 18 words. Break complex compound thoughts into two clear, punchy sentences.
@@ -586,19 +664,20 @@ CRITICAL EDITORIAL STRUCTURE & HEADING RULES (MANDATORY):
    - You MUST seamlessly and naturally integrate the exact target keyword "{kw}" (or its natural primary phrase) within the VERY FIRST PARAGRAPH (<p>...</p>) of the article.
    - It MUST read 100% naturally, engagingly, and contextually — NEVER forced, stuffed, or awkward. It should immediately signal topic authority to both Google algorithms and human readers.
 
-3. MANDATORY PRE-FAQ CLOSING H2 ("Final Thoughts & Practitioner Perspective"):
+4. MANDATORY PRE-FAQ CLOSING H2 ("Final Thoughts & Practitioner Perspective"):
    - Directly before the article ends (before FAQs), you MUST include an overarching <h2> section titled with a natural, varied name such as:
      "Final Thoughts and Engineering Takeaways", "Key Takeaways and Architectural Verdict", "Field Notes and Implementation Realities", or "Architectural Verdict: Practical Considerations".
    - Under this <h2>, write 1-2 rich paragraphs sharing REAL PRACTITIONER/HUMAN EXPERIENCE (e.g. real-world trade-offs observed in production, common pitfalls teams hit when migrating, latency vs cost realities, or hands-on benchmarks).
    - This directly builds Google E-E-A-T trust, stops boring generic text, and prevents Google helpful content penalties.
 
-4. TITLE REQUIREMENT (STRICTLY 0% AI WORDS):
+5. TITLE REQUIREMENT (STRICTLY 0% AI WORDS):
    - Must naturally feature or strictly relate to "{kw}".
    - Complete the title into a punchy, professional, and editorial headline.
+   - Recommended CTR baseline: "{recommended_title}"
    - STRICTLY FORBIDDEN WORDS IN TITLE & HEADINGS (NEVER USE ANY OF THESE):
      * NEVER use: "Modern", "Comprehensive", "Guide", "A Guide to", "Navigating", "Navigating the", "Demystifying", "Unpacking", "Delving", "Deep Dive", "Ultimate", or "Ultimate Guide".
    - Craft natural, human editorial headlines (e.g. "Evaluating Machine Learning Frameworks", "Production Lessons from Distributed Caching").
-   - Strictly between 45 and 54 characters in length (optimal SEO headline range, never truncating mid-thought).
+   - Strictly between 51 and 59 characters in length (optimal SEO headline range, never truncating mid-thought).
    - NEVER include any years (such as 2025, 2026, etc.). Evergreen content only.
 
 5. META DESCRIPTION (EXCERPT - STRICTLY 0% AI WORDS & NO REPETITIVE TEMPLATES):
@@ -772,13 +851,13 @@ def main():
         # Ensure first character is capitalized
         if cleaned:
             cleaned = cleaned[0].upper() + cleaned[1:]
-        # Strict 54 character limit so layout suffix "| Com Pors" never exceeds 65
-        if len(cleaned) > 54:
-            words = cleaned[:52].split()
+        # Strict 51-59 character limit so layout suffix "| Com Pors" never exceeds 68
+        if len(cleaned) > 59:
+            words = cleaned[:57].split()
             if len(words) > 1:
                 cleaned = ' '.join(words[:-1]).rstrip('.,;:- ')
             else:
-                cleaned = cleaned[:52].rstrip('.,;:- ')
+                cleaned = cleaned[:57].rstrip('.,;:- ')
         return cleaned
 
     def clean_excerpt(text):
@@ -948,8 +1027,10 @@ def main():
             (r'\bfast-paced digital world\b', 'modern computing environment'),
             (r'\btapestry\b', 'network'),
             (r'\btestament\b', 'evidence'),
-            (r'\bcrucial component\b', 'vital element'),
-            (r'\bcrucial\b', 'vital'),
+            (r'\bcrucial component\b', 'key element'),
+            (r'\bcrucial\b', 'key'),
+            (r'\bvital element\b', 'key element'),
+            (r'\bvital\b', 'key'),
             (r'\bbeacon\b', 'benchmark'),
             (r'\bpivotal\b', 'central'),
             (r'\bit is important to remember that\b', 'notably,'),
@@ -1043,6 +1124,17 @@ def main():
         # 5. Trailing Slash Normalization for Internal Links
         text = re.sub(r'href="(/category/[^"/]+)(?<!/)"', r'href="\1/"', text)
         text = re.sub(r'href="(/(?:about|contact|terms|privacy-policy))(?<!/)"', r'href="\1/"', text)
+
+        # 6. Automated Flesch-Kincaid Readability Score Check
+        try:
+            flesch_val = calculate_flesch_score(text)
+            print(f"[READABILITY CHECK] Flesch Reading Ease Score: {flesch_val} (Target: >= 60.0)")
+            if flesch_val >= 60.0:
+                print(f"[READABILITY PASS] Article satisfies High Readability standard!")
+            else:
+                print(f"[READABILITY NOTE] Score is {flesch_val}. Short sentences and active voice prioritized.")
+        except Exception as fe:
+            print(f"[DEBUG] Readability calculation note: {fe}")
 
         return text
 
