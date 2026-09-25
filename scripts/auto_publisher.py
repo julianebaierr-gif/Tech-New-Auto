@@ -991,6 +991,10 @@ def main():
             # For standard articles, strip all numerical prefixes like "1. ", "1.1 ", "2.1 " from headings
             text = re.sub(r'(<h[234][^>]*>)\s*(\d+\.\d+\.?|\d+\.)\s*', r'\1', text, flags=re.IGNORECASE)
 
+        # Strip trailing periods / full stops from headings (Standard English grammar & typography)
+        # e.g. <h2>Title.</h2> -> <h2>Title</h2>, <h3>Section.</h3> -> <h3>Section</h3>
+        text = re.sub(r'(<h[1-6][^>]*>[\s\S]*?)\.\s*(</h[1-6]>)', r'\1\2', text, flags=re.IGNORECASE)
+
         # 1. Automated Readability & Vocabulary Simplification (Flesch-Kincaid & Ahrefs Compliance)
         replacements = [
             (r'\butilizing\b', 'using'),
