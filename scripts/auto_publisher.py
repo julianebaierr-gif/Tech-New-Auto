@@ -874,13 +874,13 @@ def main():
         # Ensure first character is capitalized
         if cleaned:
             cleaned = cleaned[0].upper() + cleaned[1:]
-        # Strict 51-59 character limit so layout suffix "| Com Pors" never exceeds 68
-        if len(cleaned) > 59:
-            words = cleaned[:57].split()
+        # Strict 50-57 character limit so Google SERP snippet never truncates with "..."
+        if len(cleaned) > 57:
+            words = cleaned[:56].split()
             if len(words) > 1:
                 cleaned = ' '.join(words[:-1]).rstrip('.,;:- ')
             else:
-                cleaned = cleaned[:57].rstrip('.,;:- ')
+                cleaned = cleaned[:56].rstrip('.,;:- ')
         return cleaned
 
     def clean_excerpt(text):

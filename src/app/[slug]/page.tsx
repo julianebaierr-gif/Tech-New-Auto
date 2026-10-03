@@ -33,7 +33,9 @@ export async function generateMetadata({ params }: Props) {
   const imageAlt = post.coverImageAlt || `${post.title} - ${post.category}`;
 
   return {
-    title: post.title,
+    title: {
+      absolute: post.title,
+    },
     description: desc,
     alternates: {
       canonical: postUrl,
