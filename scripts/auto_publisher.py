@@ -834,9 +834,6 @@ def main():
         existing_posts=existing_meta.get("posts", [])
     )
 
-    visual_subject = article_data.get("visual_subject") or keyword_data["keyword"]
-    cover_image = fetch_unsplash_image(keyword_data["keyword"], used_image_ids=existing_meta["image_ids"], visual_subject=visual_subject)
-
     slug = article_data.get("slug") or re.sub(r'[^a-zA-Z0-9]+', '-', article_data["title"].lower()).strip('-')
     target_file = os.path.join(POSTS_DIR, f"{slug}.json")
 
@@ -844,6 +841,23 @@ def main():
     if os.path.exists(target_file):
         slug = f"{slug}-{int(time.time())}"
         target_file = os.path.join(POSTS_DIR, f"{slug}.json")
+
+    # Check if local AI generated image exists in public/images/posts/
+    local_candidates = [
+        (f"/images/posts/{slug}.jpg", os.path.join(REPO_ROOT, "public", "images", "posts", f"{slug}.jpg")),
+        (f"/images/posts/{slug}.png", os.path.join(REPO_ROOT, "public", "images", "posts", f"{slug}.png")),
+        (f"/images/posts/{slug}.webp", os.path.join(REPO_ROOT, "public", "images", "posts", f"{slug}.webp")),
+    ]
+    cover_image = None
+    for rel_path, abs_path in local_candidates:
+        if os.path.exists(abs_path):
+            cover_image = rel_path
+            print(f"[IMAGE SYSTEM] Using local high-res AI image: {rel_path}")
+            break
+
+    if not cover_image:
+        visual_subject = article_data.get("visual_subject") or keyword_data["keyword"]
+        cover_image = fetch_unsplash_image(keyword_data["keyword"], used_image_ids=existing_meta["image_ids"], visual_subject=visual_subject)
 
     def clean_dashes(text):
         if not isinstance(text, str):

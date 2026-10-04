@@ -32,6 +32,10 @@ export async function generateMetadata({ params }: Props) {
 
   const imageAlt = post.coverImageAlt || `${post.title} - ${post.category}`;
 
+  const fullImageUrl = post.coverImage.startsWith("http")
+    ? post.coverImage
+    : `${siteUrl}${post.coverImage}`;
+
   return {
     title: {
       absolute: post.title,
@@ -52,7 +56,7 @@ export async function generateMetadata({ params }: Props) {
       tags: post.tags,
       images: [
         {
-          url: post.coverImage,
+          url: fullImageUrl,
           width: 1200,
           height: 630,
           alt: imageAlt,
@@ -63,7 +67,7 @@ export async function generateMetadata({ params }: Props) {
       card: "summary_large_image",
       title: post.title,
       description: desc,
-      images: [post.coverImage],
+      images: [fullImageUrl],
     },
   };
 }
@@ -118,7 +122,11 @@ export default async function BlogPostPage({ params }: Props) {
     "@type": "TechArticle",
     headline: post.title,
     description: post.excerpt,
-    image: [post.coverImage],
+    image: [
+      post.coverImage.startsWith("http")
+        ? post.coverImage
+        : `${siteUrl}${post.coverImage}`
+    ],
     datePublished: post.date,
     dateModified: post.date,
     inLanguage: "en-US",
