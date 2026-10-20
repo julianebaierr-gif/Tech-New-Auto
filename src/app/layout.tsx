@@ -88,6 +88,7 @@ export const metadata: Metadata = {
     google: "google6e9bb79cbb03eec0",
     other: {
       "msvalidate.01": "98533D5A610C8BB068BDE589D75E9C6F",
+      "ahrefs-site-verification": "6280d6ffc889f33450faf4b4e2b42b8f54cb5c65bc96be932da9f4d0d51726d4",
     },
   },
 };
